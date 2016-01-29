@@ -14,6 +14,51 @@
 class Kernel;
 class SvmData;
 using namespace std;
+class Utils
+{
+public:
+	bool static TryParseDouble(string str, double &out)
+	{
+		try
+		{
+			out = stod(str);
+			return true;
+		}
+		catch (invalid_argument&)
+		{
+			return false;
+		}
+	}
+
+	bool static TryParseInt(string str, int &out)
+	{
+		try
+		{
+			out = stoi(str);
+			return true;
+		}
+		catch (invalid_argument&)
+		{
+			return false;
+		}
+	}
+
+	std::vector<std::string> static &split(const std::string &s, char delim, std::vector<std::string> &elems) {
+		std::stringstream ss(s);
+		std::string item;
+		while (std::getline(ss, item, delim)) {
+			elems.push_back(item);
+		}
+		return elems;
+	}
+
+
+	std::vector<std::string> static split(const std::string &s, char delim) {
+		std::vector<std::string> elems;
+		split(s, delim, elems);
+		return elems;
+	}
+};
 class DataSet
 {
 public:
@@ -23,15 +68,32 @@ public:
 	int nTesters;
 	int nFeatures;
 	int nClasses;
+	int C;
+	double Gama;
+	DataSet static GetAdult()
+	{
+		DataSet ds;
+		ds.FileName = "../Data/adult2.data";
+		ds.IsCsv = false;
+		ds.nTrainers = 32561;
+		ds.nTesters = 16281;
+		ds.nFeatures = 123;
+		ds.nClasses = 2;
+		ds.C = 1;
+		ds.Gama = 0.0625;
+		return ds;
+	}
 	DataSet static GetIris()
 	{
 		DataSet ds;
-		ds.FileName = "../data/iris.csv";
+		ds.FileName = "../Data/iris.csv";
 		ds.IsCsv = true;
 		ds.nTrainers = 80;
 		ds.nTesters = 20;
 		ds.nFeatures = 4;
 		ds.nClasses = 2;
+		ds.C = 16;
+		ds.Gama = 0.5;
 		return ds;
 	}
 };
@@ -53,7 +115,7 @@ public:
 	}
 	void readNextRow(istream& str)
 	{
-		if (IsCsv)
+		if (SvmData::IsCsv)
 			readCsvData(str);
 		else
 			readIndexedData(str);
@@ -61,17 +123,18 @@ public:
 
 	SvmData Copy()
 	{
+
 		unsigned int i;
 		SvmData d;
-		for (i = 0; i < m_data.size(); i++)
-			d.m_data.push_back(m_data[i]);
-		for (i = 0; i < m_doubles.size(); i++)
-			d.m_doubles.push_back(m_doubles[i]);
-		for (i = 0; i < m_longs.size(); i++)
-			d.m_longs.push_back(m_longs[i]);
+		//for (i = 0; i < m_data.size(); i++)
+		//	d.m_data.push_back(m_data[i]);
+		//for (i = 0; i < m_doubles.size(); i++)
+		//	d.m_doubles.push_back(m_doubles[i]);
+		//for (i = 0; i < m_longs.size(); i++)
+		//	d.m_longs.push_back(m_longs[i]);
 		for (i = 0; i < x.size(); i++)
 			d.x.push_back(x[i]);
-		d.myClass = myClass;
+		//d.myClass = myClass;
 		d.y = y;
 
 		return d;
@@ -99,66 +162,31 @@ private:
 
 	void readIndexedData(istream& str)
 	{
-		int i = 0;
-		for (int i = 0; i < nFeatures; ++i)
-		{
-			
-		}
 		string         line;
 		getline(str, line);
 
+		if (line.size() == 0) return;
 		stringstream   lineStream(line);
 		string         cell;
 
-		m_data.clear();
-		m_doubles.clear();
-		m_longs.clear();
+		int i = 0;
+		getline(lineStream, cell, ' ');
+		//m_data.push_back(cell);
+		if (!Utils::TryParseDouble(cell, y))
+			throw new exception("Missing y value.");
 		x.clear();
-		while (getline(lineStream, cell, ','))
+		for (int i = 0; i < nFeatures; ++i)
 		{
-			m_data.push_back(cell);
-			try
-			{
-				double t;
-				t = stod(cell);
-				m_doubles.push_back(t);
-				x.push_back(t);
-				continue;
-			}
-			catch (invalid_argument&)
-			{
-
-			}
-
-			try
-			{
-				long t;
-				t = stol(cell);
-				m_longs.push_back(t);
-				continue;
-			}
-			catch (invalid_argument&)
-			{
-
-			}
+			x.push_back(0);
 		}
-		//Last line didn't read anything
-		if (m_data.size() == 0) return;
 
-		myClass = m_data[m_data.size() - 1];
-
-		//Find out classes
-		
-		if (classes[1].empty())
-			if (classes[0].empty())
-				classes[0] = myClass;
-			else if (classes[0].compare(myClass) != 0)
-				classes[1] = myClass;
-
-		if (classes[0].compare(myClass) == 0)
-			y = 1;
-		else
-			y = -1;
+		while (getline(lineStream, cell, ' '))
+		{
+			//m_data.push_back(cell);
+			auto elems = Utils::split(cell, ':');
+			int index = stoi(elems[0]);
+			x[index-1] = stod(elems[1]);
+		}
 	}
 
 	void readCsvData(istream& str)
@@ -207,19 +235,22 @@ private:
 		myClass = m_data[m_data.size() - 1];
 
 		//Find out classes
-		//static string classes[2];
-		if (classes[1].empty())
-			if (classes[0].empty())
-				classes[0] = myClass;
-			else if (classes[0].compare(myClass) != 0)
-				classes[1] = myClass;
+		//static string SvmData::classes[2];
+		if (SvmData::classes[1].empty())
+			if (SvmData::classes[0].empty())
+				SvmData::classes[0] = myClass;
+			else if (SvmData::classes[0].compare(myClass) != 0)
+				SvmData::classes[1] = myClass;
 
-		if (classes[0].compare(myClass) == 0)
+		if (SvmData::classes[0].compare(myClass) == 0)
 			y = 1;
 		else
 			y = -1;
 	}
 };
+int SvmData::nFeatures = 0;
+bool SvmData::IsCsv = false;
+string SvmData::classes[] = { "", "" };
 
 istream& operator>>(istream& str, SvmData& data)
 {
@@ -369,7 +400,7 @@ public:
 	}
 	void Init()
 	{
-		if (_data.size()==0)
+		if (_data.size() == 0)
 			throw new exception("Tried to initialise without data.");
 	}
 private:
@@ -390,80 +421,129 @@ void shuffle(vector<SvmData> &dados)
 	}
 }
 
-int classify(vector<SvmData> data, SvmData example, vector<double> alpha, Kernel kernel)
+void shuffle(vector<vector<double>> &x,vector<double> &y)
 {
-	auto b = 0.0;
+	int size = x.size();
+	for (auto i = 0; i < size; ++i)
+	{
+		auto position = rand() % (size - i);
+		auto tx = x[position];
+		auto ty = y[position];
+		x[position] = x[i];
+		y[position] = y[i];
+		x[i] = tx;
+		y[i] = ty;
+	}
+}
+
+int classify(vector<vector<double>> &x, vector<double> &y, int index, vector<double> alpha, Kernel kernel, int precision)
+{
 	auto size = alpha.size();
 	vector<int> alpha_indexes;
+	vector<double> sv;
+	double maxValue = 0.0;
 	for (auto i = 0; i < alpha.size(); ++i)
 	{
-		auto value = alpha[i];
-		if (value > 1e-6)
-			alpha_indexes.push_back(i);
+		if (alpha[i] > maxValue){
+			maxValue = alpha[i];
+			sv = x[i];
+		}
 	}
-	auto sv = data[alpha_indexes[0]];
-	for (auto i = 0; i < alpha_indexes.size(); ++i)
+	if (maxValue == 0.0)
+		throw new exception("Could not find support vector.");
+
+	auto b = 0.0;
+	for (auto i = 0; i < alpha.size(); i++)
 	{
-		auto index = alpha_indexes[i];
-		b += alpha[index] * data[index].y*kernel.K(data[index].x, sv.x);
+		if (alpha[i] == 0) continue;
+		b += alpha[i] * y[i]*kernel.K(x[i], sv);
 	}
+
 	auto sum = 0.0;
-	for (auto i = 0; i < alpha_indexes.size(); ++i)
+	for (auto i = 0; i < alpha.size(); ++i)
 	{
-		auto index = alpha_indexes[i];
-		sum += alpha[index] * data[index].y * kernel.K(data[index].x, sv.x);
+		if (alpha[i] == 0) continue;
+		sum += alpha[i] * y[i] * kernel.K(x[i], x[index]);
 	}
-	if (sum > 1e-6)
+	if (sum > precision)
 		return 1;
-	if (sum < -1e-6)
+	if (sum < -precision)
 		return -1;
 	return 0;
 }
 
+//int classify(vector<SvmData> data, SvmData example, vector<double> alpha, Kernel kernel)
+//{
+//	return classify(data, example.x, example.y, alpha, kernel);
+//}
+void log(string msg)
+{
+}
 int main()
 {
-	srand(time(nullptr));
-	DataSet ds = DataSet::GetIris();
+	//unsigned seed = time(nullptr);
+	unsigned seed = time(nullptr);
+	unsigned int start = clock();
+	std::cout <<clock()-start<< ": seed: " << seed << endl;
+	srand(seed);
+	vector<vector<double>> x;
+	vector<double> y;
+	DataSet ds = DataSet::GetAdult();
+	//DataSet ds = DataSet::GetIris();
 	SvmData::IsCsv = ds.IsCsv;
+	SvmData::nFeatures = ds.nFeatures;
 	if (ds.IsCsv){
-		SvmData::nFeatures = ds.IsCsv;
 	}
-	ifstream       file(ds.FileName);
-
-	if (!file.good())
+	else
 	{
-		cout << "Error: File not found" << endl;
+	}
+	ifstream       file;
+	file.open(ds.FileName, ifstream::in);
+
+	if (!file.good() )
+	{
+		std::cout << "Error: File not found" << endl;
 		return 1;
 	}
 	SvmData linha;
 	vector<SvmData> linhas;
 	SequentialSVM svm;
-	double value, n, C, b, sum;
-	n = 0.0001;
-	C = 50.0;
+	double value, C, b, sum;
+	double precision = 1e-9;
+	double step = 0.1;
+	C = ds.C;
 	b = 0.0;
+	int counter = 0;
 
+	cout << clock() - start << ": Reading File: " << ds.FileName<< endl;
 	while (file >> linha)
 	{
-		linhas.push_back(linha.Copy());
-		cout << linha.ToString();
+		//linhas.push_back(linha.Copy());
+		vector<double> vd;
+		for (int i = 0; i < linha.x.size(); ++i)
+			vd.push_back(linha.x[i]);
+		x.push_back(vd);
+		y.push_back(linha.y);
+		//std::cout << linha.ToString();
 	}
-
 	svm.SetData(linhas);
-
-	shuffle(linhas);
+	cout << clock() - start << ": Schuffling" << endl;
+	shuffle(x,y);
 
 	double validationPercentage = 0.2;
-	int nValidators = (linhas.size()*validationPercentage);
-	int nTrainers = linhas.size() - nValidators;
+	int nValidators = (x.size()*validationPercentage);
+	int nTrainers = x.size() - nValidators;
 	Kernel kernel;
-	kernel.DefineHomogeneousPolynomial(2);
+	kernel.DefineGaussian(ds.Gama);
+	//kernel.DefineHomogeneousPolynomial(2);
 	vector<double> alpha, oldAlpha;
 	for (int i = 0; i < nTrainers; ++i){
 		alpha.push_back(0);
 		oldAlpha.push_back(1);
 	}
 	int count = 0;
+	double lastDif = 0;
+	cout << clock() - start << ": Trainging!" << endl;
 	do
 	{
 		count++;
@@ -473,17 +553,20 @@ int main()
 			oldAlpha[i] = alpha[i];
 		}
 
-		if (difAlpha<1e-4 && difAlpha>-1e-4)
+		if (abs(difAlpha) < precision)
 			break;
-
+		if (abs(difAlpha - lastDif) > difAlpha/10.0)
+			step = step / 2;
+		lastDif = difAlpha;
 		for (int i = 0; i < nTrainers; ++i)
 		{
 			sum = 0;
 			for (int j = 0; j < nTrainers; ++j)
 			{
-				sum += linhas[j].y*alpha[j] * kernel.K(linhas[j].x, linhas[i].x);
+				if (oldAlpha[j] == 0) continue;
+				sum += y[j]*oldAlpha[j] * kernel.K(x[j], x[i]);
 			}
-			value = alpha[i] + n - n*linhas[i].y*sum;
+			value = oldAlpha[i] + step - step*y[i] * sum;
 			if (value > C)
 				alpha[i] = C;
 			else if (value < 0)
@@ -493,19 +576,18 @@ int main()
 		}
 
 	} while (true);
-	cout << "iterations: " << count << endl;
+	std::cout << clock() - start << ": Training iterations: " << count << endl;
 	auto nCorrect = 0;
-	for (auto i = nTrainers; i < linhas.size(); ++i)
+	for (auto i = nTrainers; i < x.size(); ++i)
 	{
-		int classifiedY = classify(linhas, linhas[i], alpha, kernel);
-		if (classifiedY == linhas[i].y){
+		int classifiedY = classify(x, y, i, alpha, kernel, precision);
+		if (classifiedY == y[i]){
 			nCorrect++;
-			cout << "Correct";
 		}
-		else
-			cout << "Wrong";
 	}
 	auto percentageCorrect = static_cast<double>(nCorrect) / nValidators;
-	cout << "Percentage correct: " << percentageCorrect*100.0 << "\n";
+	std::cout << clock() - start << ": Percentage correct: " << percentageCorrect*100.0 << "%" << endl;
+	int aef;
+	cin >> aef;
 	return 0;
 }
