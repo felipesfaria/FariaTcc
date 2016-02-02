@@ -70,23 +70,249 @@ public:
 	int nClasses;
 	int C;
 	double Gama;
-	DataSet static GetAdult()
+	double Step;
+	DataSet static GetAdult1()
 	{
 		DataSet ds;
-		ds.FileName = "../Data/adult2.data";
+		ds.FileName = "Data/adult1.data";
+		ds.IsCsv = false;
+		ds.nTrainers = 1605;
+		ds.nTesters = 16281;
+		ds.nFeatures = 123;
+		ds.nClasses = 2;
+		ds.C = 100;
+		ds.Gama = 0.5;
+		ds.Step = 1e-12;
+		return ds;
+	}
+	DataSet static GetAdult2()
+	{
+		DataSet ds;
+		ds.FileName = "Data/adult2.data";
+		ds.IsCsv = false;
+		ds.nTrainers = 2265;
+		ds.nTesters = 16281;
+		ds.nFeatures = 123;
+		ds.nClasses = 2;
+		ds.C = 100;
+		ds.Gama = 0.5;
+		ds.Step = 1e-12;
+		return ds;
+	}
+	DataSet static GetAdult3()
+	{
+		DataSet ds;
+		ds.FileName = "Data/adult3.data";
+		ds.IsCsv = false;
+		ds.nTrainers = 3185;
+		ds.nTesters = 16281;
+		ds.nFeatures = 123;
+		ds.nClasses = 2;
+		ds.C = 100;
+		ds.Gama = 0.5;
+		ds.Step = 1e-12;
+		return ds;
+	}
+	DataSet static GetAdult4()
+	{
+		DataSet ds;
+		ds.FileName = "Data/adult4.data";
+		ds.IsCsv = false;
+		ds.nTrainers = 4781;
+		ds.nTesters = 16281;
+		ds.nFeatures = 123;
+		ds.nClasses = 2;
+		ds.C = 100;
+		ds.Gama = 0.5;
+		ds.Step = 1e-12;
+		return ds;
+	}
+	DataSet static GetAdult5()
+	{
+		DataSet ds;
+		ds.FileName = "Data/adult5.data";
+		ds.IsCsv = false;
+		ds.nTrainers = 6414;
+		ds.nTesters = 16281;
+		ds.nFeatures = 123;
+		ds.nClasses = 2;
+		ds.C = 100;
+		ds.Gama = 0.5;
+		ds.Step = 1e-12;
+		return ds;
+	}
+	DataSet static GetAdult6()
+	{
+		DataSet ds;
+		ds.FileName = "Data/adult6.data";
+		ds.IsCsv = false;
+		ds.nTrainers = 11220;
+		ds.nTesters = 16281;
+		ds.nFeatures = 123;
+		ds.nClasses = 2;
+		ds.C = 100;
+		ds.Gama = 0.5;
+		ds.Step = 1e-12;
+		return ds;
+	}
+	DataSet static GetAdult7()
+	{
+		DataSet ds;
+		ds.FileName = "Data/adult7.data";
+		ds.IsCsv = false;
+		ds.nTrainers = 16100;
+		ds.nTesters = 16281;
+		ds.nFeatures = 123;
+		ds.nClasses = 2;
+		ds.C = 100;
+		ds.Gama = 0.5;
+		ds.Step = 1e-12;
+		return ds;
+	}
+	DataSet static GetAdult8()
+	{
+		DataSet ds;
+		ds.FileName = "Data/adult8.data";
+		ds.IsCsv = false;
+		ds.nTrainers = 22696;
+		ds.nTesters = 16281;
+		ds.nFeatures = 123;
+		ds.nClasses = 2;
+		ds.C = 100;
+		ds.Gama = 0.5;
+		ds.Step = 1e-12;
+		return ds;
+	}
+	DataSet static GetAdult9()
+	{
+		DataSet ds;
+		ds.FileName = "Data/adult9.data";
 		ds.IsCsv = false;
 		ds.nTrainers = 32561;
 		ds.nTesters = 16281;
 		ds.nFeatures = 123;
 		ds.nClasses = 2;
-		ds.C = 1;
-		ds.Gama = 0.0625;
+		ds.C = 100;
+		ds.Gama = 0.5;
+		ds.Step = 1e-12;
+		return ds;
+	}
+	DataSet static GetWeb1()
+	{
+		DataSet ds;
+		ds.FileName = "Data/web1.data";
+		ds.IsCsv = false;
+		ds.nTrainers = 2477;
+		ds.nTesters = 0;
+		ds.nFeatures = 300;
+		ds.nClasses = 2;
+		ds.C = 64;
+		ds.Gama = 7.8125;
+		ds.Step = 1e-13;
+		return ds;
+	}
+	DataSet static GetWeb2()
+	{
+		DataSet ds;
+		ds.FileName = "Data/web2.data";
+		ds.IsCsv = false;
+		ds.nTrainers = 3470;
+		ds.nTesters = 0;
+		ds.nFeatures = 300;
+		ds.nClasses = 2;
+		ds.C = 64;
+		ds.Gama = 7.8125;
+		ds.Step = 1e-13;
+		return ds;
+	}
+	DataSet static GetWeb3()
+	{
+		DataSet ds;
+		ds.FileName = "Data/web3.data";
+		ds.IsCsv = false;
+		ds.nTrainers = 4912;
+		ds.nTesters = 0;
+		ds.nFeatures = 300;
+		ds.nClasses = 2;
+		ds.C = 64;
+		ds.Gama = 7.8125;
+		ds.Step = 1e-13;
+		return ds;
+	}
+	DataSet static GetWeb4()
+	{
+		DataSet ds;
+		ds.FileName = "Data/web4.data";
+		ds.IsCsv = false;
+		ds.nTrainers = 7366;
+		ds.nTesters = 0;
+		ds.nFeatures = 300;
+		ds.nClasses = 2;
+		ds.C = 64;
+		ds.Gama = 7.8125;
+		ds.Step = 1e-13;
+		return ds;
+	}
+	DataSet static GetWeb5()
+	{
+		DataSet ds;
+		ds.FileName = "Data/web5.data";
+		ds.IsCsv = false;
+		ds.nTrainers = 9888;
+		ds.nTesters = 0;
+		ds.nFeatures = 300;
+		ds.nClasses = 2;
+		ds.C = 64;
+		ds.Gama = 7.8125;
+		ds.Step = 1e-13;
+		return ds;
+	}
+	DataSet static GetWeb6()
+	{
+		DataSet ds;
+		ds.FileName = "Data/web6.data";
+		ds.IsCsv = false;
+		ds.nTrainers = 17188;
+		ds.nTesters = 0;
+		ds.nFeatures = 300;
+		ds.nClasses = 2;
+		ds.C = 64;
+		ds.Gama = 7.8125;
+		ds.Step = 1e-13;
+		return ds;
+	}
+	DataSet static GetWeb7()
+	{
+		DataSet ds;
+		ds.FileName = "Data/web7.data";
+		ds.IsCsv = false;
+		ds.nTrainers = 24692;
+		ds.nTesters = 0;
+		ds.nFeatures = 300;
+		ds.nClasses = 2;
+		ds.C = 64;
+		ds.Gama = 7.8125;
+		ds.Step = 1e-13;
+		return ds;
+	}
+	DataSet static GetWeb8()
+	{
+		DataSet ds;
+		ds.FileName = "Data/web8.data";
+		ds.IsCsv = false;
+		ds.nTrainers = 49749;
+		ds.nTesters = 0;
+		ds.nFeatures = 300;
+		ds.nClasses = 2;
+		ds.C = 64;
+		ds.Gama = 7.8125;
+		ds.Step = 1e-13;
 		return ds;
 	}
 	DataSet static GetIris()
 	{
 		DataSet ds;
-		ds.FileName = "../Data/iris.csv";
+		ds.FileName = "Data/iris.csv";
 		ds.IsCsv = true;
 		ds.nTrainers = 80;
 		ds.nTesters = 20;
@@ -185,7 +411,7 @@ private:
 			//m_data.push_back(cell);
 			auto elems = Utils::split(cell, ':');
 			int index = stoi(elems[0]);
-			x[index-1] = stod(elems[1]);
+			x[index - 1] = stod(elems[1]);
 		}
 	}
 
@@ -421,12 +647,26 @@ void shuffle(vector<SvmData> &dados)
 	}
 }
 
-void shuffle(vector<vector<double>> &x,vector<double> &y)
+void shuffle(vector<vector<double>> &x, vector<double> &y)
 {
 	int size = x.size();
 	for (auto i = 0; i < size; ++i)
 	{
 		auto position = rand() % (size - i);
+		auto tx = x[position];
+		auto ty = y[position];
+		x[position] = x[i];
+		y[position] = y[i];
+		x[i] = tx;
+		y[i] = ty;
+	}
+}
+void reverse(vector<vector<double>> &x, vector<double> &y)
+{
+	int size = x.size();
+	for (auto i = 0; i < size / 2; ++i)
+	{
+		auto position = size - i - 1;
 		auto tx = x[position];
 		auto ty = y[position];
 		x[position] = x[i];
@@ -456,7 +696,7 @@ int classify(vector<vector<double>> &x, vector<double> &y, int index, vector<dou
 	for (auto i = 0; i < alpha.size(); i++)
 	{
 		if (alpha[i] == 0) continue;
-		b += alpha[i] * y[i]*kernel.K(x[i], sv);
+		b += alpha[i] * y[i] * kernel.K(x[i], sv);
 	}
 
 	auto sum = 0.0;
@@ -479,16 +719,112 @@ int classify(vector<vector<double>> &x, vector<double> &y, int index, vector<dou
 void log(string msg)
 {
 }
-int main()
+
+char* getCmdOption(char ** begin, char ** end, const std::string & option)
+{
+	char ** itr = std::find(begin, end, option);
+	if (itr != end && ++itr != end)
+	{
+		return *itr;
+	}
+	return 0;
+}
+
+bool cmdOptionExists(char** begin, char** end, const std::string& option)
+{
+	return std::find(begin, end, option) != end;
+}
+string FormatClock(int milliseconds)
+{
+	stringstream ss;
+	auto hours = milliseconds / (60 * 60 * CLOCKS_PER_SEC);
+	milliseconds = milliseconds % (60 * 60 * CLOCKS_PER_SEC);
+	auto minutes = milliseconds / (60 * CLOCKS_PER_SEC);
+	milliseconds = milliseconds % (60 * CLOCKS_PER_SEC);
+	auto seconds = milliseconds / (CLOCKS_PER_SEC);
+	milliseconds = milliseconds % (CLOCKS_PER_SEC);
+	ss << hours << ":" << minutes << ":" << seconds << ":" << milliseconds;
+	return ss.str();
+}
+int main(int argc, char* argv[])
 {
 	//unsigned seed = time(nullptr);
 	unsigned seed = time(nullptr);
 	unsigned int start = clock();
-	std::cout <<clock()-start<< ": seed: " << seed << endl;
+	std::cout << FormatClock(clock()) << ": seed: " << seed << endl;
 	srand(seed);
 	vector<vector<double>> x;
 	vector<double> y;
-	DataSet ds = DataSet::GetAdult();
+	DataSet ds;
+	char * datasetArg = getCmdOption(argv, argv + argc, "-d");
+	if (cmdOptionExists(argv, argv + argc, "a1")){
+		ds = DataSet::GetAdult1();
+	}
+	else if (cmdOptionExists(argv, argv + argc, "a2")){
+		ds = DataSet::GetAdult2();
+	}
+	else if (cmdOptionExists(argv, argv + argc, "a3"))
+	{
+		ds = DataSet::GetAdult3();
+	}
+	else if (cmdOptionExists(argv, argv + argc, "a4"))
+	{
+		ds = DataSet::GetAdult4();
+	}
+	else if (cmdOptionExists(argv, argv + argc, "a5"))
+	{
+		ds = DataSet::GetAdult5();
+	}
+	else if (cmdOptionExists(argv, argv + argc, "a6"))
+	{
+		ds = DataSet::GetAdult6();
+	}
+	else if (cmdOptionExists(argv, argv + argc, "a7"))
+	{
+		ds = DataSet::GetAdult7();
+	}
+	else if (cmdOptionExists(argv, argv + argc, "a8"))
+	{
+		ds = DataSet::GetAdult8();
+	}
+	else if (cmdOptionExists(argv, argv + argc, "a9"))
+	{
+		ds = DataSet::GetAdult9();
+	}
+	else if (cmdOptionExists(argv, argv + argc, "w1")){
+		ds = DataSet::GetWeb1();
+	}
+	else if (cmdOptionExists(argv, argv + argc, "w2")){
+		ds = DataSet::GetWeb2();
+	}
+	else if (cmdOptionExists(argv, argv + argc, "w3"))
+	{
+		ds = DataSet::GetWeb3();
+	}
+	else if (cmdOptionExists(argv, argv + argc, "w4"))
+	{
+		ds = DataSet::GetWeb4();
+	}
+	else if (cmdOptionExists(argv, argv + argc, "w5"))
+	{
+		ds = DataSet::GetWeb5();
+	}
+	else if (cmdOptionExists(argv, argv + argc, "w6"))
+	{
+		ds = DataSet::GetWeb6();
+	}
+	else if (cmdOptionExists(argv, argv + argc, "w7"))
+	{
+		ds = DataSet::GetWeb7();
+	}
+	else if (cmdOptionExists(argv, argv + argc, "w8"))
+	{
+		ds = DataSet::GetWeb8();
+	}
+	else
+	{
+		ds = DataSet::GetIris();
+	}
 	//DataSet ds = DataSet::GetIris();
 	SvmData::IsCsv = ds.IsCsv;
 	SvmData::nFeatures = ds.nFeatures;
@@ -498,9 +834,10 @@ int main()
 	{
 	}
 	ifstream       file;
+	//ds.FileName = "../" + ds.FileName;
 	file.open(ds.FileName, ifstream::in);
 
-	if (!file.good() )
+	if (!file.good())
 	{
 		std::cout << "Error: File not found" << endl;
 		return 1;
@@ -510,12 +847,12 @@ int main()
 	SequentialSVM svm;
 	double value, C, b, sum;
 	double precision = 1e-9;
-	double step = 0.1;
+	double step = 1e-13;
 	C = ds.C;
 	b = 0.0;
 	int counter = 0;
 
-	cout << clock() - start << ": Reading File: " << ds.FileName<< endl;
+	cout << FormatClock(clock()) << ": Reading File: " << ds.FileName << endl;
 	while (file >> linha)
 	{
 		//linhas.push_back(linha.Copy());
@@ -527,12 +864,13 @@ int main()
 		//std::cout << linha.ToString();
 	}
 	svm.SetData(linhas);
-	cout << clock() - start << ": Schuffling" << endl;
-	shuffle(x,y);
+	cout << FormatClock(clock()) << ": Schuffling" << endl;
+	shuffle(x, y);
 
-	double validationPercentage = 0.2;
+	double validationPercentage = 0.5;
 	int nValidators = (x.size()*validationPercentage);
 	int nTrainers = x.size() - nValidators;
+	cout << FormatClock(clock()) << ": Training Samples: " << nTrainers << endl;
 	Kernel kernel;
 	kernel.DefineGaussian(ds.Gama);
 	//kernel.DefineHomogeneousPolynomial(2);
@@ -543,11 +881,13 @@ int main()
 	}
 	int count = 0;
 	double lastDif = 0;
-	cout << clock() - start << ": Trainging!" << endl;
+	double difAlpha;
+	cout << FormatClock(clock()) << ": Training!" << endl;
 	do
 	{
 		count++;
-		double difAlpha = 0;
+
+		difAlpha = 0;
 		for (int i = 0; i < nTrainers; ++i){
 			difAlpha += alpha[i] - oldAlpha[i];
 			oldAlpha[i] = alpha[i];
@@ -555,8 +895,10 @@ int main()
 
 		if (abs(difAlpha) < precision)
 			break;
-		if (abs(difAlpha - lastDif) > difAlpha/10.0)
-			step = step / 2;
+		/*if (abs(difAlpha - lastDif) > difAlpha / 10.0)
+			step = step / 2;*/
+		if (count % 5 == 0 && count > 0)
+			cout << FormatClock(clock()) << ": Samples Trained: " << count << "\tstep: " << step << "\tlastDif:" << lastDif << "\tdifAlpha:" << difAlpha << endl;
 		lastDif = difAlpha;
 		for (int i = 0; i < nTrainers; ++i)
 		{
@@ -564,7 +906,7 @@ int main()
 			for (int j = 0; j < nTrainers; ++j)
 			{
 				if (oldAlpha[j] == 0) continue;
-				sum += y[j]*oldAlpha[j] * kernel.K(x[j], x[i]);
+				sum += y[j] * oldAlpha[j] * kernel.K(x[j], x[i]);
 			}
 			value = oldAlpha[i] + step - step*y[i] * sum;
 			if (value > C)
@@ -576,7 +918,9 @@ int main()
 		}
 
 	} while (true);
-	std::cout << clock() - start << ": Training iterations: " << count << endl;
+	std::cout << FormatClock(clock()) << ": First Training Finished!! " << endl;
+	cout << FormatClock(clock()) << ": Samples Trained: " << count << "\tstep: " << step << "\tlastDif:" << lastDif << "\tdifAlpha:" << difAlpha << endl;
+
 	auto nCorrect = 0;
 	for (auto i = nTrainers; i < x.size(); ++i)
 	{
@@ -586,8 +930,70 @@ int main()
 		}
 	}
 	auto percentageCorrect = static_cast<double>(nCorrect) / nValidators;
-	std::cout << clock() - start << ": Percentage correct: " << percentageCorrect*100.0 << "%" << endl;
-	int aef;
-	cin >> aef;
+	std::cout << FormatClock(clock()) << ": First Percentage correct: " << percentageCorrect*100.0 << "%" << endl;
+	cout << FormatClock(clock()) << " reversing" << endl;
+	reverse(x, y);
+	cout << FormatClock(clock()) << " Cross Validating" << endl;
+	alpha.clear();
+	oldAlpha.clear();
+	for (int i = 0; i < nTrainers; ++i){
+		alpha.push_back(0);
+		oldAlpha.push_back(1);
+	}
+	count = 0;
+	lastDif = 0;
+	step = 1e-13;
+	cout << FormatClock(clock()) << ": Training!" << endl;
+	do
+	{
+		count++;
+
+		difAlpha = 0;
+		for (int i = 0; i < nTrainers; ++i){
+			difAlpha += alpha[i] - oldAlpha[i];
+			oldAlpha[i] = alpha[i];
+		}
+
+		if (abs(difAlpha) < precision)
+			break;
+		if (abs(difAlpha - lastDif) > difAlpha / 10.0)
+			step = step / 2;
+		if (count % 5 == 0 && count>0)
+			cout << FormatClock(clock()) << ": Samples Trained: " << count << "\tstep: " << step << "\tlastDif:" << lastDif << "\tdifAlpha:" << difAlpha << endl;
+		lastDif = difAlpha;
+		for (int i = 0; i < nTrainers; ++i)
+		{
+			sum = 0;
+			for (int j = 0; j < nTrainers; ++j)
+			{
+				if (oldAlpha[j] == 0) continue;
+				sum += y[j] * oldAlpha[j] * kernel.K(x[j], x[i]);
+			}
+			value = oldAlpha[i] + step - step*y[i] * sum;
+			if (value > C)
+				alpha[i] = C;
+			else if (value < 0)
+				alpha[i] = 0.0;
+			else
+				alpha[i] = value;
+		}
+
+	} while (true);
+	std::cout << FormatClock(clock()) << ": Second Training Finished!! " << endl;
+	cout << FormatClock(clock()) << ": Samples Trained: " << count << "\tstep: " << step << "\tlastDif:" << lastDif << "\tdifAlpha:" << difAlpha << endl;
+
+	auto nCorrect2 = 0;
+	for (auto i = nTrainers; i < x.size(); ++i)
+	{
+		int classifiedY = classify(x, y, i, alpha, kernel, precision);
+		if (classifiedY == y[i]){
+			nCorrect2++;
+		}
+	}
+	auto secondPercentageCorrect = static_cast<double>(nCorrect) / nValidators;
+	std::cout << FormatClock(clock()) << ": Second Percentage correct: " << secondPercentageCorrect*100.0 << "%" << endl;
+	auto averagePercentageCorrect = (static_cast<double>(nCorrect)+static_cast<double>(nCorrect2)) / (nValidators + nTrainers);
+	std::cout << FormatClock(clock()) << ": Average Percentage correct: " << averagePercentageCorrect*100.0 << "%" << endl;
+	std::cout << endl;
 	return 0;
 }

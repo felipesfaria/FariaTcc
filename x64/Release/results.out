@@ -1,0 +1,195 @@
+
+C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe
+0:0:0:0: seed: 1454379718
+0:0:0:0: Reading File: Data/iris.csv
+0:0:0:0: Training Samples: 80
+0:0:0:0: Schuffling
+0:0:0:2: Training!
+0:0:0:8: Samples Trained: 5	step: 0.003125	lastDif:0.164519	difAlpha:0.077955
+0:0:0:20: Samples Trained: 10	step: 9.76563e-005	lastDif:0.00460612	difAlpha:0.00229866
+0:0:0:29: Samples Trained: 15	step: 3.05176e-006	lastDif:0.000143409	difAlpha:7.17003e-005
+0:0:0:38: Samples Trained: 20	step: 9.53674e-008	lastDif:4.48102e-006	difAlpha:2.24051e-006
+0:0:0:52: Samples Trained: 25	step: 2.98023e-009	lastDif:1.40031e-007	difAlpha:7.00157e-008
+0:0:0:61: Samples Trained: 30	step: 9.31323e-011	lastDif:4.37598e-009	difAlpha:2.18799e-009
+0:0:0:64: Training Finished: 32
+0:0:0:65: Percentage correct: 100%
+
+
+C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d a1 
+0:0:0:0: seed: 1454379718
+0:0:0:1: Reading File: Data/adult1.data
+0:0:0:1: Training Samples: 1605
+0:0:0:35: Schuffling
+0:0:0:35: Training!
+0:0:2:505: Samples Trained: 5	step: 0.003125	lastDif:14.8461	difAlpha:7.32906
+0:0:6:759: Samples Trained: 10	step: 9.76563e-005	lastDif:0.452656	difAlpha:0.226238
+0:0:10:959: Samples Trained: 15	step: 3.05176e-006	lastDif:0.0141347	difAlpha:0.00706724
+0:0:15:123: Samples Trained: 20	step: 9.53674e-008	lastDif:0.000441698	difAlpha:0.000220849
+0:0:19:371: Samples Trained: 25	step: 2.98023e-009	lastDif:1.3803e-005	difAlpha:6.90152e-006
+0:0:23:519: Samples Trained: 30	step: 9.31323e-011	lastDif:4.31345e-007	difAlpha:2.15673e-007
+0:0:27:637: Samples Trained: 35	step: 2.91038e-012	lastDif:1.34795e-008	difAlpha:6.73976e-009
+0:0:30:145: Training Finished: 38
+0:0:30:532: Percentage correct: 56.6978%
+
+
+C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d w1 
+0:0:0:0: seed: 1454379748
+0:0:0:0: Reading File: Data/web1.data
+0:0:0:0: Training Samples: 2477
+0:0:0:49: Schuffling
+0:0:0:50: Training!
+0:0:9:508: Samples Trained: 5	step: 0.003125	lastDif:24.0388	difAlpha:8.23741
+0:0:25:30: Samples Trained: 10	step: 9.76563e-005	lastDif:0.633023	difAlpha:0.316261
+0:0:40:74: Samples Trained: 15	step: 3.05176e-006	lastDif:0.0197522	difAlpha:0.00987585
+0:0:55:100: Samples Trained: 20	step: 9.53674e-008	lastDif:0.000617227	difAlpha:0.000308613
+0:1:10:728: Samples Trained: 25	step: 2.98023e-009	lastDif:1.92883e-005	difAlpha:9.64416e-006
+0:1:25:715: Samples Trained: 30	step: 9.31323e-011	lastDif:6.0276e-007	difAlpha:3.0138e-007
+0:1:40:739: Samples Trained: 35	step: 2.91038e-012	lastDif:1.88362e-008	difAlpha:9.41811e-009
+0:1:52:797: Training Finished: 39
+0:1:54:296: Percentage correct: 50.7071%
+
+
+C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d a2 
+0:0:0:0: seed: 1454379863
+0:0:0:0: Reading File: Data/adult2.data
+0:0:0:0: Training Samples: 2265
+0:0:0:49: Schuffling
+0:0:0:49: Training!
+0:0:4:797: Samples Trained: 5	step: 0.003125	lastDif:20.9338	difAlpha:10.3333
+0:0:12:976: Samples Trained: 10	step: 9.76563e-005	lastDif:0.638142	difAlpha:0.318944
+0:0:21:214: Samples Trained: 15	step: 3.05176e-006	lastDif:0.0199266	difAlpha:0.00996316
+0:0:29:510: Samples Trained: 20	step: 9.53674e-008	lastDif:0.00062269	difAlpha:0.000311345
+0:0:37:772: Samples Trained: 25	step: 2.98023e-009	lastDif:1.94591e-005	difAlpha:9.72953e-006
+0:0:45:721: Samples Trained: 30	step: 9.31323e-011	lastDif:6.08096e-007	difAlpha:3.04048e-007
+0:0:54:179: Samples Trained: 35	step: 2.91038e-012	lastDif:1.9003e-008	difAlpha:9.50148e-009
+0:1:0:917: Training Finished: 39
+0:1:1:736: Percentage correct: 53.4216%
+
+
+C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d w2 
+0:0:0:0: seed: 1454379924
+0:0:0:0: Reading File: Data/web2.data
+0:0:0:0: Training Samples: 3470
+0:0:0:111: Schuffling
+0:0:0:115: Training!
+0:0:17:909: Samples Trained: 5	step: 0.003125	lastDif:40.6486	difAlpha:3.73154
+0:0:49:347: Samples Trained: 10	step: 9.76563e-005	lastDif:0.933335	difAlpha:0.464515
+0:1:21:700: Samples Trained: 15	step: 3.05176e-006	lastDif:0.0289191	difAlpha:0.0144578
+0:1:52:885: Samples Trained: 20	step: 9.53674e-008	lastDif:0.000903507	difAlpha:0.000451752
+0:2:23:989: Samples Trained: 25	step: 2.98023e-009	lastDif:2.82344e-005	difAlpha:1.41172e-005
+0:2:54:229: Samples Trained: 30	step: 9.31323e-011	lastDif:8.82324e-007	difAlpha:4.41162e-007
+0:3:26:769: Samples Trained: 35	step: 2.91038e-012	lastDif:2.75726e-008	difAlpha:1.37863e-008
+0:3:50:565: Training Finished: 39
+0:3:56:330: Percentage correct: 50.2882%
+
+
+C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d a3 
+0:0:0:0: seed: 1454380161
+0:0:0:0: Reading File: Data/adult3.data
+0:0:0:0: Training Samples: 3185
+0:0:0:67: Schuffling
+0:0:0:68: Training!
+0:0:9:604: Samples Trained: 5	step: 0.003125	lastDif:29.4028	difAlpha:14.5112
+0:0:25:652: Samples Trained: 10	step: 9.76563e-005	lastDif:0.896006	difAlpha:0.447822
+0:0:40:943: Samples Trained: 15	step: 3.05176e-006	lastDif:0.0279783	difAlpha:0.013989
+0:0:57:313: Samples Trained: 20	step: 9.53674e-008	lastDif:0.000874301	difAlpha:0.00043715
+0:1:14:200: Samples Trained: 25	step: 2.98023e-009	lastDif:2.73219e-005	difAlpha:1.36609e-005
+0:1:29:792: Samples Trained: 30	step: 9.31323e-011	lastDif:8.53809e-007	difAlpha:4.26904e-007
+0:1:44:908: Samples Trained: 35	step: 2.91038e-012	lastDif:2.66815e-008	difAlpha:1.33407e-008
+0:1:56:989: Training Finished: 39
+0:1:58:487: Percentage correct: 60.4396%
+
+
+C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d w3 
+0:0:0:0: seed: 1454380279
+0:0:0:0: Reading File: Data/web3.data
+0:0:0:0: Training Samples: 4912
+0:0:0:102: Schuffling
+0:0:0:104: Training!
+0:0:36:759: Samples Trained: 5	step: 0.003125	lastDif:64.2365	difAlpha:-2.53202
+0:1:37:866: Samples Trained: 10	step: 9.76563e-005	lastDif:1.25691	difAlpha:0.628049
+0:2:40:598: Samples Trained: 15	step: 3.05176e-006	lastDif:0.0392305	difAlpha:0.0196149
+0:3:42:846: Samples Trained: 20	step: 9.53674e-008	lastDif:0.00122591	difAlpha:0.000612954
+0:4:46:55: Samples Trained: 25	step: 2.98023e-009	lastDif:3.83096e-005	difAlpha:1.91548e-005
+0:5:49:684: Samples Trained: 30	step: 9.31323e-011	lastDif:1.19717e-006	difAlpha:5.98587e-007
+Deseja finalizar o arquivo em lotes (S/N)? 
+
+C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d a4 
+0:0:0:0: seed: 1454380653
+0:0:0:0: Reading File: Data/adult4.data
+0:0:0:0: Training Samples: 4781
+0:0:0:101: Schuffling
+0:0:0:102: Training!
+Deseja finalizar o arquivo em lotes (S/N)? 
+
+C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d w4 
+0:0:0:1: seed: 1454380679
+0:0:0:2: Reading File: Data/web4.data
+0:0:0:2: Training Samples: 7366
+0:0:0:178: Schuffling
+0:0:0:183: Training!
+Deseja finalizar o arquivo em lotes (S/N)? 
+
+C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d a5 
+0:0:0:0: seed: 1454380685
+0:0:0:1: Reading File: Data/adult5.data
+0:0:0:1: Training Samples: 6414
+0:0:0:170: Schuffling
+0:0:0:172: Training!
+Deseja finalizar o arquivo em lotes (S/N)? 
+
+C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d w5 
+0:0:0:0: seed: 1454380687
+0:0:0:1: Reading File: Data/web5.data
+0:0:0:1: Training Samples: 9888
+0:0:0:218: Schuffling
+0:0:0:225: Training!
+Deseja finalizar o arquivo em lotes (S/N)? 
+
+C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d a6 
+0:0:0:0: seed: 1454380695
+0:0:0:0: Reading File: Data/adult6.data
+0:0:0:0: Training Samples: 11220
+0:0:0:233: Schuffling
+0:0:0:237: Training!
+Deseja finalizar o arquivo em lotes (S/N)? 
+
+C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d w6 
+0:0:0:0: seed: 1454380698
+0:0:0:0: Reading File: Data/web6.data
+0:0:0:0: Training Samples: 17188
+0:0:0:376: Schuffling
+0:0:0:395: Training!
+Deseja finalizar o arquivo em lotes (S/N)? 
+
+C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d a7 
+0:0:0:0: seed: 1454380701
+Error: File not found
+
+C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d w7 
+0:0:0:0: seed: 1454380701
+0:0:0:0: Reading File: Data/web7.data
+0:0:0:0: Training Samples: 24692
+0:0:0:513: Schuffling
+0:0:0:532: Training!
+Deseja finalizar o arquivo em lotes (S/N)? 
+
+C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d a8 
+0:0:0:1: seed: 1454380704
+Error: File not found
+
+C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d w8 
+0:0:0:0: seed: 1454380704
+0:0:0:1: Reading File: Data/web8.data
+0:0:0:1: Training Samples: 49749
+0:0:1:53: Schuffling
+0:0:1:93: Training!
+Deseja finalizar o arquivo em lotes (S/N)? 
+
+C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d a9 
+0:0:0:0: seed: 1454380711
+0:0:0:0: Reading File: Data/adult9.data
+0:0:0:0: Training Samples: 32561
+0:0:0:694: Schuffling
+0:0:0:708: Training!
+Deseja finalizar o arquivo em lotes (S/N)? 
