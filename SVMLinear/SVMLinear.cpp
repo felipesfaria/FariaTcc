@@ -320,6 +320,7 @@ public:
 		ds.nClasses = 2;
 		ds.C = 16;
 		ds.Gama = 0.5;
+		ds.Step = 0.0001;
 		return ds;
 	}
 };
@@ -675,7 +676,8 @@ void reverse(vector<vector<double>> &x, vector<double> &y)
 		y[i] = ty;
 	}
 }
-
+double b = 0.0;
+bool bIsSet = false;
 int classify(vector<vector<double>> &x, vector<double> &y, int index, vector<double> alpha, Kernel kernel, int precision)
 {
 	auto size = alpha.size();
@@ -692,11 +694,13 @@ int classify(vector<vector<double>> &x, vector<double> &y, int index, vector<dou
 	if (maxValue == 0.0)
 		throw new exception("Could not find support vector.");
 
-	auto b = 0.0;
-	for (auto i = 0; i < alpha.size(); i++)
-	{
-		if (alpha[i] == 0) continue;
-		b += alpha[i] * y[i] * kernel.K(x[i], sv);
+	if (!bIsSet){
+		for (auto i = 0; i < alpha.size(); i++)
+		{
+			if (alpha[i] == 0) continue;
+			b += alpha[i] * y[i] * kernel.K(x[i], sv);
+		}
+		bIsSet = true;
 	}
 
 	auto sum = 0.0;
@@ -847,7 +851,7 @@ int main(int argc, char* argv[])
 	SequentialSVM svm;
 	double value, C, b, sum;
 	double precision = 1e-9;
-	double step = 1e-13;
+	double step = ds.Step;
 	C = ds.C;
 	b = 0.0;
 	int counter = 0;
@@ -895,8 +899,8 @@ int main(int argc, char* argv[])
 
 		if (abs(difAlpha) < precision)
 			break;
-		/*if (abs(difAlpha - lastDif) > difAlpha / 10.0)
-			step = step / 2;*/
+		if (abs(difAlpha - lastDif) > difAlpha / 10.0)
+			step = step / 2;
 		if (count % 5 == 0 && count > 0)
 			cout << FormatClock(clock()) << ": Samples Trained: " << count << "\tstep: " << step << "\tlastDif:" << lastDif << "\tdifAlpha:" << difAlpha << endl;
 		lastDif = difAlpha;
@@ -942,7 +946,7 @@ int main(int argc, char* argv[])
 	}
 	count = 0;
 	lastDif = 0;
-	step = 1e-13;
+	step = ds.Step;
 	cout << FormatClock(clock()) << ": Training!" << endl;
 	do
 	{

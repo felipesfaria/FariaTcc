@@ -1,278 +1,239 @@
 
 C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe
-0:0:0:0: seed: 1454382131
-0:0:0:0: Reading File: Data/iris.csv
-0:0:0:1: Schuffling
-0:0:0:1: Training Samples: 50
-0:0:0:1: Training!
-0:0:0:3: Samples Trained: 5	step: 0.003125	lastDif:0.227858	difAlpha:0.102876
-0:0:0:9: Samples Trained: 10	step: 9.76563e-005	lastDif:0.00588637	difAlpha:0.00293485
-0:0:0:16: Samples Trained: 15	step: 3.05176e-006	lastDif:0.000182942	difAlpha:9.14632e-005
-0:0:0:20: Samples Trained: 20	step: 9.53674e-008	lastDif:5.71597e-006	difAlpha:2.85798e-006
-0:0:0:23: Samples Trained: 25	step: 2.98023e-009	lastDif:1.78623e-007	difAlpha:8.93116e-008
-0:0:0:27: Samples Trained: 30	step: 9.31323e-011	lastDif:5.58198e-009	difAlpha:2.79099e-009
-0:0:0:28: First Training Finished!! 
-0:0:0:28: Samples Trained: 32	step: 4.65661e-011	lastDif:1.39549e-009	difAlpha:6.97747e-010
-0:0:0:30: First Percentage correct: 100%
-0:0:0:30 reversing
-0:0:0:30 Cross Validating
-0:0:0:30: Training!
-0:0:0:30: Second Training Finished!! 
-0:0:0:30: Samples Trained: 3	step: 1.16415e-011	lastDif:1.16415e-009	difAlpha:5.82077e-010
-0:0:0:32: Second Percentage correct: 100%
-0:0:0:32: Average Percentage correct: 100%
+0:0:0:1: seed: 1454384120
+0:0:0:1: Reading File: Data/iris.csv
+0:0:0:2: Schuffling
+0:0:0:2: Training Samples: 50
+0:0:0:2: Training!
+0:0:0:5: Samples Trained: 5	step: 3.125e-006	lastDif:0.000624486	difAlpha:0.0003122
+0:0:0:9: Samples Trained: 10	step: 9.76563e-008	lastDif:1.951e-005	difAlpha:9.75495e-006
+0:0:0:12: Samples Trained: 15	step: 3.05176e-009	lastDif:6.09682e-007	difAlpha:3.04841e-007
+0:0:0:15: Samples Trained: 20	step: 9.53674e-011	lastDif:1.90526e-008	difAlpha:9.52628e-009
+0:0:0:18: First Training Finished!! 
+0:0:0:18: Samples Trained: 24	step: 1.19209e-011	lastDif:1.19079e-009	difAlpha:5.95393e-010
+0:0:0:19: First Percentage correct: 100%
+0:0:0:19 reversing
+0:0:0:19 Cross Validating
+0:0:0:19: Training!
+0:0:0:21: Samples Trained: 5	step: 3.125e-006	lastDif:0.0006246	difAlpha:0.000312266
+0:0:0:26: Samples Trained: 10	step: 9.76563e-008	lastDif:1.95147e-005	difAlpha:9.75732e-006
+0:0:0:30: Samples Trained: 15	step: 3.05176e-009	lastDif:6.0983e-007	difAlpha:3.04915e-007
+0:0:0:34: Samples Trained: 20	step: 9.53674e-011	lastDif:1.90572e-008	difAlpha:9.5286e-009
+0:0:0:37: Second Training Finished!! 
+0:0:0:37: Samples Trained: 24	step: 1.19209e-011	lastDif:1.19107e-009	difAlpha:5.95537e-010
+0:0:0:38: Second Percentage correct: 100%
+0:0:0:38: Average Percentage correct: 100%
 
 
 C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d a1 
-0:0:0:0: seed: 1454382131
+0:0:0:0: seed: 1454384120
 0:0:0:0: Reading File: Data/adult1.data
-0:0:0:39: Schuffling
-0:0:0:40: Training Samples: 803
-0:0:0:40: Training!
-0:0:1:230: Samples Trained: 5	step: 0.003125	lastDif:9.29823	difAlpha:4.59122
-0:0:2:799: Samples Trained: 10	step: 9.76563e-005	lastDif:0.283616	difAlpha:0.141753
-0:0:4:306: Samples Trained: 15	step: 3.05176e-006	lastDif:0.00885632	difAlpha:0.0044281
-0:0:5:812: Samples Trained: 20	step: 9.53674e-008	lastDif:0.000276753	difAlpha:0.000138377
-0:0:7:369: Samples Trained: 25	step: 2.98023e-009	lastDif:8.64854e-006	difAlpha:4.32427e-006
-0:0:8:944: Samples Trained: 30	step: 9.31323e-011	lastDif:2.70267e-007	difAlpha:1.35133e-007
-0:0:10:593: Samples Trained: 35	step: 2.91038e-012	lastDif:8.44584e-009	difAlpha:4.22291e-009
-0:0:11:499: First Training Finished!! 
-0:0:11:499: Samples Trained: 38	step: 7.27596e-013	lastDif:1.05573e-009	difAlpha:5.27866e-010
-0:0:12:290: First Percentage correct: 80.6733%
-0:0:12:290 reversing
-0:0:12:290 Cross Validating
-0:0:12:290: Training!
-0:0:12:291: Second Training Finished!! 
-0:0:12:291: Samples Trained: 2	step: 3.63798e-013	lastDif:-803	difAlpha:2.9213e-010
-0:0:12:942: Second Percentage correct: 80.6733%
-0:0:12:942: Average Percentage correct: 80.1246%
+0:0:0:34: Schuffling
+0:0:0:35: Training Samples: 803
+0:0:0:35: Training!
+0:0:0:36: First Training Finished!! 
+0:0:0:36: Samples Trained: 2	step: 5e-013	lastDif:-803	difAlpha:4.015e-010
+0:0:0:367: First Percentage correct: 79.1771%
+0:0:0:367 reversing
+0:0:0:367 Cross Validating
+0:0:0:367: Training!
+0:0:0:368: Second Training Finished!! 
+0:0:0:368: Samples Trained: 2	step: 5e-013	lastDif:-803	difAlpha:4.015e-010
+0:0:0:740: Second Percentage correct: 79.1771%
+0:0:0:740: Average Percentage correct: 78.8785%
 
 
 C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d w1 
-0:0:0:0: seed: 1454382144
+0:0:0:0: seed: 1454384121
 0:0:0:0: Reading File: Data/web1.data
-0:0:0:58: Schuffling
-0:0:0:59: Training Samples: 1239
-0:0:0:59: Training!
-0:0:2:332: Samples Trained: 5	step: 0.003125	lastDif:565.905	difAlpha:-483.193
-0:0:6:164: Samples Trained: 10	step: 9.76563e-005	lastDif:8.77748	difAlpha:2.57019
-0:0:12:352: Samples Trained: 15	step: 3.05176e-006	lastDif:0.105362	difAlpha:0.0519966
-0:0:18:473: Samples Trained: 20	step: 9.53674e-008	lastDif:0.00321037	difAlpha:0.00160453
-0:0:24:450: Samples Trained: 25	step: 2.98023e-009	lastDif:0.000100245	difAlpha:5.0122e-005
-0:0:30:474: Samples Trained: 30	step: 9.31323e-011	lastDif:3.13259e-006	difAlpha:1.56629e-006
-0:0:36:530: Samples Trained: 35	step: 2.91038e-012	lastDif:9.78932e-008	difAlpha:4.89466e-008
-0:0:42:563: Samples Trained: 40	step: 9.09495e-014	lastDif:3.05915e-009	difAlpha:1.52958e-009
-0:0:43:848: First Training Finished!! 
-0:0:43:848: Samples Trained: 41	step: 9.09495e-014	lastDif:1.52958e-009	difAlpha:7.64799e-010
-0:0:46:410: First Percentage correct: 3.15024%
-0:0:46:410 reversing
-0:0:46:411 Cross Validating
-0:0:46:411: Training!
-0:0:46:413: Second Training Finished!! 
-0:0:46:413: Samples Trained: 2	step: 4.54747e-014	lastDif:-1239	difAlpha:5.63432e-011
-0:0:48:790: Second Percentage correct: 3.15024%
-0:0:48:790: Average Percentage correct: 50.222%
+0:0:0:74: Schuffling
+0:0:0:75: Training Samples: 1239
+0:0:0:76: Training!
+0:0:0:79: First Training Finished!! 
+0:0:0:79: Samples Trained: 2	step: 5e-014	lastDif:-1239	difAlpha:6.195e-011
+0:0:1:356: First Percentage correct: 96.6882%
+0:0:1:356 reversing
+0:0:1:357 Cross Validating
+0:0:1:357: Training!
+0:0:1:359: Second Training Finished!! 
+0:0:1:359: Samples Trained: 2	step: 5e-014	lastDif:-1239	difAlpha:6.195e-011
+0:0:2:521: Second Percentage correct: 96.6882%
+0:0:2:521: Average Percentage correct: 97.0529%
 
 
 C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d a2 
-0:0:0:1: seed: 1454382193
-0:0:0:1: Reading File: Data/adult2.data
-0:0:0:49: Schuffling
-0:0:0:50: Training Samples: 1133
-0:0:0:50: Training!
-0:0:1:866: Samples Trained: 5	step: 0.003125	lastDif:13.0992	difAlpha:6.46647
-0:0:5:41: Samples Trained: 10	step: 9.76563e-005	lastDif:0.399368	difAlpha:0.199605
-0:0:8:460: Samples Trained: 15	step: 3.05176e-006	lastDif:0.0124707	difAlpha:0.00623526
-0:0:11:709: Samples Trained: 20	step: 9.53674e-008	lastDif:0.000389699	difAlpha:0.000194849
-0:0:15:105: Samples Trained: 25	step: 2.98023e-009	lastDif:1.21781e-005	difAlpha:6.08904e-006
-0:0:18:467: Samples Trained: 30	step: 9.31323e-011	lastDif:3.80565e-007	difAlpha:1.90283e-007
-0:0:21:607: Samples Trained: 35	step: 2.91038e-012	lastDif:1.18927e-008	difAlpha:5.94632e-009
-0:0:23:588: First Training Finished!! 
-0:0:23:588: Samples Trained: 38	step: 7.27596e-013	lastDif:1.48659e-009	difAlpha:7.43293e-010
-0:0:24:810: First Percentage correct: 79.3286%
-0:0:24:810 reversing
-0:0:24:810 Cross Validating
-0:0:24:810: Training!
-0:0:24:812: Second Training Finished!! 
-0:0:24:812: Samples Trained: 2	step: 3.63798e-013	lastDif:-1133	difAlpha:4.12183e-010
-0:0:26:3: Second Percentage correct: 79.3286%
-0:0:26:3: Average Percentage correct: 77.6159%
+0:0:0:0: seed: 1454384123
+0:0:0:0: Reading File: Data/adult2.data
+0:0:0:48: Schuffling
+0:0:0:48: Training Samples: 1133
+0:0:0:49: Training!
+0:0:0:51: First Training Finished!! 
+0:0:0:51: Samples Trained: 2	step: 5e-013	lastDif:-1133	difAlpha:5.665e-010
+0:0:0:669: First Percentage correct: 79.8587%
+0:0:0:669 reversing
+0:0:0:669 Cross Validating
+0:0:0:669: Training!
+0:0:0:671: Second Training Finished!! 
+0:0:0:671: Samples Trained: 2	step: 5e-013	lastDif:-1133	difAlpha:5.665e-010
+0:0:1:284: Second Percentage correct: 79.8587%
+0:0:1:295: Average Percentage correct: 79.3819%
 
 
 C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d w2 
-0:0:0:0: seed: 1454382219
-0:0:0:1: Reading File: Data/web2.data
-0:0:0:73: Schuffling
-0:0:0:75: Training Samples: 1735
-0:0:0:75: Training!
-0:0:4:717: Samples Trained: 5	step: 0.003125	lastDif:1575.46	difAlpha:-1208.03
-0:0:11:729: Samples Trained: 10	step: 9.76563e-005	lastDif:-43.4634	difAlpha:-9.22028
-0:0:22:987: Samples Trained: 15	step: 3.05176e-006	lastDif:-0.316058	difAlpha:-0.155227
-0:0:33:599: Samples Trained: 20	step: 9.53674e-008	lastDif:-0.0095413	difAlpha:-0.00476801
-0:0:44:235: Samples Trained: 25	step: 2.98023e-009	lastDif:-0.000297846	difAlpha:-0.00014892
-0:0:54:889: Samples Trained: 30	step: 9.31323e-011	lastDif:-9.30737e-006	difAlpha:-4.65368e-006
-0:1:5:527: Samples Trained: 35	step: 2.91038e-012	lastDif:-2.90855e-007	difAlpha:-1.45428e-007
-0:1:16:197: Samples Trained: 40	step: 9.09495e-014	lastDif:-9.08917e-009	difAlpha:-4.54462e-009
-0:1:22:666: First Training Finished!! 
-0:1:22:666: Samples Trained: 43	step: 2.27374e-014	lastDif:-1.13613e-009	difAlpha:-5.68026e-010
-0:1:30:368: First Percentage correct: 96.6571%
-0:1:30:368 reversing
-0:1:30:369 Cross Validating
-0:1:30:369: Training!
-0:1:30:374: Second Training Finished!! 
-0:1:30:374: Samples Trained: 2	step: 1.13687e-014	lastDif:-1735	difAlpha:1.97247e-011
-0:1:38:46: Second Percentage correct: 96.6571%
-0:1:38:46: Average Percentage correct: 96.9164%
+0:0:0:0: seed: 1454384125
+0:0:0:0: Reading File: Data/web2.data
+0:0:0:74: Schuffling
+0:0:0:76: Training Samples: 1735
+0:0:0:76: Training!
+0:0:0:81: First Training Finished!! 
+0:0:0:81: Samples Trained: 2	step: 5e-014	lastDif:-1735	difAlpha:8.675e-011
+0:0:4:260: First Percentage correct: 96.8876%
+0:0:4:260 reversing
+0:0:4:261 Cross Validating
+0:0:4:261: Training!
+0:0:4:266: Second Training Finished!! 
+0:0:4:266: Samples Trained: 2	step: 5e-014	lastDif:-1735	difAlpha:8.675e-011
+0:0:8:598: Second Percentage correct: 96.8876%
+0:0:8:599: Average Percentage correct: 96.9164%
 
 
 C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d a3 
-0:0:0:0: seed: 1454382317
-0:0:0:0: Reading File: Data/adult3.data
-0:0:0:66: Schuffling
-0:0:0:67: Training Samples: 1593
-0:0:0:67: Training!
-0:0:3:534: Samples Trained: 5	step: 0.003125	lastDif:18.4098	difAlpha:9.08771
-0:0:9:274: Samples Trained: 10	step: 9.76563e-005	lastDif:0.561238	difAlpha:0.280508
-0:0:14:999: Samples Trained: 15	step: 3.05176e-006	lastDif:0.0175252	difAlpha:0.00876249
-0:0:20:743: Samples Trained: 20	step: 9.53674e-008	lastDif:0.000547649	difAlpha:0.000273825
-0:0:26:448: Samples Trained: 25	step: 2.98023e-009	lastDif:1.7114e-005	difAlpha:8.55702e-006
-0:0:32:162: Samples Trained: 30	step: 9.31323e-011	lastDif:5.34813e-007	difAlpha:2.67407e-007
-0:0:38:289: Samples Trained: 35	step: 2.91038e-012	lastDif:1.67129e-008	difAlpha:8.35645e-009
-0:0:43:398: First Training Finished!! 
-0:0:43:398: Samples Trained: 39	step: 3.63798e-013	lastDif:1.04456e-009	difAlpha:5.22272e-010
-0:0:45:878: First Percentage correct: 79.8367%
-0:0:45:878 reversing
-0:0:45:879 Cross Validating
-0:0:45:879: Training!
-0:0:45:883: Second Training Finished!! 
-0:0:45:883: Samples Trained: 2	step: 1.81899e-013	lastDif:-1593	difAlpha:2.89765e-010
-0:0:48:375: Second Percentage correct: 79.8367%
-0:0:48:375: Average Percentage correct: 80.2512%
+0:0:0:0: seed: 1454384133
+0:0:0:1: Reading File: Data/adult3.data
+0:0:0:68: Schuffling
+0:0:0:70: Training Samples: 1593
+0:0:0:70: Training!
+0:0:0:74: First Training Finished!! 
+0:0:0:74: Samples Trained: 2	step: 5e-013	lastDif:-1593	difAlpha:7.965e-010
+0:0:1:317: First Percentage correct: 79.8367%
+0:0:1:317 reversing
+0:0:1:317 Cross Validating
+0:0:1:317: Training!
+0:0:1:325: Second Training Finished!! 
+0:0:1:325: Samples Trained: 2	step: 5e-013	lastDif:-1593	difAlpha:7.965e-010
+0:0:2:517: Second Percentage correct: 79.8367%
+0:0:2:517: Average Percentage correct: 79.7488%
 
 
 C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d w3 
-0:0:0:1: seed: 1454382365
-0:0:0:1: Reading File: Data/web3.data
-0:0:0:102: Schuffling
-0:0:0:105: Training Samples: 2456
-0:0:0:105: Training!
-0:0:10:213: Samples Trained: 5	step: 0.003125	lastDif:4834.09	difAlpha:-2944.3
-0:0:24:647: Samples Trained: 10	step: 9.76563e-005	lastDif:-1402.27	difAlpha:-127.981
-0:0:48:411: Samples Trained: 15	step: 3.05176e-006	lastDif:-3.23817	difAlpha:-1.57846
-0:1:11:583: Samples Trained: 20	step: 9.53674e-008	lastDif:-0.0963518	difAlpha:-0.0481381
-0:1:34:603: Samples Trained: 25	step: 2.98023e-009	lastDif:-0.00300643	difAlpha:-0.00150318
-0:1:57:713: Samples Trained: 30	step: 9.31323e-011	lastDif:-9.39463e-005	difAlpha:-4.69731e-005
-0:2:20:583: Samples Trained: 35	step: 2.91038e-012	lastDif:-2.93582e-006	difAlpha:-1.46791e-006
-0:2:44:819: Samples Trained: 40	step: 9.09495e-014	lastDif:-9.17446e-008	difAlpha:-4.58721e-008
-0:3:8:592: Samples Trained: 45	step: 2.84217e-015	lastDif:-2.86694e-009	difAlpha:-1.43318e-009
-0:3:13:682: First Training Finished!! 
-0:3:13:682: Samples Trained: 46	step: 2.84217e-015	lastDif:-1.43318e-009	difAlpha:-7.16853e-010
-0:3:23:367: First Percentage correct: 97.3127%
-0:3:23:367 reversing
-0:3:23:369 Cross Validating
-0:3:23:369: Training!
-0:3:23:379: Second Training Finished!! 
-0:3:23:379: Samples Trained: 2	step: 1.42109e-015	lastDif:-2456	difAlpha:3.49019e-012
-0:3:32:440: Second Percentage correct: 97.3127%
-0:3:32:440: Average Percentage correct: 97.0888%
+0:0:0:0: seed: 1454384136
+0:0:0:0: Reading File: Data/web3.data
+0:0:0:104: Schuffling
+0:0:0:108: Training Samples: 2456
+0:0:0:108: Training!
+0:0:0:124: First Training Finished!! 
+0:0:0:124: Samples Trained: 2	step: 5e-014	lastDif:-2456	difAlpha:1.228e-010
+0:0:5:137: First Percentage correct: 96.987%
+0:0:5:137 reversing
+0:0:5:138 Cross Validating
+0:0:5:138: Training!
+0:0:5:149: Second Training Finished!! 
+0:0:5:149: Samples Trained: 2	step: 5e-014	lastDif:-2456	difAlpha:1.228e-010
+0:0:10:116: Second Percentage correct: 96.987%
+0:0:10:116: Average Percentage correct: 97.0888%
 
 
 C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d a4 
-0:0:0:0: seed: 1454382578
-0:0:0:1: Reading File: Data/adult4.data
-0:0:0:129: Schuffling
-0:0:0:130: Training Samples: 2391
-0:0:0:130: Training!
-0:0:8:234: Samples Trained: 5	step: 0.003125	lastDif:27.5919	difAlpha:13.6172
-0:0:22:292: Samples Trained: 10	step: 9.76563e-005	lastDif:0.840791	difAlpha:0.420225
-0:0:36:39: Samples Trained: 15	step: 3.05176e-006	lastDif:0.0262541	difAlpha:0.0131269
-0:0:49:945: Samples Trained: 20	step: 9.53674e-008	lastDif:0.000820422	difAlpha:0.000410211
-0:1:4:111: Samples Trained: 25	step: 2.98023e-009	lastDif:2.56382e-005	difAlpha:1.28191e-005
-0:1:17:573: Samples Trained: 30	step: 9.31323e-011	lastDif:8.01193e-007	difAlpha:4.00596e-007
-0:1:31:76: Samples Trained: 35	step: 2.91038e-012	lastDif:2.50373e-008	difAlpha:1.25186e-008
-0:1:41:876: First Training Finished!! 
-0:1:41:876: Samples Trained: 39	step: 3.63798e-013	lastDif:1.56483e-009	difAlpha:7.82404e-010
-0:1:47:195: First Percentage correct: 79.2887%
-0:1:47:195 reversing
-0:1:47:196 Cross Validating
-0:1:47:196: Training!
-0:1:47:205: Second Training Finished!! 
-0:1:47:205: Samples Trained: 2	step: 1.81899e-013	lastDif:-2391	difAlpha:4.3492e-010
-0:1:53:72: Second Percentage correct: 79.2887%
-0:1:53:72: Average Percentage correct: 78.8956%
+0:0:0:0: seed: 1454384146
+0:0:0:0: Reading File: Data/adult4.data
+0:0:0:101: Schuffling
+0:0:0:102: Training Samples: 2391
+0:0:0:102: Training!
+0:0:3:280: First Training Finished!! 
+0:0:3:280: Samples Trained: 3	step: 2.5e-013	lastDif:1.1955e-009	difAlpha:5.9775e-010
+0:0:6:169: First Percentage correct: 78.9121%
+0:0:6:170 reversing
+0:0:6:170 Cross Validating
+0:0:6:170: Training!
+0:0:9:142: Second Training Finished!! 
+0:0:9:142: Samples Trained: 3	step: 2.5e-013	lastDif:1.1955e-009	difAlpha:5.9775e-010
+0:0:12:140: Second Percentage correct: 78.9121%
+0:0:12:140: Average Percentage correct: 79.293%
 
 
 C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d w4 
-0:0:0:0: seed: 1454382691
+0:0:0:0: seed: 1454384158
 0:0:0:0: Reading File: Data/web4.data
-0:0:0:154: Schuffling
-0:0:0:158: Training Samples: 3683
-0:0:0:158: Training!
-0:0:22:289: Samples Trained: 5	step: 0.00625	lastDif:28717.7	difAlpha:-22696.3
-0:0:44:780: Samples Trained: 10	step: 0.000195313	lastDif:-29690	difAlpha:7422.51
-0:1:40:205: Samples Trained: 15	step: 6.10352e-006	lastDif:-24.2611	difAlpha:-11.2205
-0:2:37:934: Samples Trained: 20	step: 1.90735e-007	lastDif:-0.65313	difAlpha:-0.325802
-0:3:39:219: Samples Trained: 25	step: 5.96046e-009	lastDif:-0.020318	difAlpha:-0.0101583
-0:4:33:626: Samples Trained: 30	step: 1.86265e-010	lastDif:-0.000634849	difAlpha:-0.000317424
-Deseja finalizar o arquivo em lotes (S/N)? Deseja finalizar o arquivo em lotes (S/N)? 
+0:0:0:196: Schuffling
+0:0:0:203: Training Samples: 3683
+0:0:0:204: Training!
+0:0:0:234: First Training Finished!! 
+0:0:0:234: Samples Trained: 2	step: 5e-014	lastDif:-3683	difAlpha:1.8415e-010
+0:0:11:773: First Percentage correct: 97.0405%
+0:0:11:773 reversing
+0:0:11:775 Cross Validating
+0:0:11:775: Training!
+0:0:11:798: Second Training Finished!! 
+0:0:11:798: Samples Trained: 2	step: 5e-014	lastDif:-3683	difAlpha:1.8415e-010
+0:0:23:217: Second Percentage correct: 97.0405%
+0:0:23:217: Average Percentage correct: 97.0676%
+
 
 C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d a5 
-0:0:0:0: seed: 1454383010
-0:0:0:1: Reading File: Data/adult5.data
-0:0:0:157: Schuffling
-0:0:0:159: Training Samples: 3207
-0:0:0:159: Training!
-Deseja finalizar o arquivo em lotes (S/N)? 
+0:0:0:0: seed: 1454384181
+0:0:0:0: Reading File: Data/adult5.data
+0:0:0:145: Schuffling
+0:0:0:147: Training Samples: 3207
+0:0:0:147: Training!
+0:0:4:766: First Training Finished!! 
+0:0:4:766: Samples Trained: 3	step: 2.5e-013	lastDif:1.6035e-009	difAlpha:8.0175e-010
+0:0:9:401: First Percentage correct: 78.7964%
+0:0:9:401 reversing
+0:0:9:402 Cross Validating
+0:0:9:402: Training!
+0:0:14:3: Second Training Finished!! 
+0:0:14:3: Samples Trained: 3	step: 2.5e-013	lastDif:1.6035e-009	difAlpha:8.0175e-010
+0:0:18:655: Second Percentage correct: 78.7964%
+0:0:18:655: Average Percentage correct: 79.6071%
+
 
 C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d w5 
-0:0:0:0: seed: 1454383011
+0:0:0:0: seed: 1454384200
 0:0:0:0: Reading File: Data/web5.data
-0:0:0:204: Schuffling
-0:0:0:211: Training Samples: 4944
-0:0:0:212: Training!
-Deseja finalizar o arquivo em lotes (S/N)? 
+0:0:0:206: Schuffling
+0:0:0:213: Training Samples: 4944
+0:0:0:213: Training!
+0:0:0:255: First Training Finished!! 
+0:0:0:255: Samples Trained: 2	step: 5e-014	lastDif:-4944	difAlpha:2.472e-010
+0:0:20:990: First Percentage correct: 97.411%
+0:0:20:990 reversing
+0:0:20:993 Cross Validating
+0:0:20:993: Training!
+0:0:21:35: Second Training Finished!! 
+0:0:21:35: Samples Trained: 2	step: 5e-014	lastDif:-4944	difAlpha:2.472e-010
+0:0:41:466: Second Percentage correct: 97.411%
+0:0:41:466: Average Percentage correct: 97.1582%
+
 
 C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d a6 
-0:0:0:0: seed: 1454383014
+0:0:0:0: seed: 1454384242
 0:0:0:0: Reading File: Data/adult6.data
-0:0:0:239: Schuffling
-0:0:0:243: Training Samples: 5610
-0:0:0:244: Training!
-Deseja finalizar o arquivo em lotes (S/N)? 
+0:0:0:238: Schuffling
+0:0:0:242: Training Samples: 5610
+0:0:0:242: Training!
+0:0:30:490: First Training Finished!! 
+0:0:30:490: Samples Trained: 4	step: 1.25e-013	lastDif:1.4025e-009	difAlpha:7.0125e-010
+0:0:45:598: First Percentage correct: 81.426%
+0:0:45:598 reversing
+0:0:45:600 Cross Validating
+0:0:45:600: Training!
+0:1:15:589: Second Training Finished!! 
+0:1:15:589: Samples Trained: 4	step: 1.25e-013	lastDif:1.4025e-009	difAlpha:7.0125e-010
+0:1:30:486: Second Percentage correct: 81.426%
+0:1:30:486: Average Percentage correct: 81.221%
+
 
 C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d w6 
-0:0:0:0: seed: 1454383016
+0:0:0:0: seed: 1454384332
 0:0:0:0: Reading File: Data/web6.data
-0:0:0:390: Schuffling
-0:0:0:411: Training Samples: 8594
-0:0:0:411: Training!
-Deseja finalizar o arquivo em lotes (S/N)? 
-
-C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d a7 
-0:0:0:0: seed: 1454383018
-Error: File not found
-
-C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d w7 
-0:0:0:0: seed: 1454383018
-0:0:0:0: Reading File: Data/web7.data
-0:0:0:507: Schuffling
-0:0:0:526: Training Samples: 12346
-0:0:0:526: Training!
-Deseja finalizar o arquivo em lotes (S/N)? 
-
-C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d a8 
-0:0:0:0: seed: 1454383021
-Error: File not found
-
-C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d w8 
-0:0:0:0: seed: 1454383021
-0:0:0:0: Reading File: Data/web8.data
-0:0:1:23: Schuffling
-0:0:1:61: Training Samples: 24875
-0:0:1:62: Training!
-Deseja finalizar o arquivo em lotes (S/N)? 
-
-C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d a9 
-0:0:0:0: seed: 1454383025
-0:0:0:0: Reading File: Data/adult9.data
-Deseja finalizar o arquivo em lotes (S/N)? 
+0:0:0:361: Schuffling
+0:0:0:380: Training Samples: 8594
+0:0:0:380: Training!
+0:0:0:504: First Training Finished!! 
+0:0:0:504: Samples Trained: 2	step: 5e-014	lastDif:-8594	difAlpha:4.297e-010
+0:1:2:536: First Percentage correct: 96.8699%
+0:1:2:536 reversing
+0:1:2:545 Cross Validating
+0:1:2:545: Training!
+0:1:2:671: Second Training Finished!! 
+0:1:2:671: Samples Trained: 2	step: 5e-014	lastDif:-8594	difAlpha:4.297e-010
