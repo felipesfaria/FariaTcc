@@ -52,13 +52,31 @@ public:
 		return elems;
 	}
 
-
 	std::vector<std::string> static split(const std::string &s, char delim) {
 		std::vector<std::string> elems;
 		split(s, delim, elems);
 		return elems;
 	}
 };
+
+string FormatClock(int milliseconds)
+{
+	stringstream ss;
+	auto hours = milliseconds / (60 * 60 * CLOCKS_PER_SEC);
+	milliseconds = milliseconds % (60 * 60 * CLOCKS_PER_SEC);
+	auto minutes = milliseconds / (60 * CLOCKS_PER_SEC);
+	milliseconds = milliseconds % (60 * CLOCKS_PER_SEC);
+	auto seconds = milliseconds / (CLOCKS_PER_SEC);
+	milliseconds = milliseconds % (CLOCKS_PER_SEC);
+	ss << hours << ":" << minutes << ":" << seconds << ":" << milliseconds;
+	return ss.str();
+}
+
+string FormatClock()
+{
+	return FormatClock(clock());
+}
+
 class DataSet
 {
 public:
@@ -71,6 +89,7 @@ public:
 	int C;
 	double Gama;
 	double Step;
+	double Precision = 1e-9;
 	DataSet static GetAdult1()
 	{
 		DataSet ds;
@@ -650,6 +669,8 @@ void shuffle(vector<SvmData> &dados)
 
 void shuffle(vector<vector<double>> &x, vector<double> &y)
 {
+	cout << FormatClock() << "Shuffle starting..." << endl;
+	int start = clock();
 	int size = x.size();
 	for (auto i = 0; i < size; ++i)
 	{
@@ -661,9 +682,14 @@ void shuffle(vector<vector<double>> &x, vector<double> &y)
 		x[i] = tx;
 		y[i] = ty;
 	}
+	int end = clock();
+	cout << FormatClock() << "Shuffle finished in "<<FormatClock(end-start) << endl;
 }
+
 void reverse(vector<vector<double>> &x, vector<double> &y)
 {
+	cout << FormatClock() << "Reverse starting..." << endl;
+	int start = clock();
 	int size = x.size();
 	for (auto i = 0; i < size / 2; ++i)
 	{
@@ -675,43 +701,23 @@ void reverse(vector<vector<double>> &x, vector<double> &y)
 		x[i] = tx;
 		y[i] = ty;
 	}
+	int end = clock();
+	cout << FormatClock() << "Reverse finished in " << FormatClock(end - start) << endl;
 }
-double b = 0.0;
-bool bIsSet = false;
-int classify(vector<vector<double>> &x, vector<double> &y, int index, vector<double> alpha, Kernel kernel, int precision)
+
+int classify(vector<vector<double>>& x, vector<double>& y, int index, vector<double>& alpha, Kernel& kernel, int precision, double& b)
 {
 	auto size = alpha.size();
-	vector<int> alpha_indexes;
-	vector<double> sv;
-	double maxValue = 0.0;
-	for (auto i = 0; i < alpha.size(); ++i)
-	{
-		if (alpha[i] > maxValue){
-			maxValue = alpha[i];
-			sv = x[i];
-		}
-	}
-	if (maxValue == 0.0)
-		throw new exception("Could not find support vector.");
-
-	if (!bIsSet){
-		for (auto i = 0; i < alpha.size(); i++)
-		{
-			if (alpha[i] == 0) continue;
-			b += alpha[i] * y[i] * kernel.K(x[i], sv);
-		}
-		bIsSet = true;
-	}
-
 	auto sum = 0.0;
 	for (auto i = 0; i < alpha.size(); ++i)
 	{
 		if (alpha[i] == 0) continue;
 		sum += alpha[i] * y[i] * kernel.K(x[i], x[index]);
 	}
-	if (sum > precision)
+	auto sign = sum - b;
+	if (sign > precision)
 		return 1;
-	if (sum < -precision)
+	if (sign < -precision)
 		return -1;
 	return 0;
 }
@@ -738,27 +744,81 @@ bool cmdOptionExists(char** begin, char** end, const std::string& option)
 {
 	return std::find(begin, end, option) != end;
 }
-string FormatClock(int milliseconds)
+
+void Train(vector<vector<double>>& x, vector<double>& y, DataSet ds, int nTrainers, Kernel& kernel, vector<double>& alpha,double& b)
 {
-	stringstream ss;
-	auto hours = milliseconds / (60 * 60 * CLOCKS_PER_SEC);
-	milliseconds = milliseconds % (60 * 60 * CLOCKS_PER_SEC);
-	auto minutes = milliseconds / (60 * CLOCKS_PER_SEC);
-	milliseconds = milliseconds % (60 * CLOCKS_PER_SEC);
-	auto seconds = milliseconds / (CLOCKS_PER_SEC);
-	milliseconds = milliseconds % (CLOCKS_PER_SEC);
-	ss << hours << ":" << minutes << ":" << seconds << ":" << milliseconds;
-	return ss.str();
+	int start = clock();
+	cout << FormatClock() << "\t Training Started" << endl;;
+	alpha.clear();
+	vector<double> oldAlpha;
+	for (int i = 0; i < nTrainers; ++i){
+		alpha.push_back(0);
+		oldAlpha.push_back(1);
+	}
+	int count = 0;
+	double lastDif = 0.0;
+	double difAlpha;
+	double step = ds.Step;
+	double C = ds.C;
+	double precision = ds.Precision;
+	do
+	{
+		count++;
+
+		difAlpha = 0;
+		for (int i = 0; i < nTrainers; ++i){
+			difAlpha += alpha[i] - oldAlpha[i];
+			oldAlpha[i] = alpha[i];
+		}
+
+		if (count>0)
+			cout << FormatClock() << "\t Iteration: " << count << "\tstep: " << step << "\tlastDif:" << lastDif << "\tdifAlpha:" << difAlpha << endl;
+		if (abs(difAlpha) < precision)
+			break;
+		if (abs(difAlpha - lastDif) > difAlpha / 10.0)
+			step = step / 2;
+		lastDif = difAlpha;
+		for (int i = 0; i < nTrainers; ++i)
+		{
+			double sum = 0;
+			for (int j = 0; j < nTrainers; ++j)
+			{
+				if (oldAlpha[j] == 0) continue;
+				sum += y[j] * oldAlpha[j] * kernel.K(x[j], x[i]);
+			}
+			double value = oldAlpha[i] + step - step*y[i] * sum;
+			if (value > C)
+				alpha[i] = C;
+			else if (value < 0)
+				alpha[i] = 0.0;
+			else
+				alpha[i] = value;
+		}
+
+	} while (true);
+	b = 0.0;
+	vector<double> sv;
+	double maxValue = 0.0;
+	for (auto i = 0; i < alpha.size(); ++i)
+	{
+		if (alpha[i] > maxValue){
+			maxValue = alpha[i];
+			sv = x[i];
+		}
+	}
+	if (maxValue == 0.0)
+		throw new exception("Could not find support vector.");
+	for (auto i = 0; i < alpha.size(); i++)
+	{
+		if (alpha[i] == 0) continue;
+		b += alpha[i] * y[i] * kernel.K(x[i], sv);
+	}
+	int end = clock();
+	cout << FormatClock() << "\t Training Finished in "<<FormatClock(end-start) << endl;
 }
-int main(int argc, char* argv[])
+
+DataSet GetDataSet(int argc, char** argv)
 {
-	//unsigned seed = time(nullptr);
-	unsigned seed = time(nullptr);
-	unsigned int start = clock();
-	std::cout << FormatClock(clock()) << ": seed: " << seed << endl;
-	srand(seed);
-	vector<vector<double>> x;
-	vector<double> y;
 	DataSet ds;
 	char * datasetArg = getCmdOption(argv, argv + argc, "-d");
 	if (cmdOptionExists(argv, argv + argc, "a1")){
@@ -829,14 +889,40 @@ int main(int argc, char* argv[])
 	{
 		ds = DataSet::GetIris();
 	}
-	//DataSet ds = DataSet::GetIris();
-	SvmData::IsCsv = ds.IsCsv;
-	SvmData::nFeatures = ds.nFeatures;
-	if (ds.IsCsv){
-	}
-	else
+	cout << FormatClock() << "DataSet:" << endl;
+	cout << FormatClock() << "FileName: " << ds.FileName << endl;
+	cout << FormatClock() << "Samples: " << ds.nTrainers << endl;
+	cout << FormatClock() << "C: " << ds.C << endl;
+	cout << FormatClock() << "Gama: " << ds.Gama << endl;
+	cout << FormatClock() << "Precision: " << ds.Precision << endl;
+	cout << FormatClock() << "Classes: " << ds.nClasses << endl;
+	cout << FormatClock() << "Features: " << ds.nFeatures << endl;
+	cout << FormatClock() << "InitialStepSize: " << ds.Step << endl;
+	return ds;
+}
+
+void Test(vector<vector<double>>& x, vector<double>& y, DataSet& ds, int nValidators, int nTrainers, Kernel& kernel, vector<double>& alpha1, double& b1, int& nCorrect)
+{
+	int start = clock();
+	cout << FormatClock() << "\t Test Started" << endl;
+	nCorrect = 0;
+	for (auto i = nTrainers; i < x.size(); ++i)
 	{
+		int classifiedY = classify(x, y, i, alpha1, kernel, ds.Precision,b1);
+		if (classifiedY == y[i]){
+			nCorrect++;
+		}
 	}
+	int end = clock();
+	auto percentageCorrect = static_cast<double>(nCorrect) / nValidators;
+	std::cout << FormatClock() << ": Percentage correct: " <<nCorrect<<"/"<<nValidators<<" = "<< percentageCorrect*100.0 << "%" << endl;
+	cout << FormatClock() << "\t Test Finished in " << FormatClock(end - start) << endl;
+}
+
+void ReadFile(vector<vector<double>>& x, vector<double>& y, DataSet ds)
+{
+	cout << FormatClock() << ": Started reading file" << endl;
+	int start = clock();
 	ifstream       file;
 	//ds.FileName = "../" + ds.FileName;
 	file.open(ds.FileName, ifstream::in);
@@ -844,19 +930,11 @@ int main(int argc, char* argv[])
 	if (!file.good())
 	{
 		std::cout << "Error: File not found" << endl;
-		return 1;
 	}
 	SvmData linha;
 	vector<SvmData> linhas;
 	SequentialSVM svm;
-	double value, C, b, sum;
-	double precision = 1e-9;
-	double step = ds.Step;
-	C = ds.C;
-	b = 0.0;
-	int counter = 0;
 
-	cout << FormatClock(clock()) << ": Reading File: " << ds.FileName << endl;
 	while (file >> linha)
 	{
 		//linhas.push_back(linha.Copy());
@@ -868,136 +946,59 @@ int main(int argc, char* argv[])
 		//std::cout << linha.ToString();
 	}
 	svm.SetData(linhas);
-	cout << FormatClock(clock()) << ": Schuffling" << endl;
+	int end = clock();
+	cout << FormatClock() << ": Finished reading file in "<<FormatClock(end-start)<< endl;
+}
+
+int main(int argc, char* argv[])
+{
+	//unsigned seed = time(nullptr);
+	unsigned seed = time(nullptr);
+	unsigned int start = clock();
+	cout << FormatClock() << "\t Program Started" << endl;;
+	std::cout << FormatClock() << ": seed: " << seed << endl;
+	srand(seed);
+	vector<vector<double>> x;
+	vector<double> y;
+	DataSet ds = GetDataSet(argc, argv);
+	
+	//DataSet ds = DataSet::GetIris();
+	SvmData::IsCsv = ds.IsCsv;
+	SvmData::nFeatures = ds.nFeatures;
+
+	ReadFile(x, y, ds);
+
 	shuffle(x, y);
 
 	double validationPercentage = 0.5;
 	int nValidators = (x.size()*validationPercentage);
 	int nTrainers = x.size() - nValidators;
-	cout << FormatClock(clock()) << ": Training Samples: " << nTrainers << endl;
 	Kernel kernel;
 	kernel.DefineGaussian(ds.Gama);
 	//kernel.DefineHomogeneousPolynomial(2);
-	vector<double> alpha, oldAlpha;
-	for (int i = 0; i < nTrainers; ++i){
-		alpha.push_back(0);
-		oldAlpha.push_back(1);
-	}
-	int count = 0;
-	double lastDif = 0;
-	double difAlpha;
-	cout << FormatClock(clock()) << ": Training!" << endl;
-	do
-	{
-		count++;
 
-		difAlpha = 0;
-		for (int i = 0; i < nTrainers; ++i){
-			difAlpha += alpha[i] - oldAlpha[i];
-			oldAlpha[i] = alpha[i];
-		}
+	cout << FormatClock() << "\tFirst Fold: " << endl;
+	vector<double> alpha1;
+	double b1;
+	int nCorrect1;
+	Train(x, y, ds, nTrainers, kernel,alpha1,b1);
+	Test(x, y, ds, nValidators, nTrainers, kernel, alpha1, b1, nCorrect1);
 
-		if (abs(difAlpha) < precision)
-			break;
-		if (abs(difAlpha - lastDif) > difAlpha / 10.0)
-			step = step / 2;
-		if (count % 5 == 0 && count > 0)
-			cout << FormatClock(clock()) << ": Samples Trained: " << count << "\tstep: " << step << "\tlastDif:" << lastDif << "\tdifAlpha:" << difAlpha << endl;
-		lastDif = difAlpha;
-		for (int i = 0; i < nTrainers; ++i)
-		{
-			sum = 0;
-			for (int j = 0; j < nTrainers; ++j)
-			{
-				if (oldAlpha[j] == 0) continue;
-				sum += y[j] * oldAlpha[j] * kernel.K(x[j], x[i]);
-			}
-			value = oldAlpha[i] + step - step*y[i] * sum;
-			if (value > C)
-				alpha[i] = C;
-			else if (value < 0)
-				alpha[i] = 0.0;
-			else
-				alpha[i] = value;
-		}
-
-	} while (true);
-	std::cout << FormatClock(clock()) << ": First Training Finished!! " << endl;
-	cout << FormatClock(clock()) << ": Samples Trained: " << count << "\tstep: " << step << "\tlastDif:" << lastDif << "\tdifAlpha:" << difAlpha << endl;
-
-	auto nCorrect = 0;
-	for (auto i = nTrainers; i < x.size(); ++i)
-	{
-		int classifiedY = classify(x, y, i, alpha, kernel, precision);
-		if (classifiedY == y[i]){
-			nCorrect++;
-		}
-	}
-	auto percentageCorrect = static_cast<double>(nCorrect) / nValidators;
-	std::cout << FormatClock(clock()) << ": First Percentage correct: " << percentageCorrect*100.0 << "%" << endl;
-	cout << FormatClock(clock()) << " reversing" << endl;
 	reverse(x, y);
-	cout << FormatClock(clock()) << " Cross Validating" << endl;
-	alpha.clear();
-	oldAlpha.clear();
-	for (int i = 0; i < nTrainers; ++i){
-		alpha.push_back(0);
-		oldAlpha.push_back(1);
-	}
-	count = 0;
-	lastDif = 0;
-	step = ds.Step;
-	cout << FormatClock(clock()) << ": Training!" << endl;
-	do
-	{
-		count++;
 
-		difAlpha = 0;
-		for (int i = 0; i < nTrainers; ++i){
-			difAlpha += alpha[i] - oldAlpha[i];
-			oldAlpha[i] = alpha[i];
-		}
+	cout << FormatClock() << "\tSecond Fold: " << endl;
+	vector<double> alpha2;
+	double b2;
+	int nCorrect2;
+	Train(x, y, ds, nTrainers, kernel, alpha2, b2);
+	Test(x, y, ds, nValidators, nTrainers, kernel, alpha2, b2, nCorrect2);
 
-		if (abs(difAlpha) < precision)
-			break;
-		if (abs(difAlpha - lastDif) > difAlpha / 10.0)
-			step = step / 2;
-		if (count % 5 == 0 && count>0)
-			cout << FormatClock(clock()) << ": Samples Trained: " << count << "\tstep: " << step << "\tlastDif:" << lastDif << "\tdifAlpha:" << difAlpha << endl;
-		lastDif = difAlpha;
-		for (int i = 0; i < nTrainers; ++i)
-		{
-			sum = 0;
-			for (int j = 0; j < nTrainers; ++j)
-			{
-				if (oldAlpha[j] == 0) continue;
-				sum += y[j] * oldAlpha[j] * kernel.K(x[j], x[i]);
-			}
-			value = oldAlpha[i] + step - step*y[i] * sum;
-			if (value > C)
-				alpha[i] = C;
-			else if (value < 0)
-				alpha[i] = 0.0;
-			else
-				alpha[i] = value;
-		}
-
-	} while (true);
-	std::cout << FormatClock(clock()) << ": Second Training Finished!! " << endl;
-	cout << FormatClock(clock()) << ": Samples Trained: " << count << "\tstep: " << step << "\tlastDif:" << lastDif << "\tdifAlpha:" << difAlpha << endl;
-
-	auto nCorrect2 = 0;
-	for (auto i = nTrainers; i < x.size(); ++i)
-	{
-		int classifiedY = classify(x, y, i, alpha, kernel, precision);
-		if (classifiedY == y[i]){
-			nCorrect2++;
-		}
-	}
-	auto secondPercentageCorrect = static_cast<double>(nCorrect) / nValidators;
-	std::cout << FormatClock(clock()) << ": Second Percentage correct: " << secondPercentageCorrect*100.0 << "%" << endl;
-	auto averagePercentageCorrect = (static_cast<double>(nCorrect)+static_cast<double>(nCorrect2)) / (nValidators + nTrainers);
-	std::cout << FormatClock(clock()) << ": Average Percentage correct: " << averagePercentageCorrect*100.0 << "%" << endl;
+	double totalCorrect = nCorrect1 + nCorrect2;
+	double totalSamples = nValidators + nTrainers;
+	double averagePercentageCorrect = totalCorrect / totalSamples;
+	std::cout << FormatClock() << ": Percentage correct: " << totalCorrect << "/" << totalSamples << " = " << averagePercentageCorrect*100.0 << "%" << endl;
+	int end = clock();
+	cout << FormatClock() << "\t Program Finished in " << FormatClock(end - start) << endl;
 	std::cout << endl;
 	return 0;
 }
