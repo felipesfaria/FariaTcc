@@ -2,3 +2,5 @@
 *.sdf
 *.suo
 *.user
+Debug/
+*.stackdump
