@@ -10,7 +10,9 @@
 #include <string>
 #include <exception>
 #include <ctime>
+#include "Logger.h"
 
+Logger logger;
 class Kernel;
 class SvmData;
 using namespace std;
@@ -669,8 +671,7 @@ void shuffle(vector<SvmData> &dados)
 
 void shuffle(vector<vector<double>> &x, vector<double> &y)
 {
-	cout << FormatClock() << "Shuffle starting..." << endl;
-	int start = clock();
+	logger.FunctionStart("Shuffle");
 	int size = x.size();
 	for (auto i = 0; i < size; ++i)
 	{
@@ -682,14 +683,12 @@ void shuffle(vector<vector<double>> &x, vector<double> &y)
 		x[i] = tx;
 		y[i] = ty;
 	}
-	int end = clock();
-	cout << FormatClock() << "Shuffle finished in " << FormatClock(end - start) << endl;
+	logger.FunctionEnd();
 }
 
 void reverse(vector<vector<double>> &x, vector<double> &y)
 {
-	cout << FormatClock() << "Reverse starting..." << endl;
-	int start = clock();
+	logger.FunctionStart("Reverse");
 	int size = x.size();
 	for (auto i = 0; i < size / 2; ++i)
 	{
@@ -701,8 +700,7 @@ void reverse(vector<vector<double>> &x, vector<double> &y)
 		x[i] = tx;
 		y[i] = ty;
 	}
-	int end = clock();
-	cout << FormatClock() << "Reverse finished in " << FormatClock(end - start) << endl;
+	logger.FunctionEnd();
 }
 
 int classify(vector<vector<double>>& x, vector<double>& y, int index, vector<double>& alpha, Kernel& kernel, int precision, double& b)
@@ -747,8 +745,7 @@ bool cmdOptionExists(char** begin, char** end, const std::string& option)
 
 void Train(vector<vector<double>>& x, vector<double>& y, DataSet ds, int nTrainers, Kernel& kernel, vector<double>& alpha, double& b)
 {
-	int start = clock();
-	cout << FormatClock() << "Training Started" << endl;;
+	logger.FunctionStart("Train");
 	alpha.clear();
 	vector<double> oldAlpha;
 	for (int i = 0; i < nTrainers; ++i){
@@ -772,7 +769,8 @@ void Train(vector<vector<double>>& x, vector<double>& y, DataSet ds, int nTraine
 		}
 
 		if (count>0)
-			cout << FormatClock() << "Iteration: " << count << "\tstep: " << step << "\tlastDif:" << lastDif << "\tdifAlpha:" << difAlpha << endl;
+			logger.ClassifyProgress(count, step, lastDif, difAlpha);
+			
 		if (abs(difAlpha) < precision)
 			break;
 		if (abs(difAlpha - lastDif) > difAlpha / 10.0)
@@ -796,7 +794,6 @@ void Train(vector<vector<double>>& x, vector<double>& y, DataSet ds, int nTraine
 		}
 
 	} while (true);
-	b = 0.0;
 	int nSupportVectors = 0;
 	vector<double> sv;
 	double maxValue = 0.0;
@@ -810,14 +807,9 @@ void Train(vector<vector<double>>& x, vector<double>& y, DataSet ds, int nTraine
 	}
 	if (maxValue == 0.0)
 		throw new exception("Could not find support vector.");
-	for (auto i = 0; i < alpha.size(); i++)
-	{
-		if (alpha[i] == 0) continue;
-		b += alpha[i] * y[i] * kernel.K(x[i], sv);
-	}
 	b = 0.0;
-	int end = clock();
-	cout << FormatClock() << "Training Finished in " << FormatClock(end - start) << "Found nSupportVectors: " << nSupportVectors << endl;
+	logger.Stats("nSupportVectors", nSupportVectors);
+	logger.FunctionEnd();
 }
 
 DataSet GetDataSet(int argc, char** argv)
@@ -892,22 +884,21 @@ DataSet GetDataSet(int argc, char** argv)
 	{
 		ds = DataSet::GetIris();
 	}
-	cout << FormatClock() << "DataSet:" << endl;
-	cout << FormatClock() << "FileName: " << ds.FileName << endl;
-	cout << FormatClock() << "Samples: " << ds.nTrainers << endl;
-	cout << FormatClock() << "C: " << ds.C << endl;
-	cout << FormatClock() << "Gama: " << ds.Gama << endl;
-	cout << FormatClock() << "Precision: " << ds.Precision << endl;
-	cout << FormatClock() << "Classes: " << ds.nClasses << endl;
-	cout << FormatClock() << "Features: " << ds.nFeatures << endl;
-	cout << FormatClock() << "InitialStepSize: " << ds.Step << endl;
+	logger.Line("DataSet:");
+	logger.Stats( "FileName: " ,ds.FileName );
+	logger.Stats( "Samples: " ,ds.nTrainers );
+	logger.Stats( "C: " ,ds.C );
+	logger.Stats( "Gama: " ,ds.Gama );
+	logger.Stats( "Precision: " ,ds.Precision );
+	logger.Stats( "Classes: " ,ds.nClasses );
+	logger.Stats( "Features: " ,ds.nFeatures );
+	logger.Stats( "InitialStepSize: " ,ds.Step );
 	return ds;
 }
 
 void Test(vector<vector<double>>& x, vector<double>& y, DataSet& ds, int nValidators, int nTrainers, Kernel& kernel, vector<double>& alpha1, double& b1, int& nCorrect)
 {
-	int start = clock();
-	cout << FormatClock() << "Test Started" << endl;
+	logger.FunctionStart("Test");
 	nCorrect = 0;
 	for (auto i = nTrainers; i < x.size(); ++i)
 	{
@@ -918,39 +909,34 @@ void Test(vector<vector<double>>& x, vector<double>& y, DataSet& ds, int nValida
 	}
 	int end = clock();
 	auto percentageCorrect = static_cast<double>(nCorrect) / nValidators;
-	std::cout << FormatClock() << "Percentage correct: " << nCorrect << "/" << nValidators << " = " << percentageCorrect*100.0 << "%" << endl;
-	cout << FormatClock() << "Test Finished in " << FormatClock(end - start) << endl;
+	logger.Percentage(nCorrect, nValidators, percentageCorrect);
+	logger.FunctionEnd();
 }
 
 void ReadFile(vector<vector<double>>& x, vector<double>& y, DataSet ds)
 {
-	cout << FormatClock() << "Started reading file" << endl;
+	logger.FunctionStart("ReadFile");
 	int start = clock();
 	ifstream       file;
-	//ds.FileName = "../" + ds.FileName;
 	file.open(ds.FileName, ifstream::in);
 
 	if (!file.good())
-	{
-		std::cout << "Error: File not found" << endl;
-	}
+		throw(new exception("Error: File not found"));
+
 	SvmData linha;
 	vector<SvmData> linhas;
 	SequentialSVM svm;
 
 	while (file >> linha)
 	{
-		//linhas.push_back(linha.Copy());
 		vector<double> vd;
 		for (int i = 0; i < linha.x.size(); ++i)
 			vd.push_back(linha.x[i]);
 		x.push_back(vd);
 		y.push_back(linha.y);
-		//std::cout << linha.ToString();
 	}
 	svm.SetData(linhas);
-	int end = clock();
-	cout << FormatClock() << "Finished reading file in " << FormatClock(end - start) << endl;
+	logger.FunctionEnd();
 }
 
 int main(int argc, char* argv[])
@@ -959,11 +945,12 @@ int main(int argc, char* argv[])
 		//unsigned seed = time(nullptr);
 		unsigned seed = time(nullptr);
 		unsigned int start = clock();
-		cout << FormatClock() << "Program Started" << endl;;
-		std::cout << FormatClock() << "seed: " << seed << endl;
+		logger.Init(argc, argv);
+		logger.Seed(seed);
 		srand(seed);
 		vector<vector<double>> x;
 		vector<double> y;
+
 		DataSet ds = GetDataSet(argc, argv);
 
 		//DataSet ds = DataSet::GetIris();
@@ -980,8 +967,10 @@ int main(int argc, char* argv[])
 		Kernel kernel;
 		kernel.DefineGaussian(ds.Gama);
 		//kernel.DefineHomogeneousPolynomial(2);
+		int iFold = 1;
+		
+		logger.Fold(iFold++);
 
-		cout << FormatClock() << "First Fold: " << endl;
 		vector<double> alpha1;
 		double b1;
 		int nCorrect1;
@@ -990,7 +979,8 @@ int main(int argc, char* argv[])
 
 		reverse(x, y);
 
-		cout << FormatClock() << "Second Fold: " << endl;
+		logger.Fold(iFold++);
+
 		vector<double> alpha2;
 		double b2;
 		int nCorrect2;
@@ -1000,15 +990,13 @@ int main(int argc, char* argv[])
 		double totalCorrect = nCorrect1 + nCorrect2;
 		double totalSamples = nValidators + nTrainers;
 		double averagePercentageCorrect = totalCorrect / totalSamples;
-		std::cout << FormatClock() << "Average Percentage correct: " << totalCorrect << "/" << totalSamples << " = " << averagePercentageCorrect*100.0 << "%" << endl;
-		int end = clock();
-		cout << FormatClock() << "Program Finished in " << FormatClock(end - start) << endl;
-		std::cout << endl;
+		logger.Percentage(totalCorrect, totalSamples, averagePercentageCorrect,"Average ");
+		logger.End();
 		return 0;
 	}
 	catch (exception& e)
 	{
-		cout << FormatClock() << "Fatal error ocurred: " << e.what() << endl;
+		logger.Error(e);
 		return 1;
 	}
 }
