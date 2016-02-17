@@ -3,22 +3,36 @@
 #include <locale>
 #include <sstream>
 #include <iostream>
+#include "Utils.h"
 using namespace std;
 
+Logger::LoggerType Logger::_type = Logger::DISABLED;
+unsigned int Logger::_programStart=0;
+unsigned int Logger::_functionStart=0;
+string Logger::_currentFunction="";
 Logger::Logger()
 {
 }
 
+Logger::~Logger()
+{
+}
 void Logger::Init(int argc, char** argv)
 {
 	_functionStart = -1;
 	_programStart = clock();
-	if (cmdOptionExists(argv, argv + argc, "lv"))
+	string argument = Utils::GetComandVariable(argc, argv, "-l");
+	if (argument =="v")
 		_type = VERBOSE;
-	else if (cmdOptionExists(argv, argv + argc, "lcsv"))
+	else if (argument == "c")
 		_type = CSV;
-	else
+	else if (argument == "d" || argument == "")
 		_type = DISABLED;
+	else
+	{
+		string message = "Invalid argument for -l:" + argument;
+		throw(new exception(message.c_str()));
+	}
 
 	switch (_type)
 	{
@@ -31,10 +45,6 @@ void Logger::Init(int argc, char** argv)
 	default:
 		break;
 	}
-}
-
-Logger::~Logger()
-{
 }
 
 void Logger::Seed(unsigned seed)
@@ -189,11 +199,6 @@ void Logger::Percentage(double correct, double total, double percentage, string 
 	default:
 		break;
 	}
-}
-
-bool Logger::cmdOptionExists(char** begin, char** end, const std::string& option)
-{
-	return find(begin, end, option) != end;
 }
 
 std::string Logger::FormatClock(int milliseconds)

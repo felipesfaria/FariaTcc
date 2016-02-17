@@ -19,9 +19,6 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
-    <Text Include="..\Data\iris.csv">
-      <Filter>Data</Filter>
-    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -31,6 +28,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Logger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DataSet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -44,19 +47,16 @@
     <ClCompile Include="Logger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DataSet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="libsvm\svm.def">
       <Filter>Source Files</Filter>
-    </None>
-    <None Include="..\Data\web.data">
-      <Filter>Data</Filter>
-    </None>
-    <None Include="..\Data\adult2.data">
-      <Filter>Data</Filter>
-    </None>
-    <None Include="..\Data\SimpleDataset.csv">
-      <Filter>Data</Filter>
     </None>
   </ItemGroup>
 </Project>

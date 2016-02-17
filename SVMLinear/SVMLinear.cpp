@@ -11,75 +11,16 @@
 #include <exception>
 #include <ctime>
 #include "Logger.h"
+#include "Utils.h"
+#include <algorithm>
+#include "DataSet.h"
 
 Logger logger;
 class Kernel;
 class SvmData;
 using namespace std;
-class Utils
-{
-public:
-	bool static TryParseDouble(string str, double &out)
-	{
-		try
-		{
-			out = stod(str);
-			return true;
-		}
-		catch (invalid_argument&)
-		{
-			return false;
-		}
-	}
 
-	bool static TryParseInt(string str, int &out)
-	{
-		try
-		{
-			out = stoi(str);
-			return true;
-		}
-		catch (invalid_argument&)
-		{
-			return false;
-		}
-	}
-
-	std::vector<std::string> static &split(const std::string &s, char delim, std::vector<std::string> &elems) {
-		std::stringstream ss(s);
-		std::string item;
-		while (std::getline(ss, item, delim)) {
-			elems.push_back(item);
-		}
-		return elems;
-	}
-
-	std::vector<std::string> static split(const std::string &s, char delim) {
-		std::vector<std::string> elems;
-		split(s, delim, elems);
-		return elems;
-	}
-};
-
-string FormatClock(int milliseconds)
-{
-	stringstream ss;
-	auto hours = milliseconds / (60 * 60 * CLOCKS_PER_SEC);
-	milliseconds = milliseconds % (60 * 60 * CLOCKS_PER_SEC);
-	auto minutes = milliseconds / (60 * CLOCKS_PER_SEC);
-	milliseconds = milliseconds % (60 * CLOCKS_PER_SEC);
-	auto seconds = milliseconds / (CLOCKS_PER_SEC);
-	milliseconds = milliseconds % (CLOCKS_PER_SEC);
-	ss << hours << ":" << minutes << ":" << seconds << ":" << milliseconds << "\t";
-	return ss.str();
-}
-
-string FormatClock()
-{
-	return FormatClock(clock());
-}
-
-class DataSet
+class DataSet2
 {
 public:
 	string FileName;
@@ -92,266 +33,8 @@ public:
 	double Gama;
 	double Step;
 	double Precision = 1e-9;
-	DataSet static GetAdult1()
-	{
-		DataSet ds;
-		ds.FileName = "Data/adult1.data";
-		ds.IsCsv = false;
-		ds.nTrainers = 1605;
-		ds.nTesters = 16281;
-		ds.nFeatures = 123;
-		ds.nClasses = 2;
-		ds.C = 100;
-		ds.Gama = 0.5;
-		ds.Step = 1e-12;
-		return ds;
-	}
-	DataSet static GetAdult2()
-	{
-		DataSet ds;
-		ds.FileName = "Data/adult2.data";
-		ds.IsCsv = false;
-		ds.nTrainers = 2265;
-		ds.nTesters = 16281;
-		ds.nFeatures = 123;
-		ds.nClasses = 2;
-		ds.C = 100;
-		ds.Gama = 0.5;
-		ds.Step = 1e-12;
-		return ds;
-	}
-	DataSet static GetAdult3()
-	{
-		DataSet ds;
-		ds.FileName = "Data/adult3.data";
-		ds.IsCsv = false;
-		ds.nTrainers = 3185;
-		ds.nTesters = 16281;
-		ds.nFeatures = 123;
-		ds.nClasses = 2;
-		ds.C = 100;
-		ds.Gama = 0.5;
-		ds.Step = 1e-12;
-		return ds;
-	}
-	DataSet static GetAdult4()
-	{
-		DataSet ds;
-		ds.FileName = "Data/adult4.data";
-		ds.IsCsv = false;
-		ds.nTrainers = 4781;
-		ds.nTesters = 16281;
-		ds.nFeatures = 123;
-		ds.nClasses = 2;
-		ds.C = 100;
-		ds.Gama = 0.5;
-		ds.Step = 1e-12;
-		return ds;
-	}
-	DataSet static GetAdult5()
-	{
-		DataSet ds;
-		ds.FileName = "Data/adult5.data";
-		ds.IsCsv = false;
-		ds.nTrainers = 6414;
-		ds.nTesters = 16281;
-		ds.nFeatures = 123;
-		ds.nClasses = 2;
-		ds.C = 100;
-		ds.Gama = 0.5;
-		ds.Step = 1e-12;
-		return ds;
-	}
-	DataSet static GetAdult6()
-	{
-		DataSet ds;
-		ds.FileName = "Data/adult6.data";
-		ds.IsCsv = false;
-		ds.nTrainers = 11220;
-		ds.nTesters = 16281;
-		ds.nFeatures = 123;
-		ds.nClasses = 2;
-		ds.C = 100;
-		ds.Gama = 0.5;
-		ds.Step = 1e-12;
-		return ds;
-	}
-	DataSet static GetAdult7()
-	{
-		DataSet ds;
-		ds.FileName = "Data/adult7.data";
-		ds.IsCsv = false;
-		ds.nTrainers = 16100;
-		ds.nTesters = 16281;
-		ds.nFeatures = 123;
-		ds.nClasses = 2;
-		ds.C = 100;
-		ds.Gama = 0.5;
-		ds.Step = 1e-12;
-		return ds;
-	}
-	DataSet static GetAdult8()
-	{
-		DataSet ds;
-		ds.FileName = "Data/adult8.data";
-		ds.IsCsv = false;
-		ds.nTrainers = 22696;
-		ds.nTesters = 16281;
-		ds.nFeatures = 123;
-		ds.nClasses = 2;
-		ds.C = 100;
-		ds.Gama = 0.5;
-		ds.Step = 1e-12;
-		return ds;
-	}
-	DataSet static GetAdult9()
-	{
-		DataSet ds;
-		ds.FileName = "Data/adult9.data";
-		ds.IsCsv = false;
-		ds.nTrainers = 32561;
-		ds.nTesters = 16281;
-		ds.nFeatures = 123;
-		ds.nClasses = 2;
-		ds.C = 100;
-		ds.Gama = 0.5;
-		ds.Step = 1e-12;
-		return ds;
-	}
-	DataSet static GetWeb1()
-	{
-		DataSet ds;
-		ds.FileName = "Data/web1.data";
-		ds.IsCsv = false;
-		ds.nTrainers = 2477;
-		ds.nTesters = 0;
-		ds.nFeatures = 300;
-		ds.nClasses = 2;
-		ds.C = 64;
-		ds.Gama = 7.8125;
-		ds.Step = 1e-13;
-		return ds;
-	}
-	DataSet static GetWeb2()
-	{
-		DataSet ds;
-		ds.FileName = "Data/web2.data";
-		ds.IsCsv = false;
-		ds.nTrainers = 3470;
-		ds.nTesters = 0;
-		ds.nFeatures = 300;
-		ds.nClasses = 2;
-		ds.C = 64;
-		ds.Gama = 7.8125;
-		ds.Step = 1e-13;
-		return ds;
-	}
-	DataSet static GetWeb3()
-	{
-		DataSet ds;
-		ds.FileName = "Data/web3.data";
-		ds.IsCsv = false;
-		ds.nTrainers = 4912;
-		ds.nTesters = 0;
-		ds.nFeatures = 300;
-		ds.nClasses = 2;
-		ds.C = 64;
-		ds.Gama = 7.8125;
-		ds.Step = 1e-13;
-		return ds;
-	}
-	DataSet static GetWeb4()
-	{
-		DataSet ds;
-		ds.FileName = "Data/web4.data";
-		ds.IsCsv = false;
-		ds.nTrainers = 7366;
-		ds.nTesters = 0;
-		ds.nFeatures = 300;
-		ds.nClasses = 2;
-		ds.C = 64;
-		ds.Gama = 7.8125;
-		ds.Step = 1e-13;
-		return ds;
-	}
-	DataSet static GetWeb5()
-	{
-		DataSet ds;
-		ds.FileName = "Data/web5.data";
-		ds.IsCsv = false;
-		ds.nTrainers = 9888;
-		ds.nTesters = 0;
-		ds.nFeatures = 300;
-		ds.nClasses = 2;
-		ds.C = 64;
-		ds.Gama = 7.8125;
-		ds.Step = 1e-13;
-		return ds;
-	}
-	DataSet static GetWeb6()
-	{
-		DataSet ds;
-		ds.FileName = "Data/web6.data";
-		ds.IsCsv = false;
-		ds.nTrainers = 17188;
-		ds.nTesters = 0;
-		ds.nFeatures = 300;
-		ds.nClasses = 2;
-		ds.C = 64;
-		ds.Gama = 7.8125;
-		ds.Step = 1e-13;
-		return ds;
-	}
-	DataSet static GetWeb7()
-	{
-		DataSet ds;
-		ds.FileName = "Data/web7.data";
-		ds.IsCsv = false;
-		ds.nTrainers = 24692;
-		ds.nTesters = 0;
-		ds.nFeatures = 300;
-		ds.nClasses = 2;
-		ds.C = 64;
-		ds.Gama = 7.8125;
-		ds.Step = 1e-13;
-		return ds;
-	}
-	DataSet static GetWeb8()
-	{
-		DataSet ds;
-		ds.FileName = "Data/web8.data";
-		ds.IsCsv = false;
-		ds.nTrainers = 49749;
-		ds.nTesters = 0;
-		ds.nFeatures = 300;
-		ds.nClasses = 2;
-		ds.C = 64;
-		ds.Gama = 7.8125;
-		ds.Step = 1e-13;
-		return ds;
-	}
-	DataSet static GetIris()
-	{
-		DataSet ds;
-		ds.FileName = "Data/iris.csv";
-		ds.IsCsv = true;
-		ds.nTrainers = 80;
-		ds.nTesters = 20;
-		ds.nFeatures = 4;
-		ds.nClasses = 2;
-		ds.C = 16;
-		ds.Gama = 0.5;
-		ds.Step = 0.0001;
-		return ds;
-	}
-};
-class SvmData
-{
-public:
 	vector<double> x;
 	double y;
-	static int nFeatures;
-	static bool IsCsv;
 
 	string const& operator[](size_t index) const
 	{
@@ -363,51 +46,326 @@ public:
 	}
 	void readNextRow(istream& str)
 	{
-		if (SvmData::IsCsv)
+		if (IsCsv)
 			readCsvData(str);
 		else
 			readIndexedData(str);
 	}
-
-	SvmData Copy()
+	DataSet2 static Get(string arg)
 	{
-
-		unsigned int i;
-		SvmData d;
-		//for (i = 0; i < m_data.size(); i++)
-		//	d.m_data.push_back(m_data[i]);
-		//for (i = 0; i < m_doubles.size(); i++)
-		//	d.m_doubles.push_back(m_doubles[i]);
-		//for (i = 0; i < m_longs.size(); i++)
-		//	d.m_longs.push_back(m_longs[i]);
-		for (i = 0; i < x.size(); i++)
-			d.x.push_back(x[i]);
-		//d.myClass = myClass;
-		d.y = y;
-
-		return d;
-	}
-	string ToString()
-	{
-		unsigned int i;
-		string output = "";
-		for (i = 0; i < m_data.size(); i++)
+		switch (arg[0])
 		{
-			output += m_data[i];
-			if (i != m_data.size() - 1)
-				output += ",";
+		case 'a':
+			return GetAdult(arg[1]);
+		case 'w':
+			return GetWeb(arg[1]);
+		case 'i':
+		default:
+			return GetIris();
 		}
-		output += "\n";
-		return output;
 	}
 private:
 	vector<string> m_data;
 	vector<double> m_doubles;
 	vector<long> m_longs;
-	vector<string> m_multivalues;
 	string myClass;
-	static string classes[2];
+	string classes[2];
 
+	DataSet2 static GetAdult(char c)
+	{
+		return GetAdult(c - '0');
+	}
+	DataSet2 static GetAdult(int n)
+	{
+		switch (n)
+		{
+		case 1: return GetAdult1();
+		case 2: return GetAdult2();
+		case 3: return GetAdult3();
+		case 4: return GetAdult4();
+		case 5: return GetAdult5();
+		case 6: return GetAdult6();
+		case 7: return GetAdult7();
+		case 8: return GetAdult8();
+		case 9: return GetAdult9();
+		default:
+			throw(new exception("Invalid adult type"));
+		}
+	}
+	DataSet2 static GetAdult1()
+	{
+		DataSet2 ds;
+		ds.FileName = "Data/adult1.data";
+		ds.IsCsv = false;
+		ds.nTrainers = 1605;
+		ds.nTesters = 16281;
+		ds.nFeatures = 123;
+		ds.nClasses = 2;
+		ds.C = 100;
+		ds.Gama = 0.5;
+		ds.Step = 1e-12;
+		return ds;
+	}
+	DataSet2 static GetAdult2()
+	{
+		DataSet2 ds;
+		ds.FileName = "Data/adult2.data";
+		ds.IsCsv = false;
+		ds.nTrainers = 2265;
+		ds.nTesters = 16281;
+		ds.nFeatures = 123;
+		ds.nClasses = 2;
+		ds.C = 100;
+		ds.Gama = 0.5;
+		ds.Step = 1e-12;
+		return ds;
+	}
+	DataSet2 static GetAdult3()
+	{
+		DataSet2 ds;
+		ds.FileName = "Data/adult3.data";
+		ds.IsCsv = false;
+		ds.nTrainers = 3185;
+		ds.nTesters = 16281;
+		ds.nFeatures = 123;
+		ds.nClasses = 2;
+		ds.C = 100;
+		ds.Gama = 0.5;
+		ds.Step = 1e-12;
+		return ds;
+	}
+	DataSet2 static GetAdult4()
+	{
+		DataSet2 ds;
+		ds.FileName = "Data/adult4.data";
+		ds.IsCsv = false;
+		ds.nTrainers = 4781;
+		ds.nTesters = 16281;
+		ds.nFeatures = 123;
+		ds.nClasses = 2;
+		ds.C = 100;
+		ds.Gama = 0.5;
+		ds.Step = 1e-12;
+		return ds;
+	}
+	DataSet2 static GetAdult5()
+	{
+		DataSet2 ds;
+		ds.FileName = "Data/adult5.data";
+		ds.IsCsv = false;
+		ds.nTrainers = 6414;
+		ds.nTesters = 16281;
+		ds.nFeatures = 123;
+		ds.nClasses = 2;
+		ds.C = 100;
+		ds.Gama = 0.5;
+		ds.Step = 1e-12;
+		return ds;
+	}
+	DataSet2 static GetAdult6()
+	{
+		DataSet2 ds;
+		ds.FileName = "Data/adult6.data";
+		ds.IsCsv = false;
+		ds.nTrainers = 11220;
+		ds.nTesters = 16281;
+		ds.nFeatures = 123;
+		ds.nClasses = 2;
+		ds.C = 100;
+		ds.Gama = 0.5;
+		ds.Step = 1e-12;
+		return ds;
+	}
+	DataSet2 static GetAdult7()
+	{
+		DataSet2 ds;
+		ds.FileName = "Data/adult7.data";
+		ds.IsCsv = false;
+		ds.nTrainers = 16100;
+		ds.nTesters = 16281;
+		ds.nFeatures = 123;
+		ds.nClasses = 2;
+		ds.C = 100;
+		ds.Gama = 0.5;
+		ds.Step = 1e-12;
+		return ds;
+	}
+	DataSet2 static GetAdult8()
+	{
+		DataSet2 ds;
+		ds.FileName = "Data/adult8.data";
+		ds.IsCsv = false;
+		ds.nTrainers = 22696;
+		ds.nTesters = 16281;
+		ds.nFeatures = 123;
+		ds.nClasses = 2;
+		ds.C = 100;
+		ds.Gama = 0.5;
+		ds.Step = 1e-12;
+		return ds;
+	}
+	DataSet2 static GetAdult9()
+	{
+		DataSet2 ds;
+		ds.FileName = "Data/adult9.data";
+		ds.IsCsv = false;
+		ds.nTrainers = 32561;
+		ds.nTesters = 16281;
+		ds.nFeatures = 123;
+		ds.nClasses = 2;
+		ds.C = 100;
+		ds.Gama = 0.5;
+		ds.Step = 1e-12;
+		return ds;
+	}
+
+	DataSet2 static GetWeb(char c)
+	{
+		return GetWeb(c - '0');
+	}
+	DataSet2 static GetWeb(int n)
+	{
+		switch (n)
+		{
+		case 1: return GetWeb1();
+		case 2: return GetWeb2();
+		case 3: return GetWeb3();
+		case 4: return GetWeb4();
+		case 5: return GetWeb5();
+		case 6: return GetWeb6();
+		case 7: return GetWeb7();
+		case 8: return GetWeb8();
+		default:
+			throw(new exception("Invalid Web type"));
+		}
+	}
+	DataSet2 static GetWeb1()
+	{
+		DataSet2 ds;
+		ds.FileName = "Data/web1.data";
+		ds.IsCsv = false;
+		ds.nTrainers = 2477;
+		ds.nTesters = 0;
+		ds.nFeatures = 300;
+		ds.nClasses = 2;
+		ds.C = 64;
+		ds.Gama = 7.8125;
+		ds.Step = 1e-13;
+		return ds;
+	}
+	DataSet2 static GetWeb2()
+	{
+		DataSet2 ds;
+		ds.FileName = "Data/web2.data";
+		ds.IsCsv = false;
+		ds.nTrainers = 3470;
+		ds.nTesters = 0;
+		ds.nFeatures = 300;
+		ds.nClasses = 2;
+		ds.C = 64;
+		ds.Gama = 7.8125;
+		ds.Step = 1e-13;
+		return ds;
+	}
+	DataSet2 static GetWeb3()
+	{
+		DataSet2 ds;
+		ds.FileName = "Data/web3.data";
+		ds.IsCsv = false;
+		ds.nTrainers = 4912;
+		ds.nTesters = 0;
+		ds.nFeatures = 300;
+		ds.nClasses = 2;
+		ds.C = 64;
+		ds.Gama = 7.8125;
+		ds.Step = 1e-13;
+		return ds;
+	}
+	DataSet2 static GetWeb4()
+	{
+		DataSet2 ds;
+		ds.FileName = "Data/web4.data";
+		ds.IsCsv = false;
+		ds.nTrainers = 7366;
+		ds.nTesters = 0;
+		ds.nFeatures = 300;
+		ds.nClasses = 2;
+		ds.C = 64;
+		ds.Gama = 7.8125;
+		ds.Step = 1e-13;
+		return ds;
+	}
+	DataSet2 static GetWeb5()
+	{
+		DataSet2 ds;
+		ds.FileName = "Data/web5.data";
+		ds.IsCsv = false;
+		ds.nTrainers = 9888;
+		ds.nTesters = 0;
+		ds.nFeatures = 300;
+		ds.nClasses = 2;
+		ds.C = 64;
+		ds.Gama = 7.8125;
+		ds.Step = 1e-13;
+		return ds;
+	}
+	DataSet2 static GetWeb6()
+	{
+		DataSet2 ds;
+		ds.FileName = "Data/web6.data";
+		ds.IsCsv = false;
+		ds.nTrainers = 17188;
+		ds.nTesters = 0;
+		ds.nFeatures = 300;
+		ds.nClasses = 2;
+		ds.C = 64;
+		ds.Gama = 7.8125;
+		ds.Step = 1e-13;
+		return ds;
+	}
+	DataSet2 static GetWeb7()
+	{
+		DataSet2 ds;
+		ds.FileName = "Data/web7.data";
+		ds.IsCsv = false;
+		ds.nTrainers = 24692;
+		ds.nTesters = 0;
+		ds.nFeatures = 300;
+		ds.nClasses = 2;
+		ds.C = 64;
+		ds.Gama = 7.8125;
+		ds.Step = 1e-13;
+		return ds;
+	}
+	DataSet2 static GetWeb8()
+	{
+		DataSet2 ds;
+		ds.FileName = "Data/web8.data";
+		ds.IsCsv = false;
+		ds.nTrainers = 49749;
+		ds.nTesters = 0;
+		ds.nFeatures = 300;
+		ds.nClasses = 2;
+		ds.C = 64;
+		ds.Gama = 7.8125;
+		ds.Step = 1e-13;
+		return ds;
+	}
+
+	DataSet2 static GetIris()
+	{
+		DataSet2 ds;
+		ds.FileName = "Data/iris.csv";
+		ds.IsCsv = true;
+		ds.nTrainers = 80;
+		ds.nTesters = 20;
+		ds.nFeatures = 4;
+		ds.nClasses = 2;
+		ds.C = 16;
+		ds.Gama = 0.5;
+		ds.Step = 0.0001;
+		return ds;
+	}
 	void readIndexedData(istream& str)
 	{
 		string         line;
@@ -484,27 +442,25 @@ private:
 
 		//Find out classes
 		//static string SvmData::classes[2];
-		if (SvmData::classes[1].empty())
-			if (SvmData::classes[0].empty())
-				SvmData::classes[0] = myClass;
-			else if (SvmData::classes[0].compare(myClass) != 0)
-				SvmData::classes[1] = myClass;
+		if (classes[1].empty())
+			if (classes[0].empty())
+				classes[0] = myClass;
+			else if (classes[0].compare(myClass) != 0)
+				classes[1] = myClass;
 
-		if (SvmData::classes[0].compare(myClass) == 0)
+		if (classes[0].compare(myClass) == 0)
 			y = 1;
 		else
 			y = -1;
 	}
 };
-int SvmData::nFeatures = 0;
-bool SvmData::IsCsv = false;
-string SvmData::classes[] = { "", "" };
 
-istream& operator>>(istream& str, SvmData& data)
+istream& operator>>(istream& str, DataSet2& data)
 {
 	data.readNextRow(str);
 	return str;
 }
+
 class Kernel
 {
 public:
@@ -627,84 +583,11 @@ private:
 	double _sigma;
 };
 
-class SequentialSVM
+int classify(DataSet& ds, int index, vector<double>& alpha, Kernel& kernel, double& b)
 {
-public:
-	SequentialSVM()
-	{
-
-	}
-	void SetData(vector<SvmData> data)
-	{
-		_data = data;
-	}
-	void SetKernel(Kernel k)
-	{
-		_kernel = k;
-	}
-	void SetStep(double step)
-	{
-		_step = step;
-	}
-	void Init()
-	{
-		if (_data.size() == 0)
-			throw new exception("Tried to initialise without data.");
-	}
-private:
-	vector<SvmData> _data;
-	Kernel _kernel;
-	double _step;
-};
-
-void shuffle(vector<SvmData> &dados)
-{
-	int size = dados.size();
-	for (auto i = 0; i < size; ++i)
-	{
-		auto position = rand() % (size - i);
-		auto t = dados[position];
-		dados[position] = dados[i];
-		dados[i] = t;
-	}
-}
-
-void shuffle(vector<vector<double>> &x, vector<double> &y)
-{
-	logger.FunctionStart("Shuffle");
-	int size = x.size();
-	for (auto i = 0; i < size; ++i)
-	{
-		auto position = rand() % (size - i);
-		auto tx = x[position];
-		auto ty = y[position];
-		x[position] = x[i];
-		y[position] = y[i];
-		x[i] = tx;
-		y[i] = ty;
-	}
-	logger.FunctionEnd();
-}
-
-void reverse(vector<vector<double>> &x, vector<double> &y)
-{
-	logger.FunctionStart("Reverse");
-	int size = x.size();
-	for (auto i = 0; i < size / 2; ++i)
-	{
-		auto position = size - i - 1;
-		auto tx = x[position];
-		auto ty = y[position];
-		x[position] = x[i];
-		y[position] = y[i];
-		x[i] = tx;
-		y[i] = ty;
-	}
-	logger.FunctionEnd();
-}
-
-int classify(vector<vector<double>>& x, vector<double>& y, int index, vector<double>& alpha, Kernel& kernel, int precision, double& b)
-{
+	auto precision = ds.Precision;
+	auto x = ds.X;
+	auto y = ds.Y;
 	auto size = alpha.size();
 	auto sum = 0.0;
 	for (auto i = 0; i < alpha.size(); ++i)
@@ -720,38 +603,17 @@ int classify(vector<vector<double>>& x, vector<double>& y, int index, vector<dou
 	return 0;
 }
 
-//int classify(vector<SvmData> data, SvmData example, vector<double> alpha, Kernel kernel)
-//{
-//	return classify(data, example.x, example.y, alpha, kernel);
-//}
-void log(string msg)
+void Train(DataSet& ds, int nTrainers, Kernel& kernel, vector<double>& alpha, double& b)
 {
-}
-
-char* getCmdOption(char ** begin, char ** end, const std::string & option)
-{
-	char ** itr = std::find(begin, end, option);
-	if (itr != end && ++itr != end)
-	{
-		return *itr;
-	}
-	return 0;
-}
-
-bool cmdOptionExists(char** begin, char** end, const std::string& option)
-{
-	return std::find(begin, end, option) != end;
-}
-
-void Train(vector<vector<double>>& x, vector<double>& y, DataSet ds, int nTrainers, Kernel& kernel, vector<double>& alpha, double& b)
-{
-	logger.FunctionStart("Train");
+	Logger::FunctionStart("Train");
 	alpha.clear();
 	vector<double> oldAlpha;
 	for (int i = 0; i < nTrainers; ++i){
 		alpha.push_back(0);
 		oldAlpha.push_back(1);
 	}
+	vector<vector<double>> x = ds.X;
+	vector<double> y = ds.Y;
 	int count = 0;
 	double lastDif = 0.0;
 	double difAlpha;
@@ -769,7 +631,7 @@ void Train(vector<vector<double>>& x, vector<double>& y, DataSet ds, int nTraine
 		}
 
 		if (count>0)
-			logger.ClassifyProgress(count, step, lastDif, difAlpha);
+			Logger::ClassifyProgress(count, step, lastDif, difAlpha);
 			
 		if (abs(difAlpha) < precision)
 			break;
@@ -799,7 +661,7 @@ void Train(vector<vector<double>>& x, vector<double>& y, DataSet ds, int nTraine
 	double maxValue = 0.0;
 	for (auto i = 0; i < alpha.size(); ++i)
 	{
-		if (alpha[i] == 0) nSupportVectors++;
+		if (alpha[i] != 0) nSupportVectors++;
 		if (alpha[i] > maxValue){
 			maxValue = alpha[i];
 			sv = x[i];
@@ -808,195 +670,107 @@ void Train(vector<vector<double>>& x, vector<double>& y, DataSet ds, int nTraine
 	if (maxValue == 0.0)
 		throw new exception("Could not find support vector.");
 	b = 0.0;
-	logger.Stats("nSupportVectors", nSupportVectors);
-	logger.FunctionEnd();
+	Logger::Stats("nSupportVectors", nSupportVectors);
+	Logger::FunctionEnd();
 }
 
-DataSet GetDataSet(int argc, char** argv)
+DataSet2 GetDataSet(int argc, char** argv)
 {
-	DataSet ds;
-	char * datasetArg = getCmdOption(argv, argv + argc, "-d");
-	if (cmdOptionExists(argv, argv + argc, "a1")){
-		ds = DataSet::GetAdult1();
-	}
-	else if (cmdOptionExists(argv, argv + argc, "a2")){
-		ds = DataSet::GetAdult2();
-	}
-	else if (cmdOptionExists(argv, argv + argc, "a3"))
-	{
-		ds = DataSet::GetAdult3();
-	}
-	else if (cmdOptionExists(argv, argv + argc, "a4"))
-	{
-		ds = DataSet::GetAdult4();
-	}
-	else if (cmdOptionExists(argv, argv + argc, "a5"))
-	{
-		ds = DataSet::GetAdult5();
-	}
-	else if (cmdOptionExists(argv, argv + argc, "a6"))
-	{
-		ds = DataSet::GetAdult6();
-	}
-	else if (cmdOptionExists(argv, argv + argc, "a7"))
-	{
-		ds = DataSet::GetAdult7();
-	}
-	else if (cmdOptionExists(argv, argv + argc, "a8"))
-	{
-		ds = DataSet::GetAdult8();
-	}
-	else if (cmdOptionExists(argv, argv + argc, "a9"))
-	{
-		ds = DataSet::GetAdult9();
-	}
-	else if (cmdOptionExists(argv, argv + argc, "w1")){
-		ds = DataSet::GetWeb1();
-	}
-	else if (cmdOptionExists(argv, argv + argc, "w2")){
-		ds = DataSet::GetWeb2();
-	}
-	else if (cmdOptionExists(argv, argv + argc, "w3"))
-	{
-		ds = DataSet::GetWeb3();
-	}
-	else if (cmdOptionExists(argv, argv + argc, "w4"))
-	{
-		ds = DataSet::GetWeb4();
-	}
-	else if (cmdOptionExists(argv, argv + argc, "w5"))
-	{
-		ds = DataSet::GetWeb5();
-	}
-	else if (cmdOptionExists(argv, argv + argc, "w6"))
-	{
-		ds = DataSet::GetWeb6();
-	}
-	else if (cmdOptionExists(argv, argv + argc, "w7"))
-	{
-		ds = DataSet::GetWeb7();
-	}
-	else if (cmdOptionExists(argv, argv + argc, "w8"))
-	{
-		ds = DataSet::GetWeb8();
-	}
-	else
-	{
-		ds = DataSet::GetIris();
-	}
-	logger.Line("DataSet:");
-	logger.Stats( "FileName: " ,ds.FileName );
-	logger.Stats( "Samples: " ,ds.nTrainers );
-	logger.Stats( "C: " ,ds.C );
-	logger.Stats( "Gama: " ,ds.Gama );
-	logger.Stats( "Precision: " ,ds.Precision );
-	logger.Stats( "Classes: " ,ds.nClasses );
-	logger.Stats( "Features: " ,ds.nFeatures );
-	logger.Stats( "InitialStepSize: " ,ds.Step );
+	string arg = Utils::GetComandVariable(argc, argv, "-d");
+	DataSet2 ds = DataSet2::Get(arg);
+
+	Logger::Line("DataSet2:");
+	Logger::Stats( "FileName: " ,ds.FileName );
+	Logger::Stats( "Samples: " ,ds.nTrainers );
+	Logger::Stats( "C: " ,ds.C );
+	Logger::Stats( "Gama: " ,ds.Gama );
+	Logger::Stats( "Precision: " ,ds.Precision );
+	Logger::Stats( "Classes: " ,ds.nClasses );
+	Logger::Stats( "Features: " ,ds.nFeatures );
+	Logger::Stats( "InitialStepSize: " ,ds.Step );
 	return ds;
 }
 
-void Test(vector<vector<double>>& x, vector<double>& y, DataSet& ds, int nValidators, int nTrainers, Kernel& kernel, vector<double>& alpha1, double& b1, int& nCorrect)
+void Test(DataSet& ds, int nValidators, int nTrainers, Kernel& kernel, vector<double>& alpha1, double& b1, int& nCorrect)
 {
-	logger.FunctionStart("Test");
+	Logger::FunctionStart("Test");
 	nCorrect = 0;
-	for (auto i = nTrainers; i < x.size(); ++i)
+	for (auto i = nTrainers; i < ds.X.size(); ++i)
 	{
-		int classifiedY = classify(x, y, i, alpha1, kernel, ds.Precision, b1);
-		if (classifiedY == y[i]){
+		int classifiedY = classify(ds, i, alpha1, kernel, b1);
+		if (classifiedY == ds.Y[i]){
 			nCorrect++;
 		}
 	}
 	int end = clock();
 	auto percentageCorrect = static_cast<double>(nCorrect) / nValidators;
-	logger.Percentage(nCorrect, nValidators, percentageCorrect);
-	logger.FunctionEnd();
+	Logger::Percentage(nCorrect, nValidators, percentageCorrect);
+	Logger::FunctionEnd();
 }
 
-void ReadFile(vector<vector<double>>& x, vector<double>& y, DataSet ds)
+void ReadFile(DataSet& ds)
 {
-	logger.FunctionStart("ReadFile");
-	int start = clock();
+	Logger::FunctionStart("ReadFile");
 	ifstream       file;
 	file.open(ds.FileName, ifstream::in);
 
 	if (!file.good())
 		throw(new exception("Error: File not found"));
-
-	SvmData linha;
-	vector<SvmData> linhas;
-	SequentialSVM svm;
-
-	while (file >> linha)
-	{
-		vector<double> vd;
-		for (int i = 0; i < linha.x.size(); ++i)
-			vd.push_back(linha.x[i]);
-		x.push_back(vd);
-		y.push_back(linha.y);
-	}
-	svm.SetData(linhas);
-	logger.FunctionEnd();
+	ds.ReadFile(file);
+	Logger::FunctionEnd();
 }
 
 int main(int argc, char* argv[])
 {
 	try{
-		//unsigned seed = time(nullptr);
 		unsigned seed = time(nullptr);
 		unsigned int start = clock();
-		logger.Init(argc, argv);
-		logger.Seed(seed);
+		Logger::Init(argc, argv);
+		Logger::Seed(seed);
 		srand(seed);
-		vector<vector<double>> x;
-		vector<double> y;
 
-		DataSet ds = GetDataSet(argc, argv);
+		DataSet ds(argc, argv);
 
-		//DataSet ds = DataSet::GetIris();
-		SvmData::IsCsv = ds.IsCsv;
-		SvmData::nFeatures = ds.nFeatures;
+		ReadFile(ds);
 
-		ReadFile(x, y, ds);
-
-		shuffle(x, y);
+		Utils::Shuffle(ds.X, ds.Y);
 
 		double validationPercentage = 0.5;
-		int nValidators = (x.size()*validationPercentage);
-		int nTrainers = x.size() - nValidators;
+		int nValidators = (ds.X.size()*validationPercentage);
+		int nTrainers = ds.X.size() - nValidators;
 		Kernel kernel;
 		kernel.DefineGaussian(ds.Gama);
 		//kernel.DefineHomogeneousPolynomial(2);
 		int iFold = 1;
 		
-		logger.Fold(iFold++);
+		Logger::Fold(iFold++);
 
 		vector<double> alpha1;
 		double b1;
 		int nCorrect1;
-		Train(x, y, ds, nTrainers, kernel, alpha1, b1);
-		Test(x, y, ds, nValidators, nTrainers, kernel, alpha1, b1, nCorrect1);
+		Train(ds, nTrainers, kernel, alpha1, b1);
+		Test(ds, nValidators, nTrainers, kernel, alpha1, b1, nCorrect1);
 
-		reverse(x, y);
+		Utils::Reverse(ds.X, ds.Y);
 
-		logger.Fold(iFold++);
+		Logger::Fold(iFold++);
 
 		vector<double> alpha2;
 		double b2;
 		int nCorrect2;
-		Train(x, y, ds, nTrainers, kernel, alpha2, b2);
-		Test(x, y, ds, nValidators, nTrainers, kernel, alpha2, b2, nCorrect2);
+		Train(ds, nTrainers, kernel, alpha2, b2);
+		Test(ds, nValidators, nTrainers, kernel, alpha2, b2, nCorrect2);
 
 		double totalCorrect = nCorrect1 + nCorrect2;
 		double totalSamples = nValidators + nTrainers;
 		double averagePercentageCorrect = totalCorrect / totalSamples;
-		logger.Percentage(totalCorrect, totalSamples, averagePercentageCorrect,"Average ");
-		logger.End();
+		Logger::Percentage(totalCorrect, totalSamples, averagePercentageCorrect,"Average ");
+		Logger::End();
 		return 0;
 	}
 	catch (exception& e)
 	{
-		logger.Error(e);
+		Logger::Error(e);
 		return 1;
 	}
 }
