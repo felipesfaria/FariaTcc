@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SVMLinear", "SVMLinear\SVMLinear.vcxproj", "{E7E2209F-97DE-4D57-BA32-6D5A6FEB8A39}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CudaTest", "CudaTest\CudaTest.vcxproj", "{791461CA-8117-4356-966F-D1491569FB84}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -21,6 +23,14 @@ Global
 		{E7E2209F-97DE-4D57-BA32-6D5A6FEB8A39}.Release|Win32.Build.0 = Release|Win32
 		{E7E2209F-97DE-4D57-BA32-6D5A6FEB8A39}.Release|x64.ActiveCfg = Release|x64
 		{E7E2209F-97DE-4D57-BA32-6D5A6FEB8A39}.Release|x64.Build.0 = Release|x64
+		{791461CA-8117-4356-966F-D1491569FB84}.Debug|Win32.ActiveCfg = Debug|Win32
+		{791461CA-8117-4356-966F-D1491569FB84}.Debug|Win32.Build.0 = Debug|Win32
+		{791461CA-8117-4356-966F-D1491569FB84}.Debug|x64.ActiveCfg = Debug|x64
+		{791461CA-8117-4356-966F-D1491569FB84}.Debug|x64.Build.0 = Debug|x64
+		{791461CA-8117-4356-966F-D1491569FB84}.Release|Win32.ActiveCfg = Release|Win32
+		{791461CA-8117-4356-966F-D1491569FB84}.Release|Win32.Build.0 = Release|Win32
+		{791461CA-8117-4356-966F-D1491569FB84}.Release|x64.ActiveCfg = Release|x64
+		{791461CA-8117-4356-966F-D1491569FB84}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

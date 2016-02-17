@@ -1,0 +1,758 @@
+
+C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe
+0:0:0:0	Program Started
+0:0:0:0	seed: 1454389461
+0:0:0:0	DataSet:
+0:0:0:0	FileName: Data/iris.csv
+0:0:0:0	Samples: 80
+0:0:0:0	C: 16
+0:0:0:0	Gama: 0.5
+0:0:0:0	Precision: 1e-009
+0:0:0:0	Classes: 2
+0:0:0:0	Features: 4
+0:0:0:0	InitialStepSize: 0.0001
+0:0:0:0	Started reading file
+0:0:0:0	Finished reading file in 0:0:0:0	
+0:0:0:0	Shuffle starting...
+0:0:0:0	Shuffle finished in 0:0:0:0	
+0:0:0:1	First Fold: 
+0:0:0:1	Training Started
+0:0:0:1	Iteration: 1	step: 0.0001	lastDif:0	difAlpha:-50
+0:0:0:1	Iteration: 2	step: 5e-005	lastDif:-50	difAlpha:0.0025
+0:0:0:1	Iteration: 3	step: 2.5e-005	lastDif:0.0025	difAlpha:0.0012494
+0:0:0:3	Iteration: 4	step: 1.25e-005	lastDif:0.0012494	difAlpha:0.000624549
+0:0:0:4	Iteration: 5	step: 6.25e-006	lastDif:0.000624549	difAlpha:0.000312237
+0:0:0:5	Iteration: 6	step: 3.125e-006	lastDif:0.000312237	difAlpha:0.000156109
+0:0:0:5	Iteration: 7	step: 1.5625e-006	lastDif:0.000156109	difAlpha:7.80522e-005
+0:0:0:6	Iteration: 8	step: 7.8125e-007	lastDif:7.80522e-005	difAlpha:3.90255e-005
+0:0:0:7	Iteration: 9	step: 3.90625e-007	lastDif:3.90255e-005	difAlpha:1.95126e-005
+0:0:0:7	Iteration: 10	step: 1.95313e-007	lastDif:1.95126e-005	difAlpha:9.75627e-006
+0:0:0:8	Iteration: 11	step: 9.76563e-008	lastDif:9.75627e-006	difAlpha:4.87812e-006
+0:0:0:9	Iteration: 12	step: 4.88281e-008	lastDif:4.87812e-006	difAlpha:2.43906e-006
+0:0:0:9	Iteration: 13	step: 2.44141e-008	lastDif:2.43906e-006	difAlpha:1.21953e-006
+0:0:0:10	Iteration: 14	step: 1.2207e-008	lastDif:1.21953e-006	difAlpha:6.09765e-007
+0:0:0:11	Iteration: 15	step: 6.10352e-009	lastDif:6.09765e-007	difAlpha:3.04882e-007
+0:0:0:12	Iteration: 16	step: 3.05176e-009	lastDif:3.04882e-007	difAlpha:1.52441e-007
+0:0:0:12	Iteration: 17	step: 1.52588e-009	lastDif:1.52441e-007	difAlpha:7.62206e-008
+0:0:0:13	Iteration: 18	step: 7.62939e-010	lastDif:7.62206e-008	difAlpha:3.81103e-008
+0:0:0:14	Iteration: 19	step: 3.8147e-010	lastDif:3.81103e-008	difAlpha:1.90551e-008
+0:0:0:14	Iteration: 20	step: 1.90735e-010	lastDif:1.90551e-008	difAlpha:9.52757e-009
+0:0:0:15	Iteration: 21	step: 9.53674e-011	lastDif:9.52757e-009	difAlpha:4.76378e-009
+0:0:0:16	Iteration: 22	step: 4.76837e-011	lastDif:4.76378e-009	difAlpha:2.38189e-009
+0:0:0:16	Iteration: 23	step: 2.38419e-011	lastDif:2.38189e-009	difAlpha:1.19095e-009
+0:0:0:17	Iteration: 24	step: 1.19209e-011	lastDif:1.19095e-009	difAlpha:5.95473e-010
+0:0:0:17	Training Finished in 0:0:0:16	Found nSupportVectors: 0
+0:0:0:17	Test Started
+0:0:0:18	Percentage correct: 50/50 = 100%
+0:0:0:18	Test Finished in 0:0:0:1	
+0:0:0:18	Reverse starting...
+0:0:0:18	Reverse finished in 0:0:0:0	
+0:0:0:18	Second Fold: 
+0:0:0:18	Training Started
+0:0:0:18	Iteration: 1	step: 0.0001	lastDif:0	difAlpha:-50
+0:0:0:18	Iteration: 2	step: 5e-005	lastDif:-50	difAlpha:0.0025
+0:0:0:19	Iteration: 3	step: 2.5e-005	lastDif:0.0025	difAlpha:0.00124939
+0:0:0:19	Iteration: 4	step: 1.25e-005	lastDif:0.00124939	difAlpha:0.000624543
+0:0:0:20	Iteration: 5	step: 6.25e-006	lastDif:0.000624543	difAlpha:0.000312234
+0:0:0:21	Iteration: 6	step: 3.125e-006	lastDif:0.000312234	difAlpha:0.000156107
+0:0:0:21	Iteration: 7	step: 1.5625e-006	lastDif:0.000156107	difAlpha:7.80512e-005
+0:0:0:22	Iteration: 8	step: 7.8125e-007	lastDif:7.80512e-005	difAlpha:3.9025e-005
+0:0:0:23	Iteration: 9	step: 3.90625e-007	lastDif:3.9025e-005	difAlpha:1.95124e-005
+0:0:0:24	Iteration: 10	step: 1.95313e-007	lastDif:1.95124e-005	difAlpha:9.75615e-006
+0:0:0:24	Iteration: 11	step: 9.76563e-008	lastDif:9.75615e-006	difAlpha:4.87806e-006
+0:0:0:25	Iteration: 12	step: 4.88281e-008	lastDif:4.87806e-006	difAlpha:2.43903e-006
+0:0:0:26	Iteration: 13	step: 2.44141e-008	lastDif:2.43903e-006	difAlpha:1.21951e-006
+0:0:0:26	Iteration: 14	step: 1.2207e-008	lastDif:1.21951e-006	difAlpha:6.09757e-007
+0:0:0:27	Iteration: 15	step: 6.10352e-009	lastDif:6.09757e-007	difAlpha:3.04878e-007
+0:0:0:28	Iteration: 16	step: 3.05176e-009	lastDif:3.04878e-007	difAlpha:1.52439e-007
+0:0:0:28	Iteration: 17	step: 1.52588e-009	lastDif:1.52439e-007	difAlpha:7.62196e-008
+0:0:0:29	Iteration: 18	step: 7.62939e-010	lastDif:7.62196e-008	difAlpha:3.81098e-008
+0:0:0:30	Iteration: 19	step: 3.8147e-010	lastDif:3.81098e-008	difAlpha:1.90549e-008
+0:0:0:30	Iteration: 20	step: 1.90735e-010	lastDif:1.90549e-008	difAlpha:9.52745e-009
+0:0:0:31	Iteration: 21	step: 9.53674e-011	lastDif:9.52745e-009	difAlpha:4.76372e-009
+0:0:0:32	Iteration: 22	step: 4.76837e-011	lastDif:4.76372e-009	difAlpha:2.38186e-009
+0:0:0:33	Iteration: 23	step: 2.38419e-011	lastDif:2.38186e-009	difAlpha:1.19093e-009
+0:0:0:33	Iteration: 24	step: 1.19209e-011	lastDif:1.19093e-009	difAlpha:5.95466e-010
+0:0:0:33	Training Finished in 0:0:0:15	Found nSupportVectors: 0
+0:0:0:33	Test Started
+0:0:0:34	Percentage correct: 50/50 = 100%
+0:0:0:34	Test Finished in 0:0:0:1	
+0:0:0:34	Average Percentage correct: 100/100 = 100%
+0:0:0:34	Program Finished in 0:0:0:34	
+
+
+C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d a1 
+0:0:0:0	Program Started
+0:0:0:0	seed: 1454389461
+0:0:0:0	DataSet:
+0:0:0:0	FileName: Data/adult1.data
+0:0:0:0	Samples: 1605
+0:0:0:0	C: 100
+0:0:0:0	Gama: 0.5
+0:0:0:0	Precision: 1e-009
+0:0:0:0	Classes: 2
+0:0:0:0	Features: 123
+0:0:0:0	InitialStepSize: 1e-012
+0:0:0:0	Started reading file
+0:0:0:34	Finished reading file in 0:0:0:34	
+0:0:0:34	Shuffle starting...
+0:0:0:35	Shuffle finished in 0:0:0:1	
+0:0:0:35	First Fold: 
+0:0:0:35	Training Started
+0:0:0:35	Iteration: 1	step: 1e-012	lastDif:0	difAlpha:-803
+0:0:0:35	Iteration: 2	step: 5e-013	lastDif:-803	difAlpha:4.015e-010
+0:0:0:35	Training Finished in 0:0:0:0	Found nSupportVectors: 0
+0:0:0:35	Test Started
+0:0:0:312	Percentage correct: 630/802 = 78.5536%
+0:0:0:312	Test Finished in 0:0:0:277	
+0:0:0:312	Reverse starting...
+0:0:0:313	Reverse finished in 0:0:0:1	
+0:0:0:313	Second Fold: 
+0:0:0:313	Training Started
+0:0:0:313	Iteration: 1	step: 1e-012	lastDif:0	difAlpha:-803
+0:0:0:313	Iteration: 2	step: 5e-013	lastDif:-803	difAlpha:4.015e-010
+0:0:0:313	Training Finished in 0:0:0:0	Found nSupportVectors: 0
+0:0:0:314	Test Started
+0:0:0:595	Percentage correct: 641/802 = 79.9252%
+0:0:0:595	Test Finished in 0:0:0:281	
+0:0:0:595	Average Percentage correct: 1271/1605 = 79.19%
+0:0:0:595	Program Finished in 0:0:0:595	
+
+
+C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d w1 
+0:0:0:0	Program Started
+0:0:0:0	seed: 1454389461
+0:0:0:0	DataSet:
+0:0:0:0	FileName: Data/web1.data
+0:0:0:0	Samples: 2477
+0:0:0:0	C: 64
+0:0:0:0	Gama: 7.8125
+0:0:0:0	Precision: 1e-009
+0:0:0:0	Classes: 2
+0:0:0:0	Features: 300
+0:0:0:0	InitialStepSize: 1e-013
+0:0:0:0	Started reading file
+0:0:0:52	Finished reading file in 0:0:0:52	
+0:0:0:52	Shuffle starting...
+0:0:0:54	Shuffle finished in 0:0:0:2	
+0:0:0:54	First Fold: 
+0:0:0:54	Training Started
+0:0:0:54	Iteration: 1	step: 1e-013	lastDif:0	difAlpha:-1239
+0:0:0:55	Iteration: 2	step: 5e-014	lastDif:-1239	difAlpha:6.195e-011
+0:0:0:56	Training Finished in 0:0:0:2	Found nSupportVectors: 0
+0:0:0:56	Test Started
+0:0:1:230	Percentage correct: 1199/1238 = 96.8498%
+0:0:1:280	Test Finished in 0:0:1:174	
+0:0:1:280	Reverse starting...
+0:0:1:281	Reverse finished in 0:0:0:1	
+0:0:1:281	Second Fold: 
+0:0:1:281	Training Started
+0:0:1:281	Iteration: 1	step: 1e-013	lastDif:0	difAlpha:-1239
+0:0:1:282	Iteration: 2	step: 5e-014	lastDif:-1239	difAlpha:6.195e-011
+0:0:1:283	Training Finished in 0:0:0:2	Found nSupportVectors: 0
+0:0:1:283	Test Started
+0:0:2:467	Percentage correct: 1205/1238 = 97.3344%
+0:0:2:467	Test Finished in 0:0:1:184	
+0:0:2:467	Average Percentage correct: 2404/2477 = 97.0529%
+0:0:2:467	Program Finished in 0:0:2:467	
+
+
+C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d a2 
+0:0:0:0	Program Started
+0:0:0:0	seed: 1454389464
+0:0:0:0	DataSet:
+0:0:0:1	FileName: Data/adult2.data
+0:0:0:1	Samples: 2265
+0:0:0:1	C: 100
+0:0:0:1	Gama: 0.5
+0:0:0:1	Precision: 1e-009
+0:0:0:1	Classes: 2
+0:0:0:1	Features: 123
+0:0:0:1	InitialStepSize: 1e-012
+0:0:0:1	Started reading file
+0:0:0:47	Finished reading file in 0:0:0:46	
+0:0:0:47	Shuffle starting...
+0:0:0:47	Shuffle finished in 0:0:0:0	
+0:0:0:47	First Fold: 
+0:0:0:47	Training Started
+0:0:0:47	Iteration: 1	step: 1e-012	lastDif:0	difAlpha:-1133
+0:0:0:48	Iteration: 2	step: 5e-013	lastDif:-1133	difAlpha:5.665e-010
+0:0:0:49	Training Finished in 0:0:0:2	Found nSupportVectors: 0
+0:0:0:49	Test Started
+0:0:0:650	Percentage correct: 883/1132 = 78.0035%
+0:0:0:650	Test Finished in 0:0:0:601	
+0:0:0:650	Reverse starting...
+0:0:0:651	Reverse finished in 0:0:0:1	
+0:0:0:651	Second Fold: 
+0:0:0:651	Training Started
+0:0:0:651	Iteration: 1	step: 1e-012	lastDif:0	difAlpha:-1133
+0:0:0:652	Iteration: 2	step: 5e-013	lastDif:-1133	difAlpha:5.665e-010
+0:0:0:652	Training Finished in 0:0:0:1	Found nSupportVectors: 0
+0:0:0:652	Test Started
+0:0:1:276	Percentage correct: 902/1132 = 79.682%
+0:0:1:276	Test Finished in 0:0:0:624	
+0:0:1:276	Average Percentage correct: 1785/2265 = 78.8079%
+0:0:1:276	Program Finished in 0:0:1:276	
+
+
+C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d w2 
+0:0:0:0	Program Started
+0:0:0:0	seed: 1454389465
+0:0:0:0	DataSet:
+0:0:0:0	FileName: Data/web2.data
+0:0:0:0	Samples: 3470
+0:0:0:0	C: 64
+0:0:0:0	Gama: 7.8125
+0:0:0:0	Precision: 1e-009
+0:0:0:0	Classes: 2
+0:0:0:0	Features: 300
+0:0:0:0	InitialStepSize: 1e-013
+0:0:0:0	Started reading file
+0:0:0:71	Finished reading file in 0:0:0:71	
+0:0:0:71	Shuffle starting...
+0:0:0:73	Shuffle finished in 0:0:0:2	
+0:0:0:73	First Fold: 
+0:0:0:73	Training Started
+0:0:0:73	Iteration: 1	step: 1e-013	lastDif:0	difAlpha:-1735
+0:0:0:76	Iteration: 2	step: 5e-014	lastDif:-1735	difAlpha:8.675e-011
+0:0:0:78	Training Finished in 0:0:0:5	Found nSupportVectors: 0
+0:0:0:78	Test Started
+0:0:2:314	Percentage correct: 1689/1735 = 97.3487%
+0:0:2:314	Test Finished in 0:0:2:236	
+0:0:2:314	Reverse starting...
+0:0:2:315	Reverse finished in 0:0:0:1	
+0:0:2:315	Second Fold: 
+0:0:2:315	Training Started
+0:0:2:315	Iteration: 1	step: 1e-013	lastDif:0	difAlpha:-1735
+0:0:2:317	Iteration: 2	step: 5e-014	lastDif:-1735	difAlpha:8.675e-011
+0:0:2:319	Training Finished in 0:0:0:4	Found nSupportVectors: 0
+0:0:2:319	Test Started
+0:0:4:580	Percentage correct: 1674/1735 = 96.4841%
+0:0:4:580	Test Finished in 0:0:2:261	
+0:0:4:580	Average Percentage correct: 3363/3470 = 96.9164%
+0:0:4:580	Program Finished in 0:0:4:580	
+
+
+C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d a3 
+0:0:0:0	Program Started
+0:0:0:0	seed: 1454389470
+0:0:0:0	DataSet:
+0:0:0:0	FileName: Data/adult3.data
+0:0:0:0	Samples: 3185
+0:0:0:0	C: 100
+0:0:0:0	Gama: 0.5
+0:0:0:0	Precision: 1e-009
+0:0:0:0	Classes: 2
+0:0:0:0	Features: 123
+0:0:0:0	InitialStepSize: 1e-012
+0:0:0:0	Started reading file
+0:0:0:70	Finished reading file in 0:0:0:70	
+0:0:0:70	Shuffle starting...
+0:0:0:71	Shuffle finished in 0:0:0:1	
+0:0:0:71	First Fold: 
+0:0:0:71	Training Started
+0:0:0:71	Iteration: 1	step: 1e-012	lastDif:0	difAlpha:-1593
+0:0:0:73	Iteration: 2	step: 5e-013	lastDif:-1593	difAlpha:7.965e-010
+0:0:0:73	Training Finished in 0:0:0:2	Found nSupportVectors: 0
+0:0:0:73	Test Started
+0:0:1:291	Percentage correct: 1273/1592 = 79.9623%
+0:0:1:291	Test Finished in 0:0:1:218	
+0:0:1:291	Reverse starting...
+0:0:1:292	Reverse finished in 0:0:0:1	
+0:0:1:292	Second Fold: 
+0:0:1:292	Training Started
+0:0:1:292	Iteration: 1	step: 1e-012	lastDif:0	difAlpha:-1593
+0:0:1:294	Iteration: 2	step: 5e-013	lastDif:-1593	difAlpha:7.965e-010
+0:0:1:296	Training Finished in 0:0:0:4	Found nSupportVectors: 0
+0:0:1:296	Test Started
+0:0:2:482	Percentage correct: 1272/1592 = 79.8995%
+0:0:2:482	Test Finished in 0:0:1:186	
+0:0:2:482	Average Percentage correct: 2545/3185 = 79.9058%
+0:0:2:482	Program Finished in 0:0:2:482	
+
+
+C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d w3 
+0:0:0:0	Program Started
+0:0:0:1	seed: 1454389472
+0:0:0:1	DataSet:
+0:0:0:1	FileName: Data/web3.data
+0:0:0:1	Samples: 4912
+0:0:0:1	C: 64
+0:0:0:1	Gama: 7.8125
+0:0:0:1	Precision: 1e-009
+0:0:0:1	Classes: 2
+0:0:0:1	Features: 300
+0:0:0:1	InitialStepSize: 1e-013
+0:0:0:1	Started reading file
+0:0:0:97	Finished reading file in 0:0:0:96	
+0:0:0:97	Shuffle starting...
+0:0:0:101	Shuffle finished in 0:0:0:4	
+0:0:0:101	First Fold: 
+0:0:0:101	Training Started
+0:0:0:101	Iteration: 1	step: 1e-013	lastDif:0	difAlpha:-2456
+0:0:0:105	Iteration: 2	step: 5e-014	lastDif:-2456	difAlpha:1.228e-010
+0:0:0:107	Training Finished in 0:0:0:6	Found nSupportVectors: 0
+0:0:0:107	Test Started
+0:0:4:793	Percentage correct: 2380/2456 = 96.9055%
+0:0:4:793	Test Finished in 0:0:4:686	
+0:0:4:793	Reverse starting...
+0:0:4:795	Reverse finished in 0:0:0:2	
+0:0:4:795	Second Fold: 
+0:0:4:795	Training Started
+0:0:4:795	Iteration: 1	step: 1e-013	lastDif:0	difAlpha:-2456
+0:0:4:799	Iteration: 2	step: 5e-014	lastDif:-2456	difAlpha:1.228e-010
+0:0:4:801	Training Finished in 0:0:0:6	Found nSupportVectors: 0
+0:0:4:801	Test Started
+0:0:9:346	Percentage correct: 2389/2456 = 97.272%
+0:0:9:346	Test Finished in 0:0:4:545	
+0:0:9:346	Average Percentage correct: 4769/4912 = 97.0888%
+0:0:9:346	Program Finished in 0:0:9:346	
+
+
+C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d a4 
+0:0:0:0	Program Started
+0:0:0:1	seed: 1454389481
+0:0:0:1	DataSet:
+0:0:0:1	FileName: Data/adult4.data
+0:0:0:1	Samples: 4781
+0:0:0:1	C: 100
+0:0:0:1	Gama: 0.5
+0:0:0:1	Precision: 1e-009
+0:0:0:1	Classes: 2
+0:0:0:1	Features: 123
+0:0:0:1	InitialStepSize: 1e-012
+0:0:0:1	Started reading file
+0:0:0:101	Finished reading file in 0:0:0:100	
+0:0:0:101	Shuffle starting...
+0:0:0:103	Shuffle finished in 0:0:0:2	
+0:0:0:103	First Fold: 
+0:0:0:103	Training Started
+0:0:0:103	Iteration: 1	step: 1e-012	lastDif:0	difAlpha:-2391
+0:0:0:107	Iteration: 2	step: 5e-013	lastDif:-2391	difAlpha:1.1955e-009
+0:0:2:791	Iteration: 3	step: 2.5e-013	lastDif:1.1955e-009	difAlpha:5.9775e-010
+0:0:2:792	Training Finished in 0:0:2:689	Found nSupportVectors: 0
+0:0:2:792	Test Started
+0:0:5:468	Percentage correct: 1939/2390 = 81.1297%
+0:0:5:468	Test Finished in 0:0:2:676	
+0:0:5:468	Reverse starting...
+0:0:5:469	Reverse finished in 0:0:0:1	
+0:0:5:469	Second Fold: 
+0:0:5:469	Training Started
+0:0:5:469	Iteration: 1	step: 1e-012	lastDif:0	difAlpha:-2391
+0:0:5:473	Iteration: 2	step: 5e-013	lastDif:-2391	difAlpha:1.1955e-009
+0:0:8:209	Iteration: 3	step: 2.5e-013	lastDif:1.1955e-009	difAlpha:5.9775e-010
+0:0:8:210	Training Finished in 0:0:2:741	Found nSupportVectors: 0
+0:0:8:210	Test Started
+0:0:10:958	Percentage correct: 1891/2390 = 79.1213%
+0:0:10:958	Test Finished in 0:0:2:748	
+0:0:10:958	Average Percentage correct: 3830/4781 = 80.1088%
+0:0:10:958	Program Finished in 0:0:10:958	
+
+
+C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d w4 
+0:0:0:0	Program Started
+0:0:0:0	seed: 1454389492
+0:0:0:0	DataSet:
+0:0:0:0	FileName: Data/web4.data
+0:0:0:0	Samples: 7366
+0:0:0:0	C: 64
+0:0:0:0	Gama: 7.8125
+0:0:0:0	Precision: 1e-009
+0:0:0:0	Classes: 2
+0:0:0:0	Features: 300
+0:0:0:0	InitialStepSize: 1e-013
+0:0:0:0	Started reading file
+0:0:0:146	Finished reading file in 0:0:0:146	
+0:0:0:146	Shuffle starting...
+0:0:0:151	Shuffle finished in 0:0:0:5	
+0:0:0:151	First Fold: 
+0:0:0:151	Training Started
+0:0:0:151	Iteration: 1	step: 1e-013	lastDif:0	difAlpha:-3683
+0:0:0:160	Iteration: 2	step: 5e-014	lastDif:-3683	difAlpha:1.8415e-010
+0:0:0:163	Training Finished in 0:0:0:12	Found nSupportVectors: 0
+0:0:0:163	Test Started
+0:0:10:765	Percentage correct: 3580/3683 = 97.2034%
+0:0:10:765	Test Finished in 0:0:10:602	
+0:0:10:765	Reverse starting...
+0:0:10:767	Reverse finished in 0:0:0:2	
+0:0:10:767	Second Fold: 
+0:0:10:767	Training Started
+0:0:10:767	Iteration: 1	step: 1e-013	lastDif:0	difAlpha:-3683
+0:0:10:776	Iteration: 2	step: 5e-014	lastDif:-3683	difAlpha:1.8415e-010
+0:0:10:779	Training Finished in 0:0:0:12	Found nSupportVectors: 0
+0:0:10:779	Test Started
+0:0:21:394	Percentage correct: 3570/3683 = 96.9318%
+0:0:21:394	Test Finished in 0:0:10:615	
+0:0:21:394	Average Percentage correct: 7150/7366 = 97.0676%
+0:0:21:394	Program Finished in 0:0:21:394	
+
+
+C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d a5 
+0:0:0:0	Program Started
+0:0:0:0	seed: 1454389514
+0:0:0:0	DataSet:
+0:0:0:0	FileName: Data/adult5.data
+0:0:0:0	Samples: 6414
+0:0:0:0	C: 100
+0:0:0:0	Gama: 0.5
+0:0:0:0	Precision: 1e-009
+0:0:0:0	Classes: 2
+0:0:0:0	Features: 123
+0:0:0:0	InitialStepSize: 1e-012
+0:0:0:0	Started reading file
+0:0:0:137	Finished reading file in 0:0:0:137	
+0:0:0:137	Shuffle starting...
+0:0:0:139	Shuffle finished in 0:0:0:2	
+0:0:0:139	First Fold: 
+0:0:0:139	Training Started
+0:0:0:139	Iteration: 1	step: 1e-012	lastDif:0	difAlpha:-3207
+0:0:0:146	Iteration: 2	step: 5e-013	lastDif:-3207	difAlpha:1.6035e-009
+0:0:5:49	Iteration: 3	step: 2.5e-013	lastDif:1.6035e-009	difAlpha:8.0175e-010
+0:0:5:51	Training Finished in 0:0:4:912	Found nSupportVectors: 0
+0:0:5:51	Test Started
+0:0:9:983	Percentage correct: 2550/3207 = 79.5136%
+0:0:9:983	Test Finished in 0:0:4:932	
+0:0:9:983	Reverse starting...
+0:0:9:984	Reverse finished in 0:0:0:1	
+0:0:9:984	Second Fold: 
+0:0:9:984	Training Started
+0:0:9:984	Iteration: 1	step: 1e-012	lastDif:0	difAlpha:-3207
+0:0:9:991	Iteration: 2	step: 5e-013	lastDif:-3207	difAlpha:1.6035e-009
+0:0:14:774	Iteration: 3	step: 2.5e-013	lastDif:1.6035e-009	difAlpha:8.0175e-010
+0:0:14:776	Training Finished in 0:0:4:792	Found nSupportVectors: 0
+0:0:14:776	Test Started
+0:0:19:701	Percentage correct: 2599/3207 = 81.0415%
+0:0:19:701	Test Finished in 0:0:4:925	
+0:0:19:701	Average Percentage correct: 5149/6414 = 80.2775%
+0:0:19:701	Program Finished in 0:0:19:701	
+
+
+C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d w5 
+0:0:0:0	Program Started
+0:0:0:0	seed: 1454389534
+0:0:0:0	DataSet:
+0:0:0:0	FileName: Data/web5.data
+0:0:0:0	Samples: 9888
+0:0:0:0	C: 64
+0:0:0:0	Gama: 7.8125
+0:0:0:0	Precision: 1e-009
+0:0:0:0	Classes: 2
+0:0:0:0	Features: 300
+0:0:0:0	InitialStepSize: 1e-013
+0:0:0:0	Started reading file
+0:0:0:195	Finished reading file in 0:0:0:195	
+0:0:0:195	Shuffle starting...
+0:0:0:202	Shuffle finished in 0:0:0:7	
+0:0:0:202	First Fold: 
+0:0:0:202	Training Started
+0:0:0:202	Iteration: 1	step: 1e-013	lastDif:0	difAlpha:-4944
+0:0:0:218	Iteration: 2	step: 5e-014	lastDif:-4944	difAlpha:2.472e-010
+0:0:0:222	Training Finished in 0:0:0:20	Found nSupportVectors: 0
+0:0:0:222	Test Started
+0:0:19:930	Percentage correct: 4806/4944 = 97.2087%
+0:0:19:930	Test Finished in 0:0:19:708	
+0:0:19:930	Reverse starting...
+0:0:19:933	Reverse finished in 0:0:0:3	
+0:0:19:933	Second Fold: 
+0:0:19:933	Training Started
+0:0:19:934	Iteration: 1	step: 1e-013	lastDif:0	difAlpha:-4944
+0:0:19:949	Iteration: 2	step: 5e-014	lastDif:-4944	difAlpha:2.472e-010
+0:0:19:953	Training Finished in 0:0:0:20	Found nSupportVectors: 0
+0:0:19:953	Test Started
+0:0:39:508	Percentage correct: 4801/4944 = 97.1076%
+0:0:39:508	Test Finished in 0:0:19:555	
+0:0:39:508	Average Percentage correct: 9607/9888 = 97.1582%
+0:0:39:508	Program Finished in 0:0:39:508	
+
+
+C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d a6 
+0:0:0:0	Program Started
+0:0:0:0	seed: 1454389573
+0:0:0:0	DataSet:
+0:0:0:0	FileName: Data/adult6.data
+0:0:0:0	Samples: 11220
+0:0:0:0	C: 100
+0:0:0:0	Gama: 0.5
+0:0:0:0	Precision: 1e-009
+0:0:0:0	Classes: 2
+0:0:0:0	Features: 123
+0:0:0:0	InitialStepSize: 1e-012
+0:0:0:0	Started reading file
+0:0:0:235	Finished reading file in 0:0:0:235	
+0:0:0:235	Shuffle starting...
+0:0:0:239	Shuffle finished in 0:0:0:4	
+0:0:0:239	First Fold: 
+0:0:0:239	Training Started
+0:0:0:239	Iteration: 1	step: 1e-012	lastDif:0	difAlpha:-5610
+0:0:0:260	Iteration: 2	step: 5e-013	lastDif:-5610	difAlpha:2.805e-009
+0:0:14:719	Iteration: 3	step: 2.5e-013	lastDif:2.805e-009	difAlpha:1.4025e-009
+0:0:29:135	Iteration: 4	step: 1.25e-013	lastDif:1.4025e-009	difAlpha:7.0125e-010
+0:0:29:138	Training Finished in 0:0:28:899	Found nSupportVectors: 0
+0:0:29:138	Test Started
+0:0:43:482	Percentage correct: 4570/5610 = 81.4617%
+0:0:43:482	Test Finished in 0:0:14:344	
+0:0:43:482	Reverse starting...
+0:0:43:484	Reverse finished in 0:0:0:2	
+0:0:43:484	Second Fold: 
+0:0:43:484	Training Started
+0:0:43:484	Iteration: 1	step: 1e-012	lastDif:0	difAlpha:-5610
+0:0:43:505	Iteration: 2	step: 5e-013	lastDif:-5610	difAlpha:2.805e-009
+0:0:57:954	Iteration: 3	step: 2.5e-013	lastDif:2.805e-009	difAlpha:1.4025e-009
+0:1:12:340	Iteration: 4	step: 1.25e-013	lastDif:1.4025e-009	difAlpha:7.0125e-010
+0:1:12:342	Training Finished in 0:0:28:858	Found nSupportVectors: 0
+0:1:12:342	Test Started
+0:1:26:659	Percentage correct: 4554/5610 = 81.1765%
+0:1:26:659	Test Finished in 0:0:14:317	
+0:1:26:659	Average Percentage correct: 9124/11220 = 81.3191%
+0:1:26:659	Program Finished in 0:1:26:659	
+
+
+C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d w6 
+0:0:0:0	Program Started
+0:0:0:0	seed: 1454389660
+0:0:0:0	DataSet:
+0:0:0:0	FileName: Data/web6.data
+0:0:0:0	Samples: 17188
+0:0:0:0	C: 64
+0:0:0:0	Gama: 7.8125
+0:0:0:0	Precision: 1e-009
+0:0:0:0	Classes: 2
+0:0:0:0	Features: 300
+0:0:0:0	InitialStepSize: 1e-013
+0:0:0:0	Started reading file
+0:0:0:336	Finished reading file in 0:0:0:336	
+0:0:0:336	Shuffle starting...
+0:0:0:355	Shuffle finished in 0:0:0:19	
+0:0:0:356	First Fold: 
+0:0:0:356	Training Started
+0:0:0:356	Iteration: 1	step: 1e-013	lastDif:0	difAlpha:-8594
+0:0:0:405	Iteration: 2	step: 5e-014	lastDif:-8594	difAlpha:4.297e-010
+0:0:0:412	Training Finished in 0:0:0:56	Found nSupportVectors: 0
+0:0:0:412	Test Started
+0:1:40:583	Percentage correct: 8311/8594 = 96.707%
+0:1:40:583	Test Finished in 0:1:40:171	
+0:1:40:583	Reverse starting...
+0:1:40:592	Reverse finished in 0:0:0:9	
+0:1:40:592	Second Fold: 
+0:1:40:592	Training Started
+0:1:40:593	Iteration: 1	step: 1e-013	lastDif:0	difAlpha:-8594
+0:1:40:642	Iteration: 2	step: 5e-014	lastDif:-8594	difAlpha:4.297e-010
+0:1:40:650	Training Finished in 0:0:0:58	Found nSupportVectors: 0
+0:1:40:650	Test Started
+0:3:20:388	Percentage correct: 8352/8594 = 97.1841%
+0:3:20:388	Test Finished in 0:1:39:738	
+0:3:20:388	Average Percentage correct: 16663/17188 = 96.9455%
+0:3:20:388	Program Finished in 0:3:20:388	
+
+
+C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d a7 
+0:0:0:0	Program Started
+0:0:0:0	seed: 1454389860
+0:0:0:0	DataSet:
+0:0:0:0	FileName: Data/adult7.data
+0:0:0:0	Samples: 16100
+0:0:0:0	C: 100
+0:0:0:0	Gama: 0.5
+0:0:0:0	Precision: 1e-009
+0:0:0:0	Classes: 2
+0:0:0:0	Features: 123
+0:0:0:0	InitialStepSize: 1e-012
+0:0:0:0	Started reading file
+0:0:0:335	Finished reading file in 0:0:0:335	
+0:0:0:335	Shuffle starting...
+0:0:0:342	Shuffle finished in 0:0:0:7	
+0:0:0:342	First Fold: 
+0:0:0:342	Training Started
+0:0:0:342	Iteration: 1	step: 1e-012	lastDif:0	difAlpha:-8050
+0:0:0:386	Iteration: 2	step: 5e-013	lastDif:-8050	difAlpha:4.025e-009
+0:0:32:239	Iteration: 3	step: 2.5e-013	lastDif:4.025e-009	difAlpha:2.0125e-009
+0:1:4:197	Iteration: 4	step: 1.25e-013	lastDif:2.0125e-009	difAlpha:1.00625e-009
+0:1:36:628	Iteration: 5	step: 6.25e-014	lastDif:1.00625e-009	difAlpha:5.03125e-010
+0:1:36:632	Training Finished in 0:1:36:290	Found nSupportVectors: 0
+0:1:36:632	Test Started
+0:2:8:633	Percentage correct: 6548/8050 = 81.3416%
+0:2:8:633	Test Finished in 0:0:32:1	
+0:2:8:633	Reverse starting...
+0:2:8:635	Reverse finished in 0:0:0:2	
+0:2:8:635	Second Fold: 
+0:2:8:635	Training Started
+0:2:8:635	Iteration: 1	step: 1e-012	lastDif:0	difAlpha:-8050
+0:2:8:678	Iteration: 2	step: 5e-013	lastDif:-8050	difAlpha:4.025e-009
+0:2:40:752	Iteration: 3	step: 2.5e-013	lastDif:4.025e-009	difAlpha:2.0125e-009
+0:3:12:488	Iteration: 4	step: 1.25e-013	lastDif:2.0125e-009	difAlpha:1.00625e-009
+0:3:44:278	Iteration: 5	step: 6.25e-014	lastDif:1.00625e-009	difAlpha:5.03125e-010
+0:3:44:282	Training Finished in 0:1:35:647	Found nSupportVectors: 0
+0:3:44:282	Test Started
+0:4:16:254	Percentage correct: 6580/8050 = 81.7391%
+0:4:16:254	Test Finished in 0:0:31:972	
+0:4:16:254	Average Percentage correct: 13128/16100 = 81.5404%
+0:4:16:254	Program Finished in 0:4:16:254	
+
+
+C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d w7 
+0:0:0:0	Program Started
+0:0:0:0	seed: 1454390116
+0:0:0:0	DataSet:
+0:0:0:0	FileName: Data/web7.data
+0:0:0:0	Samples: 24692
+0:0:0:0	C: 64
+0:0:0:0	Gama: 7.8125
+0:0:0:0	Precision: 1e-009
+0:0:0:0	Classes: 2
+0:0:0:0	Features: 300
+0:0:0:0	InitialStepSize: 1e-013
+0:0:0:0	Started reading file
+0:0:0:488	Finished reading file in 0:0:0:488	
+0:0:0:488	Shuffle starting...
+0:0:0:506	Shuffle finished in 0:0:0:18	
+0:0:0:506	First Fold: 
+0:0:0:506	Training Started
+0:0:0:506	Iteration: 1	step: 1e-013	lastDif:0	difAlpha:-12346
+0:0:0:608	Iteration: 2	step: 5e-014	lastDif:-12346	difAlpha:6.173e-010
+0:0:0:618	Training Finished in 0:0:0:112	Found nSupportVectors: 0
+0:0:0:618	Test Started
+0:2:9:226	Percentage correct: 11962/12346 = 96.8897%
+0:2:9:226	Test Finished in 0:2:8:608	
+0:2:9:226	Reverse starting...
+0:2:9:237	Reverse finished in 0:0:0:11	
+0:2:9:237	Second Fold: 
+0:2:9:237	Training Started
+0:2:9:237	Iteration: 1	step: 1e-013	lastDif:0	difAlpha:-12346
+0:2:9:345	Iteration: 2	step: 5e-014	lastDif:-12346	difAlpha:6.173e-010
+0:2:9:355	Training Finished in 0:0:0:118	Found nSupportVectors: 0
+0:2:9:355	Test Started
+0:4:18:901	Percentage correct: 11990/12346 = 97.1165%
+0:4:18:901	Test Finished in 0:2:9:546	
+0:4:18:901	Average Percentage correct: 23952/24692 = 97.0031%
+0:4:18:901	Program Finished in 0:4:18:901	
+
+
+C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d a8 
+0:0:0:0	Program Started
+0:0:0:1	seed: 1454390375
+0:0:0:1	DataSet:
+0:0:0:1	FileName: Data/adult8.data
+0:0:0:1	Samples: 22696
+0:0:0:1	C: 100
+0:0:0:1	Gama: 0.5
+0:0:0:1	Precision: 1e-009
+0:0:0:1	Classes: 2
+0:0:0:1	Features: 123
+0:0:0:1	InitialStepSize: 1e-012
+0:0:0:1	Started reading file
+0:0:0:498	Finished reading file in 0:0:0:496	
+0:0:0:498	Shuffle starting...
+0:0:0:509	Shuffle finished in 0:0:0:11	
+0:0:0:509	First Fold: 
+0:0:0:509	Training Started
+0:0:0:509	Iteration: 1	step: 1e-012	lastDif:0	difAlpha:-11348
+0:0:0:605	Iteration: 2	step: 5e-013	lastDif:-11348	difAlpha:5.674e-009
+0:1:10:818	Iteration: 3	step: 2.5e-013	lastDif:5.674e-009	difAlpha:2.837e-009
+0:2:21:469	Iteration: 4	step: 1.25e-013	lastDif:2.837e-009	difAlpha:1.4185e-009
+0:3:31:629	Iteration: 5	step: 6.25e-014	lastDif:1.4185e-009	difAlpha:7.0925e-010
+0:3:31:636	Training Finished in 0:3:31:127	Found nSupportVectors: 0
+0:3:31:636	Test Started
+0:4:42:83	Percentage correct: 9224/11348 = 81.283%
+0:4:42:83	Test Finished in 0:1:10:447	
+0:4:42:83	Reverse starting...
+0:4:42:87	Reverse finished in 0:0:0:4	
+0:4:42:87	Second Fold: 
+0:4:42:87	Training Started
+0:4:42:88	Iteration: 1	step: 1e-012	lastDif:0	difAlpha:-11348
+0:4:42:174	Iteration: 2	step: 5e-013	lastDif:-11348	difAlpha:5.674e-009
+0:5:51:986	Iteration: 3	step: 2.5e-013	lastDif:5.674e-009	difAlpha:2.837e-009
+0:7:3:0	Iteration: 4	step: 1.25e-013	lastDif:2.837e-009	difAlpha:1.4185e-009
+0:8:13:321	Iteration: 5	step: 6.25e-014	lastDif:1.4185e-009	difAlpha:7.0925e-010
+0:8:13:327	Training Finished in 0:3:31:240	Found nSupportVectors: 0
+0:8:13:327	Test Started
+0:9:24:674	Percentage correct: 9246/11348 = 81.4769%
+0:9:24:674	Test Finished in 0:1:11:347	
+0:9:24:674	Average Percentage correct: 18470/22696 = 81.38%
+0:9:24:674	Program Finished in 0:9:24:674	
+
+
+C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d w8 
+0:0:0:0	Program Started
+0:0:0:0	seed: 1454390940
+0:0:0:0	DataSet:
+0:0:0:0	FileName: Data/web8.data
+0:0:0:0	Samples: 49749
+0:0:0:0	C: 64
+0:0:0:0	Gama: 7.8125
+0:0:0:0	Precision: 1e-009
+0:0:0:0	Classes: 2
+0:0:0:0	Features: 300
+0:0:0:0	InitialStepSize: 1e-013
+0:0:0:0	Started reading file
+0:0:0:979	Finished reading file in 0:0:0:979	
+0:0:0:979	Shuffle starting...
+0:0:1:18	Shuffle finished in 0:0:0:39	
+0:0:1:18	First Fold: 
+0:0:1:18	Training Started
+0:0:1:18	Iteration: 1	step: 1e-013	lastDif:0	difAlpha:-24875
+0:0:1:431	Iteration: 2	step: 5e-014	lastDif:-24875	difAlpha:1.24375e-009
+0:8:39:428	Iteration: 3	step: 2.5e-014	lastDif:1.24375e-009	difAlpha:6.21875e-010
+0:8:39:449	Training Finished in 0:8:38:431	Found nSupportVectors: 0
+0:8:39:449	Test Started
+0:17:18:113	Percentage correct: 24123/24874 = 96.9808%
+0:17:18:113	Test Finished in 0:8:38:664	
+0:17:18:113	Reverse starting...
+0:17:18:135	Reverse finished in 0:0:0:22	
+0:17:18:135	Second Fold: 
+0:17:18:135	Training Started
+0:17:18:136	Iteration: 1	step: 1e-013	lastDif:0	difAlpha:-24875
+0:17:18:556	Iteration: 2	step: 5e-014	lastDif:-24875	difAlpha:1.24375e-009
+0:25:55:125	Iteration: 3	step: 2.5e-014	lastDif:1.24375e-009	difAlpha:6.21875e-010
+0:25:55:146	Training Finished in 0:8:37:11	Found nSupportVectors: 0
+0:25:55:146	Test Started
+0:34:49:285	Percentage correct: 24146/24874 = 97.0732%
+0:34:49:285	Test Finished in 0:8:54:139	
+0:34:49:285	Average Percentage correct: 48269/49749 = 97.0251%
+0:34:49:285	Program Finished in 0:34:49:285	
+
+
+C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\x64\Release>SVMLinear.exe -d a9 
+0:0:0:0	Program Started
+0:0:0:0	seed: 1454393029
+0:0:0:0	DataSet:
+0:0:0:0	FileName: Data/adult9.data
+0:0:0:0	Samples: 32561
+0:0:0:0	C: 100
+0:0:0:0	Gama: 0.5
+0:0:0:0	Precision: 1e-009
+0:0:0:0	Classes: 2
+0:0:0:0	Features: 123
+0:0:0:0	InitialStepSize: 1e-012
+0:0:0:0	Started reading file
+0:0:0:718	Finished reading file in 0:0:0:718	
+0:0:0:718	Shuffle starting...
+0:0:0:732	Shuffle finished in 0:0:0:14	
+0:0:0:732	First Fold: 
+0:0:0:732	Training Started
+0:0:0:732	Iteration: 1	step: 1e-012	lastDif:0	difAlpha:-16281
+0:0:0:910	Iteration: 2	step: 5e-013	lastDif:-16281	difAlpha:8.1405e-009
+0:2:15:152	Iteration: 3	step: 2.5e-013	lastDif:8.1405e-009	difAlpha:4.07025e-009
+0:4:30:52	Iteration: 4	step: 1.25e-013	lastDif:4.07025e-009	difAlpha:2.03512e-009
+0:6:44:625	Iteration: 5	step: 6.25e-014	lastDif:2.03512e-009	difAlpha:1.01756e-009
+0:8:58:418	Iteration: 6	step: 3.125e-014	lastDif:1.01756e-009	difAlpha:5.08781e-010
+0:8:58:427	Training Finished in 0:8:57:695	Found nSupportVectors: 0
+0:8:58:427	Test Started
+0:11:17:110	Percentage correct: 13282/16280 = 81.5848%
+0:11:17:110	Test Finished in 0:2:18:683	
+0:11:17:110	Reverse starting...
+0:11:17:115	Reverse finished in 0:0:0:5	
+0:11:17:115	Second Fold: 
+0:11:17:115	Training Started
+0:11:17:116	Iteration: 1	step: 1e-012	lastDif:0	difAlpha:-16281
+0:11:17:293	Iteration: 2	step: 5e-013	lastDif:-16281	difAlpha:8.1405e-009
+0:13:32:191	Iteration: 3	step: 2.5e-013	lastDif:8.1405e-009	difAlpha:4.07025e-009
+0:15:44:352	Iteration: 4	step: 1.25e-013	lastDif:4.07025e-009	difAlpha:2.03512e-009
+0:17:56:264	Iteration: 5	step: 6.25e-014	lastDif:2.03512e-009	difAlpha:1.01756e-009
+0:20:8:186	Iteration: 6	step: 3.125e-014	lastDif:1.01756e-009	difAlpha:5.08781e-010
+0:20:8:194	Training Finished in 0:8:51:79	Found nSupportVectors: 0
+0:20:8:194	Test Started
+0:22:24:836	Percentage correct: 13412/16280 = 82.3833%
+0:22:24:836	Test Finished in 0:2:16:642	
+0:22:24:836	Average Percentage correct: 26694/32561 = 81.9815%
+0:22:24:836	Program Finished in 0:22:24:836	
+

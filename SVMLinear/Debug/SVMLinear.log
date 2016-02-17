@@ -1,18 +1,18 @@
-﻿Build started 02/02/2016 00:09:50.
+﻿Build started 10/02/2016 21:41:10.
      1>Project "C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\SVMLinear\SVMLinear.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\SVMLinear.pch" /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt SVMLinear.cpp
          SVMLinear.cpp
-     1>c:\users\felipe\dropbox\tcc-sepulveda\codigo\svmlinear\svmlinear\svmlinear.cpp(512): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\felipe\dropbox\tcc-sepulveda\codigo\svmlinear\svmlinear\svmlinear.cpp(571): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\felipe\dropbox\tcc-sepulveda\codigo\svmlinear\svmlinear\svmlinear.cpp(653): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\felipe\dropbox\tcc-sepulveda\codigo\svmlinear\svmlinear\svmlinear.cpp(664): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\felipe\dropbox\tcc-sepulveda\codigo\svmlinear\svmlinear\svmlinear.cpp(671): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\felipe\dropbox\tcc-sepulveda\codigo\svmlinear\svmlinear\svmlinear.cpp(720): warning C4244: 'initializing' : conversion from 'time_t' to 'unsigned int', possible loss of data
-     1>c:\users\felipe\dropbox\tcc-sepulveda\codigo\svmlinear\svmlinear\svmlinear.cpp(829): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\felipe\dropbox\tcc-sepulveda\codigo\svmlinear\svmlinear\svmlinear.cpp(840): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
-     1>c:\users\felipe\dropbox\tcc-sepulveda\codigo\svmlinear\svmlinear\svmlinear.cpp(890): warning C4018: '<' : signed/unsigned mismatch
-     1>c:\users\felipe\dropbox\tcc-sepulveda\codigo\svmlinear\svmlinear\svmlinear.cpp(892): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\felipe\dropbox\tcc-sepulveda\codigo\svmlinear\svmlinear\svmlinear.cpp(550): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\felipe\dropbox\tcc-sepulveda\codigo\svmlinear\svmlinear\svmlinear.cpp(609): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\felipe\dropbox\tcc-sepulveda\codigo\svmlinear\svmlinear\svmlinear.cpp(712): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\felipe\dropbox\tcc-sepulveda\codigo\svmlinear\svmlinear\svmlinear.cpp(803): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\felipe\dropbox\tcc-sepulveda\codigo\svmlinear\svmlinear\svmlinear.cpp(813): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\felipe\dropbox\tcc-sepulveda\codigo\svmlinear\svmlinear\svmlinear.cpp(912): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\felipe\dropbox\tcc-sepulveda\codigo\svmlinear\svmlinear\svmlinear.cpp(914): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\felipe\dropbox\tcc-sepulveda\codigo\svmlinear\svmlinear\svmlinear.cpp(945): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\felipe\dropbox\tcc-sepulveda\codigo\svmlinear\svmlinear\svmlinear.cpp(960): warning C4244: 'initializing' : conversion from 'time_t' to 'unsigned int', possible loss of data
+     1>c:\users\felipe\dropbox\tcc-sepulveda\codigo\svmlinear\svmlinear\svmlinear.cpp(978): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\Debug\SVMLinear.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\Debug\SVMLinear.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Felipe\Dropbox\TCC-Sepulveda\Codigo\SVMLinear\Debug\SVMLinear.lib" /MACHINE:X86 Debug\stdafx.obj
          Debug\SVMLinear.obj
@@ -21,4 +21,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.39
+Time Elapsed 00:00:05.30
