@@ -585,9 +585,9 @@ private:
 
 int classify(DataSet& ds, int index, vector<double>& alpha, Kernel& kernel, double& b)
 {
-	auto precision = ds.Precision;
 	auto x = ds.X;
 	auto y = ds.Y;
+	auto precision = 0;
 	auto size = alpha.size();
 	auto sum = 0.0;
 	for (auto i = 0; i < alpha.size(); ++i)
@@ -657,18 +657,6 @@ void Train(DataSet& ds, int nTrainers, Kernel& kernel, vector<double>& alpha, do
 
 	} while (true);
 	int nSupportVectors = 0;
-	vector<double> sv;
-	double maxValue = 0.0;
-	for (auto i = 0; i < alpha.size(); ++i)
-	{
-		if (alpha[i] != 0) nSupportVectors++;
-		if (alpha[i] > maxValue){
-			maxValue = alpha[i];
-			sv = x[i];
-		}
-	}
-	if (maxValue == 0.0)
-		throw new exception("Could not find support vector.");
 	b = 0.0;
 	Logger::Stats("nSupportVectors", nSupportVectors);
 	Logger::FunctionEnd();
