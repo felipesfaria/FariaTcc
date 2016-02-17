@@ -26,6 +26,7 @@ public:
 	void static FunctionEnd();
 	void static ClassifyProgress(int count, double step, double lastDif, double difAlpha);
 	void static Stats(string statName, int stat);
+	void static Stats(string statName, unsigned int stat);
 	void static Stats(string statName, double stat);
 	void static Stats(string statName, string stat);
 	void static Line(string s);

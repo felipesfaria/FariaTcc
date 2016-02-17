@@ -4,3 +4,6 @@
 *.user
 Debug/
 *.stackdump
+SVMLinear/x64/
+ipch/
+x64/

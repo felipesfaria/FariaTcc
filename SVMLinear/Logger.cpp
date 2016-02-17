@@ -132,6 +132,12 @@ void Logger::Stats(string statName, int stat)
 	strs << stat;
 	Stats(statName, strs.str());
 }
+void Logger::Stats(string statName, unsigned int stat)
+{
+	std::ostringstream strs;
+	strs << stat;
+	Stats(statName, strs.str());
+}
 void Logger::Stats(string statName, double stat)
 {
 	std::ostringstream strs;
