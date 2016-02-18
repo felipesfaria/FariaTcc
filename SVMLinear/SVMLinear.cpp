@@ -16,7 +16,7 @@ SvmLinear::~SvmLinear()
 }
 
 
-int SvmLinear::Classify(DataSet& ds, int index, vector<double>& alpha, LinearKernel& kernel, double& b)
+int SvmLinear::Classify(DataSet& ds, int index, vector<double>& alpha, double& b)
 {
 	auto x = ds.X;
 	auto y = ds.Y;
@@ -26,7 +26,7 @@ int SvmLinear::Classify(DataSet& ds, int index, vector<double>& alpha, LinearKer
 	for (auto i = 0; i < alpha.size(); ++i)
 	{
 		if (alpha[i] == 0) continue;
-		sum += alpha[i] * y[i] * kernel.K(x[i], x[index]);
+		sum += alpha[i] * y[i] * kernel->K(x[i], x[index]);
 	}
 	auto sign = sum - b;
 	if (sign > precision)
@@ -36,12 +36,13 @@ int SvmLinear::Classify(DataSet& ds, int index, vector<double>& alpha, LinearKer
 	return 0;
 }
 
-void SvmLinear::Train(DataSet& ds, int nTrainers, LinearKernel& kernel, vector<double>& alpha, double& b)
+void SvmLinear::Train(DataSet& ds, int validationStart, int validationEnd, vector<double>& alpha, double& b)
 {
 	Logger::FunctionStart("Train");
 	alpha.clear();
 	vector<double> oldAlpha;
-	for (int i = 0; i < nTrainers; ++i){
+	int samples = ds.nSamples;
+	for (int i = 0; i < samples; ++i){
 		alpha.push_back(0);
 		oldAlpha.push_back(1);
 	}
@@ -58,7 +59,10 @@ void SvmLinear::Train(DataSet& ds, int nTrainers, LinearKernel& kernel, vector<d
 		count++;
 
 		difAlpha = 0;
-		for (int i = 0; i < nTrainers; ++i){
+		for (int i = 0; i < samples; ++i){
+			if (i == validationStart)
+				i = validationEnd;
+			if (i == samples)break;
 			difAlpha += alpha[i] - oldAlpha[i];
 			oldAlpha[i] = alpha[i];
 		}
@@ -71,13 +75,21 @@ void SvmLinear::Train(DataSet& ds, int nTrainers, LinearKernel& kernel, vector<d
 		if (abs(difAlpha - lastDif) > difAlpha / 10.0)
 			step = step / 2;
 		lastDif = difAlpha;
-		for (int i = 0; i < nTrainers; ++i)
+		for (int i = 0; i < samples; ++i)
 		{
+			if (i == validationStart){
+				i = validationEnd;
+				if (i == samples)break;
+			}
 			double sum = 0;
-			for (int j = 0; j < nTrainers; ++j)
+			for (int j = 0; j < samples; ++j)
 			{
+				if (j == validationStart){
+					j = validationEnd;
+					if (j == samples)break;
+				}
 				if (oldAlpha[j] == 0) continue;
-				sum += y[j] * oldAlpha[j] * kernel.K(x[j], x[i]);
+				sum += y[j] * oldAlpha[j] * kernel->K(x[j], x[i]);
 			}
 			double value = oldAlpha[i] + step - step*y[i] * sum;
 			if (value > C)
@@ -90,27 +102,34 @@ void SvmLinear::Train(DataSet& ds, int nTrainers, LinearKernel& kernel, vector<d
 
 	} while (true);
 	int nSupportVectors = 0;
-	for (int i = 0; i < nTrainers; ++i)
+	for (int i = 0; i < samples; ++i){
+		if (i == validationStart){
+			i = validationEnd;
+			if (i == samples)break;
+		}
 		if (alpha[i] != 0)
 			nSupportVectors++;
+	}
 	b = 0.0;
 	Logger::Stats("nSupportVectors", nSupportVectors);
 	Logger::FunctionEnd();
 }
 
-void SvmLinear::Test(DataSet& ds, int nValidators, int nTrainers, LinearKernel& kernel, vector<double>& alpha1, double& b1, int& nCorrect)
+void SvmLinear::Test(DataSet& ds, int validationStart, int validationEnd, vector<double>& alpha1, double& b1, int& nCorrect)
 {
 	Logger::FunctionStart("Test");
-	nCorrect = 0;
 	auto start = clock();
-	for (auto i = nTrainers; i < ds.X.size(); ++i)
+	nCorrect = 0;
+	int nSamples = ds.nSamples;
+	int nValidators = validationEnd - validationStart;
+	for (auto i = validationStart; i < validationEnd; ++i)
 	{
-		int classifiedY = Classify(ds, i, alpha1, kernel, b1);
+		int classifiedY = Classify(ds, i, alpha1, b1);
 		if (classifiedY == ds.Y[i]){
 			nCorrect++;
 		}
 	}
-	Logger::Stats("AverageClassificationTime ", (clock()-start) / nValidators);
+	Logger::Stats("AverageClassificationTime ", (clock() - start) / nValidators);
 	auto percentageCorrect = static_cast<double>(nCorrect) / nValidators;
 	Logger::Percentage(nCorrect, nValidators, percentageCorrect);
 	Logger::FunctionEnd();

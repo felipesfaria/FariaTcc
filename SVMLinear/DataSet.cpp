@@ -25,6 +25,7 @@ DataSet::~DataSet()
 
 void DataSet::Init(string arg)
 {
+	kernelType = KernelType::GAUSSIAN;
 	switch (arg[0])
 	{
 	case 'a':

@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include "SvmKernel.h"
 using namespace std;
 
 class DataSet
@@ -13,6 +14,7 @@ public:
 	int nFeatures;
 	int nClasses;
 	int C;
+	KernelType kernelType;
 	double Gama;
 	double Step;
 	double Precision = 1e-9;

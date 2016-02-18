@@ -35,7 +35,7 @@ int main(int argc, char* argv[])
 	try{
 		unsigned int seed = time(nullptr);
 		Logger::Init(argc, argv);
-		Logger::Stats("Seed",seed);
+		Logger::Stats("Seed", seed);
 		srand(seed);
 
 		DataSet ds(argc, argv);
@@ -47,33 +47,25 @@ int main(int argc, char* argv[])
 		double validationPercentage = 0.5;
 		int nValidators = (ds.X.size()*validationPercentage);
 		int nTrainers = ds.X.size() - nValidators;
-		LinearKernel kernel;
-		kernel.DefineGaussian(ds.Gama);
-		//kernel.DefineHomogeneousPolynomial(2);
-		int iFold = 1;
-		
-		Logger::Fold(iFold++);
-
-		vector<double> alpha1;
-		double b1;
-		int nCorrect1;
-		svm.Train(ds, nTrainers, kernel, alpha1, b1);
-		svm.Test(ds, nValidators, nTrainers, kernel, alpha1, b1, nCorrect1);
-
+		svm.kernel = new LinearKernel();
+		svm.kernel->Init(ds);
+		int nFolds = 3;
+		int totalCorrect = 0;
+		int correct;
+		for (int i = 1; i <= nFolds; i++){
+			Logger::Fold(i);
+			vector<double> alpha1;
+			double b1;
+			int validationStart = ds.nSamples*(i - 1) / nFolds;
+			int validationEnd = ds.nSamples*i / nFolds;
+			svm.Train(ds, validationStart, validationEnd, alpha1, b1);
+			svm.Test(ds, validationStart, validationEnd, alpha1, b1, correct);
+			totalCorrect += correct;
+		}
 		Utils::Reverse(ds.X, ds.Y);
 
-		Logger::Fold(iFold++);
-
-		vector<double> alpha2;
-		double b2;
-		int nCorrect2;
-		svm.Train(ds, nTrainers, kernel, alpha2, b2);
-		svm.Test(ds, nValidators, nTrainers, kernel, alpha2, b2, nCorrect2);
-
-		double totalCorrect = nCorrect1 + nCorrect2;
-		double totalSamples = nValidators + nTrainers;
-		double averagePercentageCorrect = totalCorrect / totalSamples;
-		Logger::Percentage(totalCorrect, totalSamples, averagePercentageCorrect,"Average ");
+		double averagePercentageCorrect = 100.0*totalCorrect / ds.nSamples;
+		Logger::Stats("AveragePercentage", averagePercentageCorrect);
 		Logger::End();
 		return 0;
 	}

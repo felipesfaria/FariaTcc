@@ -2,11 +2,6 @@
 #include "LinearKernel.h"
 #include <vector>
 using namespace std;
-LinearKernel::LinearKernel()
-{
-	_type = NONE;
-}
-
 
 LinearKernel::~LinearKernel()
 {
@@ -27,13 +22,6 @@ double LinearKernel::K(std::vector<double> x, std::vector<double> y)
 	default:
 		throw new std::exception("Kernel Type not defined or invalid type defined.");
 	}
-}
-bool LinearKernel::DefineLinear()
-{
-	if (_type != NONE)
-		throw new exception("Can't redefine Kernel");
-	_type = LINEAR;
-	return true;
 }
 double LinearKernel::Linear(vector<double> x, vector<double> y){
 	if (x.size() != y.size())
@@ -83,15 +71,6 @@ double LinearKernel::NonHomogeneousPolynomial(vector<double> x, vector<double> y
 	for (int i = 0; i < _d; ++i)
 		product *= linear + _c;
 	return product;
-}
-
-bool LinearKernel::DefineGaussian(double sigma)
-{
-	if (_type != NONE)
-		throw new exception("Can't redefine Kernel");
-	_sigma = sigma;
-	_type = GAUSSIAN;
-	return true;
 }
 double LinearKernel::Gaussian(vector<double> x, vector<double> y)
 {
