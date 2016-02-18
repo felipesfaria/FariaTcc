@@ -30,6 +30,11 @@ double SvmKernel::K(std::vector<double> x, std::vector<double> y)
 	throw(new std::exception("Not Implemented exception"));
 }
 
+double SvmKernel::K(int i, int k)
+{
+	throw(new std::exception("Not Implemented exception"));
+}
+
 double SvmKernel::Gaussian(std::vector<double> x, std::vector<double> y)
 {
 	throw(new std::exception("Not Implemented exception"));

@@ -1,6 +1,6 @@
 #pragma once
 #include "DataSet.h"
-#include "LinearKernel.h"
+#include "SvmKernel.h"
 
 class SvmLinear
 {

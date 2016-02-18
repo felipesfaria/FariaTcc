@@ -1,13 +1,12 @@
 #include "stdafx.h"
-#include "LinearKernel.h"
-#include <vector>
+#include "SequentialKernel.h"
 using namespace std;
 
-LinearKernel::~LinearKernel()
+SequentialKernel::~SequentialKernel()
 {
 }
 
-double LinearKernel::K(std::vector<double> x, std::vector<double> y)
+double SequentialKernel::K(std::vector<double> x, std::vector<double> y)
 {
 	switch (_type)
 	{
@@ -23,7 +22,7 @@ double LinearKernel::K(std::vector<double> x, std::vector<double> y)
 		throw new std::exception("Kernel Type not defined or invalid type defined.");
 	}
 }
-double LinearKernel::Linear(vector<double> x, vector<double> y){
+double SequentialKernel::Linear(vector<double> x, vector<double> y){
 	if (x.size() != y.size())
 		throw new exception("Incompatible sizes..");
 	double sum = 0;
@@ -32,7 +31,7 @@ double LinearKernel::Linear(vector<double> x, vector<double> y){
 	return sum;
 }
 
-bool LinearKernel::DefineHomogeneousPolynomial(int d)
+bool SequentialKernel::DefineHomogeneousPolynomial(int d)
 {
 	if (d < 2)
 		throw new exception("Invalid argument d<2");
@@ -42,7 +41,7 @@ bool LinearKernel::DefineHomogeneousPolynomial(int d)
 	_type = HOMOGENEOUS_POLYNOMIAL;
 	return true;
 }
-double LinearKernel::HomogeneousPolynomial(vector<double> x, vector<double> y)
+double SequentialKernel::HomogeneousPolynomial(vector<double> x, vector<double> y)
 {
 	double linear = Linear(x, y);
 	double product = 1;
@@ -51,7 +50,7 @@ double LinearKernel::HomogeneousPolynomial(vector<double> x, vector<double> y)
 	return product;
 }
 
-bool LinearKernel::DefineNonHomogeneousPolynomial(int d, double c)
+bool SequentialKernel::DefineNonHomogeneousPolynomial(int d, double c)
 {
 	if (d < 2)
 		throw new exception("Invalid argument d<2");
@@ -64,7 +63,7 @@ bool LinearKernel::DefineNonHomogeneousPolynomial(int d, double c)
 	_type = NONHOMOGENEOUS_POLYNOMIAL;
 	return true;
 }
-double LinearKernel::NonHomogeneousPolynomial(vector<double> x, vector<double> y)
+double SequentialKernel::NonHomogeneousPolynomial(vector<double> x, vector<double> y)
 {
 	double linear = Linear(x, y);
 	double product = 1;
@@ -72,7 +71,7 @@ double LinearKernel::NonHomogeneousPolynomial(vector<double> x, vector<double> y
 		product *= linear + _c;
 	return product;
 }
-double LinearKernel::Gaussian(vector<double> x, vector<double> y)
+double SequentialKernel::Gaussian(vector<double> x, vector<double> y)
 {
 	double sum = 0;
 	double product;
@@ -85,7 +84,7 @@ double LinearKernel::Gaussian(vector<double> x, vector<double> y)
 	}
 	return exp(-gama*sum);
 }
-KernelType LinearKernel::GetType()
+KernelType SequentialKernel::GetType()
 {
 	return _type;
 }

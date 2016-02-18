@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "SvmLinear.h"
 #include "DataSet.h"
-#include "LinearKernel.h"
+#include "SequentialKernel.h"
 #include "Logger.h"
 #include <locale>
 using namespace std;
@@ -26,7 +26,7 @@ int SvmLinear::Classify(DataSet& ds, int index, vector<double>& alpha, double& b
 	for (auto i = 0; i < alpha.size(); ++i)
 	{
 		if (alpha[i] == 0) continue;
-		sum += alpha[i] * y[i] * kernel->K(x[i], x[index]);
+		sum += alpha[i] * y[i] * kernel->K(ds.X[i], ds.X[index]);
 	}
 	auto sign = sum - b;
 	if (sign > precision)
@@ -89,7 +89,7 @@ void SvmLinear::Train(DataSet& ds, int validationStart, int validationEnd, vecto
 					if (j == samples)break;
 				}
 				if (oldAlpha[j] == 0) continue;
-				sum += y[j] * oldAlpha[j] * kernel->K(x[j], x[i]);
+				sum += y[j] * oldAlpha[j] * kernel->K(ds.X[j], ds.X[i]);
 			}
 			double value = oldAlpha[i] + step - step*y[i] * sum;
 			if (value > C)

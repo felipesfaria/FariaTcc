@@ -39,7 +39,13 @@
     <ClInclude Include="SvmLinear.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LinearKernel.h">
+    <ClInclude Include="SvmKernel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SequentialKernel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ParallelKernel.cuh">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -56,13 +62,16 @@
     <ClCompile Include="DataSet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FariaSvm.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SvmLinear.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LinearKernel.cpp">
+    <ClCompile Include="SvmKernel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FariaSvm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SequentialKernel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -70,5 +79,10 @@
     <None Include="libsvm\svm.def">
       <Filter>Source Files</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <CudaCompile Include="ParallelKernel.cu">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
   </ItemGroup>
 </Project>

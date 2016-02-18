@@ -2,10 +2,10 @@
 #include <vector>
 #include "SvmKernel.h"
 
-class LinearKernel: public SvmKernel
+class SequentialKernel: public SvmKernel
 {
 public:
-	~LinearKernel();
+	~SequentialKernel();
 	double K(std::vector<double> x, std::vector<double> y) override;
 	bool DefineLinear();
 	static double Linear(std::vector<double> x, std::vector<double> y);
