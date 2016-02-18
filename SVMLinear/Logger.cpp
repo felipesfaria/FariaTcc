@@ -149,7 +149,7 @@ void Logger::Stats(string statName, string stat)
 	switch (_type)
 	{
 	case VERBOSE:
-		cout << statName << ": " << stat << endl;
+		cout << FormatClock() << statName << ": " << stat << endl;
 		break;
 	case CSV:
 
