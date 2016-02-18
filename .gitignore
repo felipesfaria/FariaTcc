@@ -258,3 +258,32 @@ _Pvt_Extensions
 *.sln.iml
 Status API Training Shop Blog About Pricing
 © 2016 GitHub, Inc. Terms Privacy Security Contact Help
+*.stackdump
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
