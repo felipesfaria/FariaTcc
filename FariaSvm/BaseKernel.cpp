@@ -1,18 +1,18 @@
 #include "stdafx.h"
-#include "SvmKernel.h"
+#include "BaseKernel.h"
 #include "DataSet.h"
 
 
-SvmKernel::SvmKernel()
+BaseKernel::BaseKernel()
 {
 	_type = NONE;
 }
 
-SvmKernel::~SvmKernel()
+BaseKernel::~BaseKernel()
 {
 }
 
-void SvmKernel::Init(DataSet ds)
+void BaseKernel::Init(DataSet ds)
 {
 	_type = ds.kernelType;
 	switch (_type)
@@ -25,17 +25,17 @@ void SvmKernel::Init(DataSet ds)
 	}
 }
 
-double SvmKernel::K(std::vector<double> x, std::vector<double> y)
+double BaseKernel::K(std::vector<double> x, std::vector<double> y)
 {
 	throw(new std::exception("Not Implemented exception"));
 }
 
-double SvmKernel::K(int i, int k)
+double BaseKernel::K(int i, int k)
 {
 	throw(new std::exception("Not Implemented exception"));
 }
 
-double SvmKernel::Gaussian(std::vector<double> x, std::vector<double> y)
+double BaseKernel::Gaussian(std::vector<double> x, std::vector<double> y)
 {
 	throw(new std::exception("Not Implemented exception"));
 }

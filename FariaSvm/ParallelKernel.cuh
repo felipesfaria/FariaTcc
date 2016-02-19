@@ -3,7 +3,7 @@
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
 
-class ParallelKernel : public SvmKernel
+class ParallelKernel : public BaseKernel
 {
 public:
 	ParallelKernel();

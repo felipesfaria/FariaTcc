@@ -12,11 +12,11 @@ enum KernelType
 	GAUSSIAN
 
 };
-class SvmKernel
+class BaseKernel
 {
 public:
-	SvmKernel();
-	virtual ~SvmKernel();
+	BaseKernel();
+	virtual ~BaseKernel();
 	virtual void Init(DataSet ds);
 	virtual double K(std::vector<double> x, std::vector<double> y);
 	virtual double K(int i, int k);

@@ -2,7 +2,7 @@
 #include <vector>
 #include "SvmKernel.h"
 
-class SequentialKernel: public SvmKernel
+class SequentialKernel: public BaseKernel
 {
 public:
 	~SequentialKernel();

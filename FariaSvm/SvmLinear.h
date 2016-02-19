@@ -5,7 +5,7 @@
 class SvmLinear
 {
 public:
-	SvmKernel *kernel;
+	BaseKernel *kernel;
 	SvmLinear();
 	~SvmLinear();
 	int Classify(DataSet& ds, int index, vector<double>& alpha, double& b);

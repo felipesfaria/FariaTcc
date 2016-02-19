@@ -1,7 +1,7 @@
 #pragma once
 #include "SvmKernel.h"
 class MemoKernel :
-	public SvmKernel
+	public BaseKernel
 {
 public:
 	MemoKernel();
