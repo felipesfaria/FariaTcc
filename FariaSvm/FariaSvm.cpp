@@ -13,18 +13,6 @@
 
 using namespace std;
 
-void ReadFile(DataSet& ds)
-{
-	Logger::FunctionStart("ReadFile");
-	ifstream       file;
-	file.open(ds.FileName, ifstream::in);
-
-	if (!file.good())
-		throw(new exception("Error: File not found"));
-	ds.ReadFile(file);
-	Logger::FunctionEnd();
-}
-
 int main(int argc, char* argv[])
 {
 	try{
@@ -35,9 +23,7 @@ int main(int argc, char* argv[])
 
 		DataSet ds(argc, argv);
 
-		ReadFile(ds);
-		SvmLinear svm;
-		Utils::Shuffle(ds.X, ds.Y);
+		SvmLinear svm(argc, argv, ds);
 
 		svm.kernel = new SequentialKernel();
 		svm.kernel->Init(ds);

@@ -25,13 +25,14 @@ public:
 	size_t size() const;
 	DataSet(int argc,char** argv);
 	~DataSet();
-	void ReadFile(istream& str);
-	bool readNextRow(istream& str);
 	void Init(string arg="");
 private:
 	vector<double> m_doubles;
 	vector<long> m_longs;
 	string classes[2];
+
+	void ReadFile();
+	bool readNextRow(istream& str);
 
 	void InitAdult(char c);
 	void InitAdult(int n);

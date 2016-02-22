@@ -2,21 +2,24 @@
 #include "DataSet.h"
 #include "Utils.h"
 #include <sstream>
+#include <fstream>
 using namespace std;
 
 DataSet::DataSet(int argc, char** argv)
 {
 	string arg = Utils::GetComandVariable(argc, argv, "-d");
 	Init(arg);
-	Utils::logger.Line("DataSet2:");
-	Utils::logger.Stats("FileName: ", FileName);
-	Utils::logger.Stats("Samples: ", nSamples);
-	Utils::logger.Stats("C: ", C);
-	Utils::logger.Stats("Gama: ", Gama);
-	Utils::logger.Stats("Precision: ", Precision);
-	Utils::logger.Stats("Classes: ", nClasses);
-	Utils::logger.Stats("Features: ", nFeatures);
-	Utils::logger.Stats("InitialStepSize: ", Step);
+	Logger::Line("DataSet2:");
+	Logger::Stats("FileName: ", FileName);
+	Logger::Stats("Samples: ", nSamples);
+	Logger::Stats("C: ", C);
+	Logger::Stats("Gama: ", Gama);
+	Logger::Stats("Precision: ", Precision);
+	Logger::Stats("Classes: ", nClasses);
+	Logger::Stats("Features: ", nFeatures);
+	Logger::Stats("InitialStepSize: ", Step);
+	ReadFile();
+	Utils::Shuffle(X, Y);
 }
 
 DataSet::~DataSet()
@@ -180,10 +183,19 @@ bool DataSet::readNextRow(istream& str)
 	return false;
 }
 
-void DataSet::ReadFile(istream& str)
+void DataSet::ReadFile()
 {
+	Logger::FunctionStart("ReadFile");
+	ifstream       file;
+	file.open(FileName, ifstream::in);
+
+	if (!file.good())
+		throw(new exception("Error: File not found"));
+
 	for (int i = 0; i < nSamples; i++)
-		readNextRow(str);
+		readNextRow(file);
+	Logger::FunctionEnd();
+
 }
 void DataSet::readIndexedData(istream& str)
 {
