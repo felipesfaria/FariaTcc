@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "BaseKernel.h"
 #include "DataSet.h"
-
+#include "Enums.h"
 
 BaseKernel::BaseKernel()
 {

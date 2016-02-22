@@ -1,7 +1,8 @@
 #pragma once
 #include <string>
 #include <vector>
-#include "SvmKernel.h"
+#include "Enums.h"
+
 using namespace std;
 
 class DataSet

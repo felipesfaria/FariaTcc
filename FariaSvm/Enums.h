@@ -1,0 +1,10 @@
+#pragma once
+enum KernelType
+{
+	NONE,
+	LINEAR,
+	HOMOGENEOUS_POLYNOMIAL,
+	NONHOMOGENEOUS_POLYNOMIAL,
+	GAUSSIAN
+
+};

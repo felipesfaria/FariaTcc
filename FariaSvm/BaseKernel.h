@@ -1,17 +1,8 @@
 #pragma once
 #include <vector>
+#include "DataSet.h"
+#include "Enums.h"
 
-class DataSet;
-
-enum KernelType
-{
-	NONE,
-	LINEAR,
-	HOMOGENEOUS_POLYNOMIAL,
-	NONHOMOGENEOUS_POLYNOMIAL,
-	GAUSSIAN
-
-};
 class BaseKernel
 {
 public:
