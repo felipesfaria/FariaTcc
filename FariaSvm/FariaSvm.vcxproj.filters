@@ -106,12 +106,6 @@
     <None Include="Data\adult9.data">
       <Filter>Data</Filter>
     </None>
-    <None Include="Data\adulta7.data">
-      <Filter>Data</Filter>
-    </None>
-    <None Include="Data\adulta8.data">
-      <Filter>Data</Filter>
-    </None>
     <None Include="Data\iris.csv">
       <Filter>Data</Filter>
     </None>
@@ -140,6 +134,12 @@
       <Filter>Data</Filter>
     </None>
     <None Include="Data\web8.data">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="Data\adult7.data">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="Data\adult8.data">
       <Filter>Data</Filter>
     </None>
   </ItemGroup>
