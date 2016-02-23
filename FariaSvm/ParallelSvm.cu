@@ -6,23 +6,31 @@
 #include "Logger.h"
 #include <locale>
 #include "Utils.h"
+
+#define CUDA_SAFE_CALL(call) { \
+   cudaError_t err = call;     \
+   if(err != cudaSuccess) {    \
+      fprintf(stderr,"Erro no arquivo '%s', linha %i: %s.\n",__FILE__,  __LINE__,cudaGetErrorString(err)); \
+      exit(EXIT_FAILURE); } } 
+
 using namespace std;
 
-__global__ void partialSum(double *saida, const double *x, const double *alphaY, const double *gama, const int *posI, const int *nFeatures)
+__global__ void partialSum(double *saida, const double *x, const double *alphaY, const double gama, const int posI, const int nFeatures,const int max)
 {
 	int idx = threadIdx.x + blockIdx.x * blockDim.x;
-
-	int aIndex = posI[0] * nFeatures[0];
-	int bIndex = idx*nFeatures[0];
+	//Sem isso ocorre erro com alguns conjuntos de dados
+	if (idx > max) return;
+	int aIndex = posI * nFeatures;
+	int bIndex = idx*nFeatures;
 	double sum = 0;
 	double product;
-	for (int i = 0; i < nFeatures[0]; ++i)
+	for (int i = 0; i < nFeatures; ++i)
 	{
 		product = x[aIndex + i] - x[bIndex + i];
 		product *= product;
 		sum += product;
 	}
-	saida[idx] = alphaY[idx] * exp(-gama[0] * sum);
+	saida[idx] = alphaY[idx] * exp(-gama * sum);
 }
 
 ParallelSvm::ParallelSvm(int argc, char** argv, const DataSet& ds)
@@ -35,8 +43,11 @@ ParallelSvm::ParallelSvm(int argc, char** argv, DataSet *ds)
 	Logger::Stats("SVM:", "Parallel");
 	this->ds = ds;
 	string arg = Utils::GetComandVariable(argc, argv, "-k");
-	int doubleSize = sizeof(double);
-	long memoByteSize = (long)ds->nSamples*(long)ds->nSamples*(long)doubleSize;
+
+	int oneGigaByte = 1 << 30;
+	long memoByteSize = ds->nSamples*ds->nSamples*sizeof(double);
+	int halfGigaByte = 1 << 29;
+	long gpuByteSize = ds->nSamples*ds->nFeatures*sizeof(double);
 	switch (arg[0])
 	{
 	case 'm':
@@ -52,21 +63,26 @@ ParallelSvm::ParallelSvm(int argc, char** argv, DataSet *ds)
 		break;
 
 	default:
-		int oneGigaByte = 1 << 29;
-		if (memoByteSize < oneGigaByte && memoByteSize>0){
+		if (memoByteSize < oneGigaByte && memoByteSize>0)
 			kernel = new MemoKernel(*ds);
-			CopyAllToGpu();
-		}
-		else{
-			throw(exception("Not Implemented"));
+		else
 			kernel = new SequentialKernel(*ds);
-		}
+
+		if (gpuByteSize < halfGigaByte && gpuByteSize>0)
+			CopyAllToGpu();
+		else
+			throw exception("Not Implemented");
 		break;
 	}
 }
 
 ParallelSvm::~ParallelSvm()
 {
+	cudaFree(dev_x);
+	cudaFree(dev_s);
+	cudaFree(dev_aY);
+	free(hst_s);
+	free(hst_aY);
 	free(kernel);
 }
 
@@ -74,76 +90,30 @@ void ParallelSvm::CopyAllToGpu()
 {
 	Logger::FunctionStart("CopyAllToGpu");
 
+	_threadsPerBlock = 256;
+	Logger::Stats("ThreadsPerBlock:", _threadsPerBlock);
+	_blocks = 1 + ds->nSamples / _threadsPerBlock;
+	Logger::Stats("Blocks:", _blocks);
+
 	double* hst_x = (double*)malloc(sizeof(double)*ds->nSamples*ds->nFeatures);
 	hst_s = (double*)malloc(sizeof(double)*ds->nSamples);
 	hst_aY = (double*)malloc(sizeof(double)*ds->nSamples);
-	hst_g = (double*)malloc(sizeof(double));
-	hst_i = (int*)malloc(sizeof(int));
-	hst_f = (int*)malloc(sizeof(int));
 
 	for (int i = 0; i < ds->nSamples; i++)
 		for (int j = 0; j < ds->nFeatures; j++)
 			hst_x[i*ds->nFeatures + j] = ds->X[i][j];
 
-	hst_g[0] = 1 / (2 * ds->Gama*ds->Gama);
-	hst_f[0] = ds->nFeatures;
+	g = 1 / (2 * ds->Gama*ds->Gama);
 
-	// Choose which GPU to run on, change this on a multi-GPU system.
-	cudaStatus = cudaSetDevice(0);
-	if (cudaStatus != cudaSuccess) {
-		fprintf(stderr, "cudaSetDevice failed!  Do you have a CUDA-capable GPU installed?");
-		throw(exception("cudaSetDevice failed!  Do you have a CUDA-capable GPU installed?"));
-	}
+	CUDA_SAFE_CALL(cudaSetDevice(0));
 
-	//
-	cudaStatus = cudaMalloc((void**)&dev_x, ds->nSamples * ds->nFeatures * sizeof(double));
-	if (cudaStatus != cudaSuccess) {
-		fprintf(stderr, "cudaMalloc failed!");
-		throw(exception("cudaMalloc failed!"));
-	}
-	cudaStatus = cudaMalloc((void**)&dev_s, ds->nSamples * sizeof(double));
-	if (cudaStatus != cudaSuccess) {
-		fprintf(stderr, "cudaMalloc failed!");
-		throw(exception("cudaMalloc failed!"));
-	}
-	cudaStatus = cudaMalloc((void**)&dev_aY, ds->nSamples * sizeof(double));
-	if (cudaStatus != cudaSuccess) {
-		fprintf(stderr, "cudaMalloc failed!");
-		throw(exception("cudaMalloc failed!"));
-	}
-	cudaStatus = cudaMalloc((void**)&dev_g, sizeof(double));
-	if (cudaStatus != cudaSuccess) {
-		fprintf(stderr, "cudaMalloc failed!");
-		throw(exception("cudaMalloc failed!"));
-	}
-	cudaStatus = cudaMalloc((void**)&dev_i, sizeof(int));
-	if (cudaStatus != cudaSuccess) {
-		fprintf(stderr, "cudaMalloc failed!");
-		throw(exception("cudaMalloc failed!"));
-	}
-	cudaStatus = cudaMalloc((void**)&dev_f, sizeof(int));
-	if (cudaStatus != cudaSuccess) {
-		fprintf(stderr, "cudaMalloc failed!");
-		throw(exception("cudaMalloc failed!"));
-	}
+	CUDA_SAFE_CALL(cudaMalloc((void**)&dev_x, ds->nSamples * ds->nFeatures * sizeof(double)));
+	CUDA_SAFE_CALL(cudaMalloc((void**)&dev_s, ds->nSamples * sizeof(double)));
+	CUDA_SAFE_CALL(cudaMalloc((void**)&dev_aY, ds->nSamples * sizeof(double)));
 
-	//Copy to GPU x
-	cudaStatus = cudaMemcpy(dev_x, hst_x, ds->nSamples * ds->nFeatures * sizeof(double), cudaMemcpyHostToDevice);
-	if (cudaStatus != cudaSuccess) {
-		fprintf(stderr, "cudaMemcpy failed!");
-		throw(exception("cudaMemcpy failed!"));
-	}
-	cudaStatus = cudaMemcpy(dev_f, hst_f, sizeof(int), cudaMemcpyHostToDevice);
-	if (cudaStatus != cudaSuccess) {
-		fprintf(stderr, "cudaMemcpy failed!");
-		throw(exception("cudaMemcpy failed!"));
-	}
 
-	cudaStatus = cudaMemcpy(dev_g, hst_g, sizeof(double), cudaMemcpyHostToDevice);
-	if (cudaStatus != cudaSuccess) {
-		fprintf(stderr, "cudaMemcpy failed!");
-		throw(exception("cudaMemcpy failed!"));
-	}
+	CUDA_SAFE_CALL(cudaMemcpy(dev_x, hst_x, ds->nSamples * ds->nFeatures * sizeof(double), cudaMemcpyHostToDevice));
+
 	free(hst_x);
 	Logger::FunctionEnd();
 }
@@ -155,27 +125,21 @@ void ParallelSvm::CopyResultToGpu(vector<double>& alpha)
 		hst_aY[i] = alpha[i] * ds->Y[i];
 	}
 
-	cudaStatus = cudaMemcpy(dev_aY, hst_aY, ds->nSamples * sizeof(double), cudaMemcpyHostToDevice);
-	if (cudaStatus != cudaSuccess) {
-		fprintf(stderr, "cudaMemcpy failed!");
-		throw(exception("cudaMemcpy failed!"));
-	}
+	CUDA_SAFE_CALL(cudaMemcpy(dev_aY, hst_aY, ds->nSamples * sizeof(double), cudaMemcpyHostToDevice));
 }
 
-int ParallelSvm::Classify(const DataSet& ds, int index, vector<double>& alpha, double& b)
+int ParallelSvm::Classify(const DataSet& dst, int index, vector<double>& alpha, double& b)
 {
+	partialSum << <_blocks, _threadsPerBlock >> >(dev_s, dev_x, dev_aY, g, index, ds->nFeatures, ds->nSamples);
 
-	hst_i[0] = index;
-	cudaMemcpy(dev_i, hst_i, sizeof(int), cudaMemcpyHostToDevice);
-
-	int threadsPerBlock = 128;
-	int blocks = 1 + ds.nSamples / threadsPerBlock;
-	partialSum << <blocks, 128 >> >(dev_s, dev_x, dev_aY, dev_g, dev_i, dev_f);
-
-	cudaMemcpy(hst_s, dev_s, ds.nSamples * sizeof(double), cudaMemcpyDeviceToHost);
+	CUDA_SAFE_CALL(cudaGetLastError());
+	
+	CUDA_SAFE_CALL(cudaDeviceSynchronize());
+	
+	CUDA_SAFE_CALL(cudaMemcpy(hst_s, dev_s, this->ds->nSamples * sizeof(double), cudaMemcpyDeviceToHost));
 
 	double cudaSum = 0.0;
-	for (int i = 0; i < ds.nSamples; i++)
+	for (int i = 0; i < this->ds->nSamples; i++)
 		cudaSum += hst_s[i];
 
 	auto precision = 0;

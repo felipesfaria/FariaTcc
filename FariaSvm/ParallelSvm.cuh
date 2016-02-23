@@ -19,16 +19,14 @@ public:
 private:
 	cudaError_t cudaStatus;;
 	DataSet* ds;
+	int _blocks;
+	int _threadsPerBlock;
+
 	double* dev_x;
 	double* dev_s;
 	double* hst_s;
 	double* dev_aY;
 	double* hst_aY;
-	double* dev_g;
-	double* hst_g;
-	int* dev_i;
-	int* hst_i;
-	int* dev_f;
-	int* hst_f;
+	double g;
 };
 
