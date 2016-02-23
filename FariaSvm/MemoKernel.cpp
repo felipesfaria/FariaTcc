@@ -1,20 +1,12 @@
 #include "stdafx.h"
 #include "MemoKernel.h"
 #include "DataSet.h"
+#include "Logger.h"
 
 
-MemoKernel::MemoKernel()
+MemoKernel::MemoKernel(const DataSet& ds)
 {
-}
-
-
-MemoKernel::~MemoKernel()
-{
-	free(_memo);
-}
-
-void MemoKernel::Init(DataSet ds)
-{
+	Logger::Stats("Kernel:", "Memo");
 	_type = ds.kernelType;
 	switch (_type)
 	{
@@ -26,6 +18,9 @@ void MemoKernel::Init(DataSet ds)
 	}
 	samples = ds.nSamples;
 	features = ds.nFeatures;
+
+	Logger::Stats("MemoByteSize:", GetMemoByteSize());
+
 	auto size = ds.nSamples*ds.nSamples;
 	_memo = (double*)malloc(size*sizeof(double));
 	x = (double*)malloc(features*samples*sizeof(double));
@@ -38,6 +33,12 @@ void MemoKernel::Init(DataSet ds)
 		for (int j = 0; j < samples; j++)
 			_memo[i*samples + j] = Gauss(i, j);
 	}
+}
+
+
+MemoKernel::~MemoKernel()
+{
+	free(_memo);
 }
 
 double MemoKernel::Gauss(int i, int j)
@@ -59,4 +60,9 @@ double MemoKernel::K(int i, int j, const DataSet& ds)
 {
 	int index = i*samples + j;
 	return _memo[index];
+}
+
+int MemoKernel::GetMemoByteSize()
+{
+	return samples*samples*sizeof(double);
 }

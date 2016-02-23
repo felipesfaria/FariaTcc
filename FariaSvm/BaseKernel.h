@@ -6,8 +6,8 @@ class BaseKernel
 {
 public:
 	BaseKernel();
+	BaseKernel(const DataSet& ds);
 	virtual ~BaseKernel();
-	virtual void Init(DataSet ds);
 	virtual double K(int i, int k, const DataSet& ds);
 protected:
 	KernelType _type;

@@ -14,19 +14,28 @@ namespace FariaTccTest
 	public:
 		TEST_METHOD(SequentialKernel_Constructor)
 		{
-			BaseKernel *kernel = new SequentialKernel;
+			int argc = 3;
+			char *argv[] = { "exePath", "-d", "i" };
+			DataSet ds(argc, argv);
+			BaseKernel *kernel = new SequentialKernel(ds);
 			Assert::IsTrue(true);
 			free(kernel);
 		}
 		TEST_METHOD(MemoKernel_Constructor)
 		{
-			BaseKernel *kernel = new MemoKernel;
+			int argc = 3;
+			char *argv[] = { "exePath", "-d", "i" };
+			DataSet ds(argc, argv);
+			BaseKernel *kernel = new MemoKernel(ds);
 			Assert::IsTrue(true);
 			free(kernel);
 		}
 		TEST_METHOD(ParallelKernel_Constructor)
 		{
-			BaseKernel *kernel = new ParallelKernel;
+			int argc = 3;
+			char *argv[] = { "exePath", "-d", "i" };
+			DataSet ds(argc, argv);
+			BaseKernel *kernel = new ParallelKernel(ds);
 			Assert::IsTrue(true);
 			free(kernel);
 		}
@@ -37,10 +46,8 @@ namespace FariaTccTest
 			int argc = 3;
 			char *argv[] = { "exePath", "-d", "i" };
 			DataSet ds(argc, argv);
-			BaseKernel *sequentialKernel = new SequentialKernel;
-			sequentialKernel->Init(ds);
-			BaseKernel *memoKernel = new MemoKernel;
-			memoKernel->Init(ds);
+			BaseKernel *sequentialKernel = new SequentialKernel(ds);
+			BaseKernel *memoKernel = new MemoKernel(ds);
 			for (int i = 0; i < ds.nSamples; i++)
 				for (int j = 0; j < i; j++)
 				{
@@ -56,10 +63,8 @@ namespace FariaTccTest
 			int argc = 3;
 			char *argv[] = { "exePath", "-d", "i" };
 			DataSet ds(argc, argv);
-			BaseKernel *sequentialKernel = new SequentialKernel;
-			sequentialKernel->Init(ds);
-			BaseKernel *parallelKernel = new ParallelKernel;
-			parallelKernel->Init(ds);
+			BaseKernel *sequentialKernel = new SequentialKernel(ds);
+			BaseKernel *parallelKernel = new ParallelKernel(ds);
 			for (int i = 0; i < ds.nSamples; i++)
 				for (int j = 0; j < i; j++)
 				{

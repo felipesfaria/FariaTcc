@@ -6,6 +6,7 @@ class SequentialKernel
 	: public BaseKernel
 {
 public:
+	SequentialKernel(const DataSet& ds);
 	~SequentialKernel();
 	double K(int i, int j, const DataSet& ds) override;
 	static double Linear(vector<double> x, vector<double> y);

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "ParallelKernel.cuh"
 #include "DataSet.h"
+#include "Logger.h"
 #include "cuda_runtime.h"
 
 __global__ void addKernel(double *c, const double *a, const double *b, const double *gama)
@@ -17,25 +18,9 @@ __global__ void myFunc(double *saida, const double *x, const int *posI, const in
 	saida[i] *= saida[i];
 }
 
-ParallelKernel::ParallelKernel()
+ParallelKernel::ParallelKernel(const DataSet& ds)
 {
-	_type = NONE;
-}
-
-
-ParallelKernel::~ParallelKernel()
-{
-	cudaFree(dev_x);
-	cudaFree(dev_s);
-	free(hst_s);
-	cudaFree(dev_i);
-	free(hst_i);
-	cudaFree(dev_j);
-	free(hst_j);
-}
-int completeSize;
-void ParallelKernel::Init(DataSet ds)
-{
+	Logger::Stats("Kernel:", "Parallel");
 	_type = ds.kernelType;
 	cudaError_t cudaStatus;
 	switch (_type)
@@ -46,7 +31,7 @@ void ParallelKernel::Init(DataSet ds)
 	default:
 		throw(new std::exception("Not Implemented exception"));
 	}
-	completeSize = ds.X.size()*ds.nFeatures;
+	int completeSize = ds.X.size()*ds.nFeatures;
 	features = ds.nFeatures;
 	double* hst_x = (double*)malloc(sizeof(double)*completeSize);
 	hst_s = (double*)malloc(sizeof(double)*features);
@@ -93,6 +78,18 @@ void ParallelKernel::Init(DataSet ds)
 		throw(new exception("cudaMemcpy failed!"));
 	}
 	free(hst_x);
+}
+
+
+ParallelKernel::~ParallelKernel()
+{
+	cudaFree(dev_x);
+	cudaFree(dev_s);
+	free(hst_s);
+	cudaFree(dev_i);
+	free(hst_i);
+	cudaFree(dev_j);
+	free(hst_j);
 }
 
 double ParallelKernel::K(int i, int j, const DataSet& ds)

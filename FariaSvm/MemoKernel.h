@@ -5,11 +5,11 @@ class MemoKernel :
 	public BaseKernel
 {
 public:
-	MemoKernel();
+	MemoKernel(const DataSet& ds);
 	~MemoKernel();
-	void Init(DataSet ds) override;
 	double Gauss(int i, int j);
 	double K(int i, int j, const DataSet& ds) override;
+	int GetMemoByteSize();
 private:
 	double *_memo;
 	double *x;

@@ -6,11 +6,7 @@ BaseKernel::BaseKernel()
 {
 }
 
-BaseKernel::~BaseKernel()
-{
-}
-
-void BaseKernel::Init(DataSet ds)
+BaseKernel::BaseKernel(const DataSet& ds)
 {
 	_type = ds.kernelType;
 	switch (_type)
@@ -21,6 +17,10 @@ void BaseKernel::Init(DataSet ds)
 	default:
 		throw(new std::exception("Not Implemented exception"));
 	}
+}
+
+BaseKernel::~BaseKernel()
+{
 }
 
 double BaseKernel::K(int i, int j, const DataSet& ds)

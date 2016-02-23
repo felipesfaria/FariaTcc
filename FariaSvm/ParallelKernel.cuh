@@ -6,9 +6,8 @@
 class ParallelKernel : public BaseKernel
 {
 public:
-	ParallelKernel();
+	ParallelKernel(const DataSet& ds);
 	~ParallelKernel();
-	void Init(DataSet ds) override;
 	virtual double K(int i, int j, const DataSet& ds);
 private:
 	cudaError_t AddWithCuda(double *c, const double *a, const double *b, unsigned int size);

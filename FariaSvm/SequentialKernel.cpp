@@ -1,8 +1,21 @@
 #include "stdafx.h"
 #include "SequentialKernel.h"
 #include "DataSet.h"
+#include "Logger.h"
 using namespace std;
 
+SequentialKernel::SequentialKernel(const DataSet& ds)
+{
+	_type = ds.kernelType;
+	switch (_type)
+	{
+	case GAUSSIAN:
+		_sigma = ds.Gama;
+		break;
+	default:
+		throw(new std::exception("Not Implemented exception"));
+	}
+}
 SequentialKernel::~SequentialKernel()
 {
 }
