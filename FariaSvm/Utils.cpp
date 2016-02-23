@@ -11,7 +11,6 @@ Utils::~Utils()
 {
 }
 
-Logger Utils::logger;
 bool Utils::TryParseDouble(std::string str, double &out)
 {
 	try
@@ -72,11 +71,11 @@ string Utils::GetComandVariable(int argc, char** argv, string comand)
 
 void Utils::Shuffle(vector<vector<double>> &x, vector<double> &y)
 {
-	logger.FunctionStart("Shuffle");
+	Logger::FunctionStart("Shuffle");
 	int size = x.size();
 	for (auto i = 0; i < size; ++i)
 	{
-		auto position = rand() % (size - i);
+		auto position = i + rand() % (size - i);
 		auto tx = x[position];
 		auto ty = y[position];
 		x[position] = x[i];
@@ -84,12 +83,12 @@ void Utils::Shuffle(vector<vector<double>> &x, vector<double> &y)
 		x[i] = tx;
 		y[i] = ty;
 	}
-	logger.FunctionEnd();
+	Logger::FunctionEnd();
 }
 
 void Utils::Reverse(vector<vector<double>> &x, vector<double> &y)
 {
-	logger.FunctionStart("Reverse");
+	Logger::FunctionStart("Reverse");
 	int size = x.size();
 	for (auto i = 0; i < size / 2; ++i)
 	{
@@ -101,5 +100,5 @@ void Utils::Reverse(vector<vector<double>> &x, vector<double> &y)
 		x[i] = tx;
 		y[i] = ty;
 	}
-	logger.FunctionEnd();
+	Logger::FunctionEnd();
 }

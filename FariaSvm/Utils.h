@@ -15,5 +15,4 @@ public:
 	string static GetComandVariable(int argc, char** argv, string comand);
 	void static Shuffle(vector<vector<double>>& x, vector<double>& y);
 	void static Reverse(vector<vector<double>>& x, vector<double>& y);
-	Logger static logger;
 };
