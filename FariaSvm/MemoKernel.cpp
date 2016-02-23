@@ -19,12 +19,13 @@ void MemoKernel::Init(DataSet ds)
 	switch (_type)
 	{
 	case GAUSSIAN:
-		_sigma = ds.Gama;
+		_sigma = 1 / (2 * ds.Gama*ds.Gama);
 		break;
 	default:
 		throw(new std::exception("Not Implemented exception"));
 	}
 	samples = ds.nSamples;
+	features = ds.nFeatures;
 	auto size = ds.nSamples*ds.nSamples;
 	_memo = (double*)malloc(size*sizeof(double));
 	x = (double*)malloc(features*samples*sizeof(double));
@@ -32,10 +33,10 @@ void MemoKernel::Init(DataSet ds)
 	for (int i = 0; i < samples; i++)
 		for (int j = 0; j < features; j++)
 			x[i*features + j] = ds.X[i][j];
+
 	for (int i = 0; i < samples; i++){
-		for (int j = 0; j < samples; j++){
+		for (int j = 0; j < samples; j++)
 			_memo[i*samples + j] = Gauss(i, j);
-		}
 	}
 }
 
@@ -54,7 +55,7 @@ double MemoKernel::Gauss(int i, int j)
 	return exp(-_sigma*sum);
 }
 
-double MemoKernel::K(int i, int j)
+double MemoKernel::K(int i, int j, const DataSet& ds)
 {
 	int index = i*samples + j;
 	return _memo[index];

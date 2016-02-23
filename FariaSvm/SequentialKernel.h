@@ -1,19 +1,18 @@
 #pragma once
 #include <vector>
-#include "SvmKernel.h"
+#include "BaseKernel.h"
 
 class SequentialKernel: public BaseKernel
 {
 public:
 	~SequentialKernel();
-	double K(std::vector<double> x, std::vector<double> y) override;
-	bool DefineLinear();
-	static double Linear(std::vector<double> x, std::vector<double> y);
+	double K(int i, int j, const DataSet& ds) override;
+	static double Linear(vector<double> x, vector<double> y);
 	bool DefineHomogeneousPolynomial(int d);
-	double HomogeneousPolynomial(std::vector<double> x, std::vector<double> y);
+	double HomogeneousPolynomial(vector<double> x, vector<double> y);
 	bool DefineNonHomogeneousPolynomial(int d, double c);
-	double NonHomogeneousPolynomial(std::vector<double> x, std::vector<double> y);
-	double Gaussian(std::vector<double> x, std::vector<double> y) override;
+	double NonHomogeneousPolynomial(vector<double> x, vector<double> y);
+	double Gaussian(vector<double> x, vector<double> y);
 	KernelType GetType();
 private:
 };

@@ -1,23 +1,24 @@
 #include "stdafx.h"
 #include "SequentialKernel.h"
+#include "DataSet.h"
 using namespace std;
 
 SequentialKernel::~SequentialKernel()
 {
 }
 
-double SequentialKernel::K(std::vector<double> x, std::vector<double> y)
+double SequentialKernel::K(int i, int j, const DataSet& ds)
 {
 	switch (_type)
 	{
 	case LINEAR:
-		return Linear(x, y);
+		return Linear(ds.X[i], ds.X[j]);
 	case HOMOGENEOUS_POLYNOMIAL:
-		return HomogeneousPolynomial(x, y);
+		return HomogeneousPolynomial(ds.X[i], ds.X[j]);
 	case NONHOMOGENEOUS_POLYNOMIAL:
-		return NonHomogeneousPolynomial(x, y);
+		return NonHomogeneousPolynomial(ds.X[i], ds.X[j]);
 	case GAUSSIAN:
-		return Gaussian(x, y);
+		return Gaussian(ds.X[i], ds.X[j]);
 	default:
 		throw new std::exception("Kernel Type not defined or invalid type defined.");
 	}

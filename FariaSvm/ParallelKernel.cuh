@@ -1,7 +1,7 @@
 #pragma once
-#include "SvmKernel.h"
 #include "cuda_runtime.h"
 #include "device_launch_parameters.h"
+#include "BaseKernel.h"
 
 class ParallelKernel : public BaseKernel
 {
@@ -9,9 +9,16 @@ public:
 	ParallelKernel();
 	~ParallelKernel();
 	void Init(DataSet ds) override;
-	virtual double K(std::vector<double> x, std::vector<double> y);
-	virtual double K(int i, int j);
+	virtual double K(int i, int j, const DataSet& ds);
 private:
 	cudaError_t AddWithCuda(double *c, const double *a, const double *b, unsigned int size);
+	double *dev_x = 0;
+	double *dev_s = 0;
+	double *hst_s;
+	int *dev_i = 0;
+	int *hst_i;
+	int *dev_j = 0;
+	int *hst_j;
+	int features;
 };
 

@@ -2,21 +2,47 @@
 #include "SvmLinear.h"
 #include "DataSet.h"
 #include "SequentialKernel.h"
+#include "ParallelKernel.cuh"
+#include "MemoKernel.h"
 #include "Logger.h"
 #include <locale>
+#include "Utils.h"
 using namespace std;
 
-SvmLinear::SvmLinear()
-{
-}
 
+SvmLinear::SvmLinear(int argc, char** argv, const DataSet& ds)
+{
+	string arg = Utils::GetComandVariable(argc, argv, "-k");
+	switch (arg[0])
+	{
+	case 'p':
+	case 'P':
+		kernel = new ParallelKernel;
+		Logger::Stats("Kernel:", "Parallel");
+		break;
+	case 'm':
+	case 'M':
+		kernel = new MemoKernel;
+		Logger::Stats("Kernel:", "Memo");
+		break;
+
+	case 's':
+	case 'S':
+	default:
+		kernel = new SequentialKernel;
+		Logger::Stats("Kernel:", "Sequential");
+		break;
+	}
+	kernel->Init(ds);
+}
 
 SvmLinear::~SvmLinear()
 {
+	free(kernel);
 }
 
 
-int SvmLinear::Classify(DataSet& ds, int index, vector<double>& alpha, double& b)
+int SvmLinear::Classify(const DataSet& ds, int index, vector<double>& alpha, double& b)
 {
 	auto x = ds.X;
 	auto y = ds.Y;
@@ -26,7 +52,7 @@ int SvmLinear::Classify(DataSet& ds, int index, vector<double>& alpha, double& b
 	for (auto i = 0; i < alpha.size(); ++i)
 	{
 		if (alpha[i] == 0) continue;
-		sum += alpha[i] * y[i] * kernel->K(ds.X[i], ds.X[index]);
+		sum += alpha[i] * y[i] * kernel->K(i, index, ds);
 	}
 	auto sign = sum - b;
 	if (sign > precision)
@@ -36,7 +62,7 @@ int SvmLinear::Classify(DataSet& ds, int index, vector<double>& alpha, double& b
 	return 0;
 }
 
-void SvmLinear::Train(DataSet& ds, int validationStart, int validationEnd, vector<double>& alpha, double& b)
+void SvmLinear::Train(const DataSet& ds, int validationStart, int validationEnd, vector<double>& alpha, double& b)
 {
 	Logger::FunctionStart("Train");
 	alpha.clear();
@@ -89,7 +115,7 @@ void SvmLinear::Train(DataSet& ds, int validationStart, int validationEnd, vecto
 					if (j == samples)break;
 				}
 				if (oldAlpha[j] == 0) continue;
-				sum += y[j] * oldAlpha[j] * kernel->K(ds.X[j], ds.X[i]);
+				sum += y[j] * oldAlpha[j] * kernel->K(j, i, ds);
 			}
 			double value = oldAlpha[i] + step - step*y[i] * sum;
 			if (value > C)
@@ -115,7 +141,7 @@ void SvmLinear::Train(DataSet& ds, int validationStart, int validationEnd, vecto
 	Logger::FunctionEnd();
 }
 
-void SvmLinear::Test(DataSet& ds, int validationStart, int validationEnd, vector<double>& alpha1, double& b1, int& nCorrect)
+void SvmLinear::Test(const DataSet& ds, int validationStart, int validationEnd, vector<double>& alpha1, double& b1, int& nCorrect)
 {
 	Logger::FunctionStart("Test");
 	auto start = clock();

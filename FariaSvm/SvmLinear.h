@@ -1,16 +1,16 @@
 #pragma once
 #include "DataSet.h"
-#include "SvmKernel.h"
+#include "BaseKernel.h"
 
 class SvmLinear
 {
 public:
 	BaseKernel *kernel;
-	SvmLinear();
+	SvmLinear(int argc, char** argv, const DataSet& ds);
 	~SvmLinear();
-	int Classify(DataSet& ds, int index, vector<double>& alpha, double& b);
-	void Train(DataSet& ds, int validationStart, int validationEnd, vector<double>& alpha, double& b);
-	void Test(DataSet& ds, int validationStart, int validationEnd, vector<double>& alpha1, double& b1, int& nCorrect);
+	int Classify(const DataSet& ds, int index, vector<double>& alpha, double& b);
+	void Train(const DataSet& ds, int validationStart, int validationEnd, vector<double>& alpha, double& b);
+	void Test(const DataSet& ds, int validationStart, int validationEnd, vector<double>& alpha1, double& b1, int& nCorrect);
 private:
 };
 

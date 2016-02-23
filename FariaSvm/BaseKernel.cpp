@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "BaseKernel.h"
-#include "DataSet.h"
 #include "Enums.h"
 
 BaseKernel::BaseKernel()
@@ -25,17 +24,7 @@ void BaseKernel::Init(DataSet ds)
 	}
 }
 
-double BaseKernel::K(std::vector<double> x, std::vector<double> y)
-{
-	throw(new std::exception("Not Implemented exception"));
-}
-
-double BaseKernel::K(int i, int k)
-{
-	throw(new std::exception("Not Implemented exception"));
-}
-
-double BaseKernel::Gaussian(std::vector<double> x, std::vector<double> y)
+double BaseKernel::K(int i, int j, const DataSet& ds)
 {
 	throw(new std::exception("Not Implemented exception"));
 }

@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FariaSvm", "FariaSvm\FariaS
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FariaCuda", "FariaCuda\FariaCuda.vcxproj", "{D752C041-2148-44E8-8EB6-7C040D32C216}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FariaTccTest", "FariaTccTest\FariaTccTest.vcxproj", "{EB81F003-CF42-4D62-BFD7-68A2511EBEEB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -31,6 +33,12 @@ Global
 		{D752C041-2148-44E8-8EB6-7C040D32C216}.Release|Win32.Build.0 = Release|Win32
 		{D752C041-2148-44E8-8EB6-7C040D32C216}.Release|x64.ActiveCfg = Release|x64
 		{D752C041-2148-44E8-8EB6-7C040D32C216}.Release|x64.Build.0 = Release|x64
+		{EB81F003-CF42-4D62-BFD7-68A2511EBEEB}.Debug|Win32.ActiveCfg = Debug|Win32
+		{EB81F003-CF42-4D62-BFD7-68A2511EBEEB}.Debug|Win32.Build.0 = Debug|Win32
+		{EB81F003-CF42-4D62-BFD7-68A2511EBEEB}.Debug|x64.ActiveCfg = Debug|Win32
+		{EB81F003-CF42-4D62-BFD7-68A2511EBEEB}.Release|Win32.ActiveCfg = Release|Win32
+		{EB81F003-CF42-4D62-BFD7-68A2511EBEEB}.Release|Win32.Build.0 = Release|Win32
+		{EB81F003-CF42-4D62-BFD7-68A2511EBEEB}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

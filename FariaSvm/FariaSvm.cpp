@@ -5,11 +5,8 @@
 #include <exception>
 #include <ctime>
 #include "Logger.h"
-#include "Utils.h"
-#include <algorithm>
 #include "DataSet.h"
 #include "SvmLinear.h"
-#include "SequentialKernel.h"
 
 using namespace std;
 
@@ -25,8 +22,6 @@ int main(int argc, char* argv[])
 
 		SvmLinear svm(argc, argv, ds);
 
-		svm.kernel = new SequentialKernel();
-		svm.kernel->Init(ds);
 		auto nFolds = 3;
 		auto totalCorrect = 0;
 		int correct;
@@ -40,7 +35,6 @@ int main(int argc, char* argv[])
 			svm.Test(ds, validationStart, validationEnd, alpha1, b1, correct);
 			totalCorrect += correct;
 		}
-		Utils::Reverse(ds.X, ds.Y);
 		double averagePercentageCorrect = 100.0*totalCorrect / ds.nSamples;
 		Logger::Stats("AveragePercentage", averagePercentageCorrect);
 		Logger::End();

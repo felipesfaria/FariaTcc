@@ -9,9 +9,7 @@ public:
 	BaseKernel();
 	virtual ~BaseKernel();
 	virtual void Init(DataSet ds);
-	virtual double K(std::vector<double> x, std::vector<double> y);
-	virtual double K(int i, int k);
-	virtual double Gaussian(std::vector<double> x, std::vector<double> y);
+	virtual double K(int i, int k, const DataSet& ds);
 protected:
 	KernelType _type;
 	int _d;

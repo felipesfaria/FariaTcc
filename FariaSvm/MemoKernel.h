@@ -1,5 +1,6 @@
 #pragma once
-#include "SvmKernel.h"
+#include "BaseKernel.h"
+
 class MemoKernel :
 	public BaseKernel
 {
@@ -8,7 +9,7 @@ public:
 	~MemoKernel();
 	void Init(DataSet ds) override;
 	double Gauss(int i, int j);
-	double K(int i, int j) override;
+	double K(int i, int j, const DataSet& ds) override;
 private:
 	double *_memo;
 	double *x;
