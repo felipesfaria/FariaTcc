@@ -12,11 +12,11 @@ DataSet::DataSet(int argc, char** argv)
 	Logger::Line("DataSet2:");
 	Logger::Stats("FileName: ", FileName);
 	Logger::Stats("Samples: ", nSamples);
+	Logger::Stats("Features: ", nFeatures);
+	Logger::Stats("Classes: ", nClasses);
 	Logger::Stats("C: ", C);
 	Logger::Stats("Gama: ", Gama);
 	Logger::Stats("Precision: ", Precision);
-	Logger::Stats("Classes: ", nClasses);
-	Logger::Stats("Features: ", nFeatures);
 	Logger::Stats("InitialStepSize: ", Step);
 	ReadFile();
 	Utils::Shuffle(X, Y);

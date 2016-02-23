@@ -4,7 +4,6 @@
 
 BaseSvm::BaseSvm()
 {
-	throw(new exception("Not Implemented."));
 }
 
 int BaseSvm::Classify(const DataSet& ds, int index, vector<double>& alpha, double& b)
