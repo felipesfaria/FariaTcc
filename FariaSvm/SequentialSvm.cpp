@@ -16,10 +16,6 @@ SequentialSvm::SequentialSvm(int argc, char** argv, const DataSet& ds)
 	int memoByteSize = ds.nSamples*ds.nSamples*doubleSize;
 	switch (arg[0])
 	{
-	case 'p':
-	case 'P':
-		kernel = new ParallelKernel(ds);
-		break;
 	case 'm':
 	case 'M':
 		kernel = new MemoKernel(ds);
@@ -28,6 +24,8 @@ SequentialSvm::SequentialSvm(int argc, char** argv, const DataSet& ds)
 	case 's':
 	case 'S':
 		kernel = new SequentialKernel(ds);
+		break;
+
 	default:
 		int oneGigaByte = 1 << 30;
 		if (memoByteSize<oneGigaByte)

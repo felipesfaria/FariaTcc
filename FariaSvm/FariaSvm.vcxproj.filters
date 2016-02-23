@@ -57,6 +57,9 @@
     <ClInclude Include="SequentialSvm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ParallelSvm.cuh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -154,6 +157,9 @@
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="ParallelKernel.cu">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="ParallelSvm.cu">
       <Filter>Source Files</Filter>
     </CudaCompile>
   </ItemGroup>

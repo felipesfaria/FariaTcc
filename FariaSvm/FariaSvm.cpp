@@ -7,6 +7,9 @@
 #include "Logger.h"
 #include "DataSet.h"
 #include "SequentialSvm.h"
+#include "ParallelSvm.cuh"
+#include "Utils.h"
+#include <iostream>
 
 using namespace std;
 
@@ -19,8 +22,14 @@ int main(int argc, char* argv[])
 		srand(seed);
 
 		DataSet ds(argc, argv);
-
-		BaseSvm *svm = new SequentialSvm(argc, argv, ds);
+		
+		string arg = Utils::GetComandVariable(argc, argv, "-s");
+		
+		BaseSvm *svm;
+		if(arg=="p")
+			svm = new ParallelSvm(argc, argv, &ds);
+		else
+			svm = new SequentialSvm(argc, argv, ds);
 
 		auto nFolds = 3;
 		auto totalCorrect = 0;

@@ -62,7 +62,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(CudaToolkitLibDir);C:\Users\Felipe\SkyDrive\Code\FariaTcc\FariaSvm\Debug;$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>cudart.lib;BaseKernel.obj;BaseSvm.obj;DataSet.obj;FariaSvm.obj;Logger.obj;MemoKernel.obj;ParallelKernel.cu.obj;SequentialKernel.obj;stdafx.obj;SequentialSvm.obj;Utils.obj;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>cudart.lib;BaseKernel.obj;BaseSvm.obj;DataSet.obj;FariaSvm.obj;Logger.obj;MemoKernel.obj;ParallelKernel.cu.obj;ParallelSvm.cu.obj;SequentialKernel.obj;stdafx.obj;SequentialSvm.obj;Utils.obj;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -95,6 +95,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="SvmTest.cpp" />
     <ClCompile Include="UtilsTest.cpp" />
   </ItemGroup>
   <ItemGroup>

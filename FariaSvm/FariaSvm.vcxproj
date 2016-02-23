@@ -152,6 +152,7 @@
     <ClInclude Include="MemoKernel.h" />
     <ClInclude Include="ParallelKernel.cuh" />
     <ClInclude Include="DataSet.h" />
+    <ClInclude Include="ParallelSvm.cuh" />
     <ClInclude Include="SequentialKernel.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="stdafx.h" />
@@ -167,6 +168,9 @@
     <ClCompile Include="BaseSvm.cpp" />
     <ClCompile Include="DataSet.cpp" />
     <ClCompile Include="MemoKernel.cpp" />
+    <CudaCompile Include="ParallelSvm.cu">
+      <FileType>CppCode</FileType>
+    </CudaCompile>
     <ClCompile Include="SequentialKernel.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="stdafx.cpp">
