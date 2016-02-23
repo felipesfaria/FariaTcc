@@ -20,7 +20,7 @@ namespace FariaTccTest
 			char *argv[] = { "exePath", "-d", "i","-s","p" };
 			DataSet ds(argc, argv);
 
-			BaseSvm *svm = new SequentialSvm(argc, argv, ds);
+			BaseSvm *svm = new SequentialSvm(argc, argv, &ds);
 
 			auto nFolds = 3;
 			auto totalCorrect = 0;
@@ -30,8 +30,8 @@ namespace FariaTccTest
 				double b1;
 				int validationStart = ds.nSamples*(i - 1) / nFolds;
 				int validationEnd = ds.nSamples*i / nFolds;
-				svm->Train(ds, validationStart, validationEnd, alpha1, b1);
-				svm->Test(ds, validationStart, validationEnd, alpha1, b1, correct);
+				svm->Train(validationStart, validationEnd, alpha1, b1);
+				svm->Test(validationStart, validationEnd, alpha1, b1, correct);
 				totalCorrect += correct;
 			}
 			double expected = 100.0;
@@ -55,8 +55,8 @@ namespace FariaTccTest
 				double b1;
 				int validationStart = ds.nSamples*(i - 1) / nFolds;
 				int validationEnd = ds.nSamples*i / nFolds;
-				svm->Train(ds, validationStart, validationEnd, alpha1, b1);
-				svm->Test(ds, validationStart, validationEnd, alpha1, b1, correct);
+				svm->Train(validationStart, validationEnd, alpha1, b1);
+				svm->Test(validationStart, validationEnd, alpha1, b1, correct);
 				totalCorrect += correct;
 			}
 			double expected = 100.0;

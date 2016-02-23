@@ -33,7 +33,7 @@ int main(int argc, char* argv[])
 		if(arg=="p")
 			svm = new ParallelSvm(argc, argv, &ds);
 		else
-			svm = new SequentialSvm(argc, argv, ds);
+			svm = new SequentialSvm(argc, argv, &ds);
 
 		auto nFolds = 3;
 		auto totalCorrect = 0;
@@ -44,8 +44,8 @@ int main(int argc, char* argv[])
 			double b1;
 			int validationStart = ds.nSamples*(i - 1) / nFolds;
 			int validationEnd = ds.nSamples*i / nFolds;
-			svm->Train(ds, validationStart, validationEnd, alpha1, b1);
-			svm->Test(ds, validationStart, validationEnd, alpha1, b1, correct);
+			svm->Train(validationStart, validationEnd, alpha1, b1);
+			svm->Test(validationStart, validationEnd, alpha1, b1, correct);
 			totalCorrect += correct;
 		}
 		double averagePercentageCorrect = 100.0*totalCorrect / ds.nSamples;

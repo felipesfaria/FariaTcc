@@ -13,12 +13,11 @@ public:
 	~ParallelSvm();
 	void CopyAllToGpu();
 	void CopyResultToGpu(vector<double>& alpha);
-	int Classify(const DataSet& ds, int index, vector<double>& alpha, double& b) override;
-	void Train(const DataSet& ds, int validationStart, int validationEnd, vector<double>& alpha, double& b) override;
-	void Test(const DataSet& ds, int validationStart, int validationEnd, vector<double>& alpha1, double& b1, int& nCorrect) override;
+	int Classify(int index, vector<double>& alpha, double& b) override;
+	void Train(int validationStart, int validationEnd, vector<double>& alpha, double& b) override;
+	void Test(int validationStart, int validationEnd, vector<double>& alpha1, double& b1, int& nCorrect) override;
 private:
 	cudaError_t cudaStatus;;
-	DataSet* ds;
 	int _blocks;
 	int _threadsPerBlock;
 
