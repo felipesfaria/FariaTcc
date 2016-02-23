@@ -1,6 +1,5 @@
 #include "stdafx.h"
-#include "SvmLinear.h"
-#include "DataSet.h"
+#include "SequentialSvm.h"
 #include "SequentialKernel.h"
 #include "ParallelKernel.cuh"
 #include "MemoKernel.h"
@@ -10,7 +9,7 @@
 using namespace std;
 
 
-SvmLinear::SvmLinear(int argc, char** argv, const DataSet& ds)
+SequentialSvm::SequentialSvm(int argc, char** argv, const DataSet& ds)
 {
 	string arg = Utils::GetComandVariable(argc, argv, "-k");
 	switch (arg[0])
@@ -36,13 +35,13 @@ SvmLinear::SvmLinear(int argc, char** argv, const DataSet& ds)
 	kernel->Init(ds);
 }
 
-SvmLinear::~SvmLinear()
+SequentialSvm::~SequentialSvm()
 {
 	free(kernel);
 }
 
 
-int SvmLinear::Classify(const DataSet& ds, int index, vector<double>& alpha, double& b)
+int SequentialSvm::Classify(const DataSet& ds, int index, vector<double>& alpha, double& b)
 {
 	auto x = ds.X;
 	auto y = ds.Y;
@@ -62,7 +61,7 @@ int SvmLinear::Classify(const DataSet& ds, int index, vector<double>& alpha, dou
 	return 0;
 }
 
-void SvmLinear::Train(const DataSet& ds, int validationStart, int validationEnd, vector<double>& alpha, double& b)
+void SequentialSvm::Train(const DataSet& ds, int validationStart, int validationEnd, vector<double>& alpha, double& b)
 {
 	Logger::FunctionStart("Train");
 	alpha.clear();
@@ -141,7 +140,7 @@ void SvmLinear::Train(const DataSet& ds, int validationStart, int validationEnd,
 	Logger::FunctionEnd();
 }
 
-void SvmLinear::Test(const DataSet& ds, int validationStart, int validationEnd, vector<double>& alpha1, double& b1, int& nCorrect)
+void SequentialSvm::Test(const DataSet& ds, int validationStart, int validationEnd, vector<double>& alpha1, double& b1, int& nCorrect)
 {
 	Logger::FunctionStart("Test");
 	auto start = clock();

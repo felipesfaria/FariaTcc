@@ -62,7 +62,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(CudaToolkitLibDir);C:\Users\Felipe\SkyDrive\Code\FariaTcc\FariaSvm\Debug;$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>cudart.lib;BaseKernel.obj;DataSet.obj;FariaSvm.obj;Logger.obj;MemoKernel.obj;ParallelKernel.cu.obj;SequentialKernel.obj;stdafx.obj;SvmLinear.obj;Utils.obj;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>cudart.lib;BaseKernel.obj;BaseSvm.obj;DataSet.obj;FariaSvm.obj;Logger.obj;MemoKernel.obj;ParallelKernel.cu.obj;SequentialKernel.obj;stdafx.obj;SequentialSvm.obj;Utils.obj;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

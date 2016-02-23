@@ -4,7 +4,7 @@
 
 BaseKernel::BaseKernel()
 {
-	_type = NONE;
+	throw(new std::exception("Not Implemented exception"));
 }
 
 BaseKernel::~BaseKernel()

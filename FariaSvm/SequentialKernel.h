@@ -2,7 +2,8 @@
 #include <vector>
 #include "BaseKernel.h"
 
-class SequentialKernel: public BaseKernel
+class SequentialKernel
+	: public BaseKernel
 {
 public:
 	~SequentialKernel();

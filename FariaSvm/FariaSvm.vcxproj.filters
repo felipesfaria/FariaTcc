@@ -36,9 +36,6 @@
     <ClInclude Include="DataSet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SvmLinear.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SequentialKernel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -52,6 +49,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Enums.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseSvm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SequentialSvm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -68,9 +71,6 @@
     <ClCompile Include="DataSet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SvmLinear.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="FariaSvm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -81,6 +81,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BaseKernel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseSvm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SequentialSvm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

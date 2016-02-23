@@ -6,7 +6,7 @@
 #include <ctime>
 #include "Logger.h"
 #include "DataSet.h"
-#include "SvmLinear.h"
+#include "SequentialSvm.h"
 
 using namespace std;
 
@@ -20,7 +20,7 @@ int main(int argc, char* argv[])
 
 		DataSet ds(argc, argv);
 
-		SvmLinear svm(argc, argv, ds);
+		BaseSvm *svm = new SequentialSvm(argc, argv, ds);
 
 		auto nFolds = 3;
 		auto totalCorrect = 0;
@@ -31,8 +31,8 @@ int main(int argc, char* argv[])
 			double b1;
 			int validationStart = ds.nSamples*(i - 1) / nFolds;
 			int validationEnd = ds.nSamples*i / nFolds;
-			svm.Train(ds, validationStart, validationEnd, alpha1, b1);
-			svm.Test(ds, validationStart, validationEnd, alpha1, b1, correct);
+			svm->Train(ds, validationStart, validationEnd, alpha1, b1);
+			svm->Test(ds, validationStart, validationEnd, alpha1, b1, correct);
 			totalCorrect += correct;
 		}
 		double averagePercentageCorrect = 100.0*totalCorrect / ds.nSamples;
