@@ -29,7 +29,7 @@ SequentialSvm::SequentialSvm(int argc, char** argv, const DataSet& ds)
 	case 'S':
 		kernel = new SequentialKernel(ds);
 	default:
-		int oneGigaByte = 2 << 30;
+		int oneGigaByte = 1 << 30;
 		if (memoByteSize<oneGigaByte)
 			kernel = new MemoKernel(ds);
 		else
