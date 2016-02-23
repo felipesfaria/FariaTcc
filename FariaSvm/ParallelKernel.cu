@@ -29,7 +29,7 @@ ParallelKernel::ParallelKernel(const DataSet& ds)
 		_sigma = 1 / (2 * ds.Gama*ds.Gama);
 		break;
 	default:
-		throw(new std::exception("Not Implemented exception"));
+		throw(exception("Not Implemented exception"));
 	}
 	int completeSize = ds.X.size()*ds.nFeatures;
 	features = ds.nFeatures;
@@ -48,34 +48,34 @@ ParallelKernel::ParallelKernel(const DataSet& ds)
 	cudaStatus = cudaSetDevice(0);
 	if (cudaStatus != cudaSuccess) {
 		fprintf(stderr, "cudaSetDevice failed!  Do you have a CUDA-capable GPU installed?");
-		throw(new exception("cudaSetDevice failed!  Do you have a CUDA-capable GPU installed?"));
+		throw(exception("cudaSetDevice failed!  Do you have a CUDA-capable GPU installed?"));
 	}
 
 	cudaStatus = cudaMalloc((void**)&dev_x, completeSize * sizeof(double));
 	if (cudaStatus != cudaSuccess) {
 		fprintf(stderr, "cudaMalloc failed!");
-		throw(new exception("cudaMalloc failed!"));
+		throw(exception("cudaMalloc failed!"));
 	}
 	cudaStatus = cudaMalloc((void**)&dev_s, features * sizeof(double));
 	if (cudaStatus != cudaSuccess) {
 		fprintf(stderr, "cudaMalloc failed!");
-		throw(new exception("cudaMalloc failed!"));
+		throw(exception("cudaMalloc failed!"));
 	}
 	cudaStatus = cudaMalloc((void**)&dev_i, sizeof(int));
 	if (cudaStatus != cudaSuccess) {
 		fprintf(stderr, "cudaMalloc failed!");
-		throw(new exception("cudaMalloc failed!"));
+		throw(exception("cudaMalloc failed!"));
 	}
 	cudaStatus = cudaMalloc((void**)&dev_j, sizeof(int));
 	if (cudaStatus != cudaSuccess) {
 		fprintf(stderr, "cudaMalloc failed!");
-		throw(new exception("cudaMalloc failed!"));
+		throw(exception("cudaMalloc failed!"));
 	}
 
 	cudaStatus = cudaMemcpy(dev_x, hst_x, completeSize * sizeof(double), cudaMemcpyHostToDevice);
 	if (cudaStatus != cudaSuccess) {
 		fprintf(stderr, "cudaMemcpy failed!");
-		throw(new exception("cudaMemcpy failed!"));
+		throw(exception("cudaMemcpy failed!"));
 	}
 	free(hst_x);
 }
@@ -101,12 +101,12 @@ double ParallelKernel::K(int i, int j, const DataSet& ds)
 	cudaStatus = cudaMemcpy(dev_i, hst_i, sizeof(int), cudaMemcpyHostToDevice);
 	if (cudaStatus != cudaSuccess) {
 		fprintf(stderr, "cudaMemcpy failed!");
-		throw(new exception("cudaMemcpy failed!"));
+		throw(exception("cudaMemcpy failed!"));
 	}
 	cudaStatus = cudaMemcpy(dev_j, hst_j, sizeof(int), cudaMemcpyHostToDevice);
 	if (cudaStatus != cudaSuccess) {
 		fprintf(stderr, "cudaMemcpy failed!");
-		throw(new exception("cudaMemcpy failed!"));
+		throw(exception("cudaMemcpy failed!"));
 	}
 
 	myFunc << <1, features >> >(dev_s, dev_x, dev_i, dev_j);
@@ -115,7 +115,7 @@ double ParallelKernel::K(int i, int j, const DataSet& ds)
 	cudaStatus = cudaGetLastError();
 	if (cudaStatus != cudaSuccess) {
 		fprintf(stderr, "addKernel launch failed: %s\n", cudaGetErrorString(cudaStatus));
-		throw(new exception("addKernel launch failed: %s\n"));
+		throw(exception("addKernel launch failed: %s\n"));
 	}
 
 	// cudaDeviceSynchronize waits for the kernel to finish, and returns
@@ -123,14 +123,14 @@ double ParallelKernel::K(int i, int j, const DataSet& ds)
 	cudaStatus = cudaDeviceSynchronize();
 	if (cudaStatus != cudaSuccess) {
 		fprintf(stderr, "cudaDeviceSynchronize returned error code %d after launching addKernel!\n", cudaStatus);
-		throw(new exception("cudaDeviceSynchronize returned error code %d after launching addKernel!\n"));
+		throw( exception("cudaDeviceSynchronize returned error code %d after launching addKernel!\n"));
 	}
 
 	// Copy output vector from GPU buffer to host memory.
 	cudaStatus = cudaMemcpy(hst_s, dev_s, features * sizeof(double), cudaMemcpyDeviceToHost);
 	if (cudaStatus != cudaSuccess) {
 		fprintf(stderr, "cudaMemcpy failed!");
-		throw(new exception("cudaMemcpy failed!"));
+		throw( exception("cudaMemcpy failed!"));
 	}
 	double sum = 0;
 	for (int i = 0; i < features; i++){
@@ -155,41 +155,41 @@ cudaError_t ParallelKernel::AddWithCuda(double *c, const double *a, const double
 		cudaStatus = cudaMalloc((void**)&dev_a, size * sizeof(double));
 		if (cudaStatus != cudaSuccess) {
 			fprintf(stderr, "cudaMalloc failed!");
-			throw(new exception("cudaMalloc failed!"));
+			throw( exception("cudaMalloc failed!"));
 		}
 		cudaStatus = cudaMalloc((void**)&dev_b, size * sizeof(double));
 		if (cudaStatus != cudaSuccess) {
 			fprintf(stderr, "cudaMalloc failed!");
-			throw(new exception("cudaMalloc failed!"));
+			throw( exception("cudaMalloc failed!"));
 		}
 		cudaStatus = cudaMalloc((void**)&dev_c, size * sizeof(double));
 		if (cudaStatus != cudaSuccess) {
 			fprintf(stderr, "cudaMalloc failed!");
-			throw(new exception("cudaMalloc failed!"));
+			throw( exception("cudaMalloc failed!"));
 		}
 		cudaStatus = cudaMalloc((void**)&dev_g, sizeof(double));
 		if (cudaStatus != cudaSuccess) {
 			fprintf(stderr, "cudaMalloc failed!");
-			throw(new exception("cudaMalloc failed!"));
+			throw( exception("cudaMalloc failed!"));
 		}
 
 		// Copy input vectors from host memory to GPU buffers.
 		cudaStatus = cudaMemcpy(dev_a, a, size * sizeof(double), cudaMemcpyHostToDevice);
 		if (cudaStatus != cudaSuccess) {
 			fprintf(stderr, "cudaMemcpy failed!");
-			throw(new exception("cudaMemcpy failed!"));
+			throw( exception("cudaMemcpy failed!"));
 		}
 
 		cudaStatus = cudaMemcpy(dev_b, b, size * sizeof(double), cudaMemcpyHostToDevice);
 		if (cudaStatus != cudaSuccess) {
 			fprintf(stderr, "cudaMemcpy failed!");
-			throw(new exception("cudaMemcpy failed!"));
+			throw( exception("cudaMemcpy failed!"));
 		}
 
 		cudaStatus = cudaMemcpy(dev_g, gama, sizeof(double), cudaMemcpyHostToDevice);
 		if (cudaStatus != cudaSuccess) {
 			fprintf(stderr, "cudaMemcpy failed!");
-			throw(new exception("cudaMemcpy failed!"));
+			throw( exception("cudaMemcpy failed!"));
 		}
 
 		// Launch a kernel on the GPU with one thread for each element.
@@ -199,7 +199,7 @@ cudaError_t ParallelKernel::AddWithCuda(double *c, const double *a, const double
 		cudaStatus = cudaGetLastError();
 		if (cudaStatus != cudaSuccess) {
 			fprintf(stderr, "addKernel launch failed: %s\n", cudaGetErrorString(cudaStatus));
-			throw(new exception("addKernel launch failed: %s\n"));
+			throw( exception("addKernel launch failed: %s\n"));
 		}
 
 		// cudaDeviceSynchronize waits for the kernel to finish, and returns
@@ -207,14 +207,14 @@ cudaError_t ParallelKernel::AddWithCuda(double *c, const double *a, const double
 		cudaStatus = cudaDeviceSynchronize();
 		if (cudaStatus != cudaSuccess) {
 			fprintf(stderr, "cudaDeviceSynchronize returned error code %d after launching addKernel!\n", cudaStatus);
-			throw(new exception("cudaDeviceSynchronize returned error code %d after launching addKernel!\n"));
+			throw( exception("cudaDeviceSynchronize returned error code %d after launching addKernel!\n"));
 		}
 
 		// Copy output vector from GPU buffer to host memory.
 		cudaStatus = cudaMemcpy(c, dev_c, size * sizeof(double), cudaMemcpyDeviceToHost);
 		if (cudaStatus != cudaSuccess) {
 			fprintf(stderr, "cudaMemcpy failed!");
-			throw(new exception("cudaMemcpy failed!"));
+			throw( exception("cudaMemcpy failed!"));
 		}
 	}
 	catch (exception &e){

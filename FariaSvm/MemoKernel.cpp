@@ -14,7 +14,7 @@ MemoKernel::MemoKernel(const DataSet& ds)
 		_sigma = 1 / (2 * ds.Gama*ds.Gama);
 		break;
 	default:
-		throw(new std::exception("Not Implemented exception"));
+		throw(exception("Not Implemented exception"));
 	}
 	samples = ds.nSamples;
 	features = ds.nFeatures;

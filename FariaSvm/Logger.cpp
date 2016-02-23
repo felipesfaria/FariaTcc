@@ -31,7 +31,7 @@ void Logger::Init(int argc, char** argv)
 	else
 	{
 		string message = "Invalid argument for -l:" + argument;
-		throw(new exception(message.c_str()));
+		throw(exception(message.c_str()));
 	}
 
 	switch (_type)
@@ -76,7 +76,7 @@ void Logger::Error(exception exception)
 void Logger::FunctionStart(string functionName)
 {
 	if (!_currentFunction.empty())
-		throw(new exception("Called Logger.FunctionStart before Logger.FunctionEnd."));
+		throw(exception("Called Logger.FunctionStart before Logger.FunctionEnd."));
 	_currentFunction = functionName;
 	_functionStart = clock();
 	switch (_type)
@@ -94,7 +94,7 @@ void Logger::FunctionStart(string functionName)
 void Logger::FunctionEnd()
 {
 	if (_currentFunction.empty())
-		throw(new exception("Called Logger.FunctionEnd before Logger.FunctionStart."));
+		throw(exception("Called Logger.FunctionEnd before Logger.FunctionStart."));
 
 	int end = clock();
 	switch (_type)

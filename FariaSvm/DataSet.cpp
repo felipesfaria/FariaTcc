@@ -103,7 +103,7 @@ void DataSet::InitAdult(int n)
 		nTesters = 16281;
 		break;
 	default:
-		throw(new exception("Invalid adult type"));
+		throw(exception("Invalid adult type"));
 	}
 }
 
@@ -155,7 +155,7 @@ void DataSet::InitWeb(int n)
 		nSamples = 49749;
 		break;
 	default:
-		throw(new exception("Invalid Web type"));
+		throw(exception("Invalid Web type"));
 	}
 }
 
@@ -190,7 +190,7 @@ void DataSet::ReadFile()
 	file.open(FileName, ifstream::in);
 
 	if (!file.good())
-		throw(new exception("Error: File not found"));
+		throw(exception("Error: File not found"));
 
 	for (int i = 0; i < nSamples; i++)
 		readNextRow(file);
@@ -209,7 +209,7 @@ void DataSet::readIndexedData(istream& str)
 	getline(lineStream, cell, ' ');
 	double y;
 	if (!Utils::TryParseDouble(cell, y))
-		throw new exception("Missing y value.");
+		throw exception("Missing y value.");
 	vector<double> x;
 	for (int i = 0; i < nFeatures; ++i)
 		x.push_back(0);

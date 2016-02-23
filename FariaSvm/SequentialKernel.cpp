@@ -13,7 +13,7 @@ SequentialKernel::SequentialKernel(const DataSet& ds)
 		_sigma = ds.Gama;
 		break;
 	default:
-		throw(new std::exception("Not Implemented exception"));
+		throw(exception("Not Implemented exception"));
 	}
 }
 SequentialKernel::~SequentialKernel()

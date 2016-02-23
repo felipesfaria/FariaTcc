@@ -15,7 +15,7 @@ BaseKernel::BaseKernel(const DataSet& ds)
 		_sigma = ds.Gama;
 		break;
 	default:
-		throw(new std::exception("Not Implemented exception"));
+		throw(exception("Not Implemented exception"));
 	}
 }
 
@@ -25,5 +25,5 @@ BaseKernel::~BaseKernel()
 
 double BaseKernel::K(int i, int j, const DataSet& ds)
 {
-	throw(new std::exception("Not Implemented exception"));
+	throw(exception("Not Implemented exception"));
 }

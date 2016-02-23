@@ -8,17 +8,17 @@ BaseSvm::BaseSvm()
 
 int BaseSvm::Classify(const DataSet& ds, int index, vector<double>& alpha, double& b)
 {
-	throw(new exception("Not Implemented."));
+	throw(exception("Not Implemented."));
 }
 
 void BaseSvm::Train(const DataSet& ds, int validationStart, int validationEnd, vector<double>& alpha, double& b)
 {
-	throw(new exception("Not Implemented."));
+	throw(exception("Not Implemented."));
 }
 
 void BaseSvm::Test(const DataSet& ds, int validationStart, int validationEnd, vector<double>& alpha1, double& b1, int& nCorrect)
 {
-	throw(new exception("Not Implemented."));
+	throw(exception("Not Implemented."));
 }
 
 BaseSvm::~BaseSvm()
