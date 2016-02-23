@@ -11,9 +11,10 @@ using namespace std;
 
 SequentialSvm::SequentialSvm(int argc, char** argv, const DataSet& ds)
 {
+	Logger::Stats("SVM:", "Sequential");
 	string arg = Utils::GetComandVariable(argc, argv, "-k");
 	int doubleSize = sizeof(double);
-	int memoByteSize = ds.nSamples*ds.nSamples*doubleSize;
+	long memoByteSize = (long)ds.nSamples*(long)ds.nSamples*(long)doubleSize;
 	switch (arg[0])
 	{
 	case 'm':
@@ -28,7 +29,7 @@ SequentialSvm::SequentialSvm(int argc, char** argv, const DataSet& ds)
 
 	default:
 		int oneGigaByte = 1 << 30;
-		if (memoByteSize<oneGigaByte)
+		if (memoByteSize<oneGigaByte && memoByteSize>0)
 			kernel = new MemoKernel(ds);
 		else
 			kernel = new SequentialKernel(ds);

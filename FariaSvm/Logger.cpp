@@ -126,6 +126,13 @@ void Logger::ClassifyProgress(int count, double step, double lastDif, double dif
 	}
 }
 
+void Logger::Stats(string statName, long stat)
+{
+	std::ostringstream strs;
+	strs << stat;
+	Stats(statName, strs.str());
+}
+
 void Logger::Stats(string statName, int stat)
 {
 	std::ostringstream strs;

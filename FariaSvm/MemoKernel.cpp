@@ -4,6 +4,21 @@
 #include "Logger.h"
 
 
+void MemoKernel::LoadMemo(const DataSet& ds)
+{
+	Logger::FunctionStart("LoadMemo");
+	int i = 0;
+	for (int i = 0; i < samples; i++)
+		for (int j = 0; j < features; j++)
+			x[i*features + j] = ds.X[i][j];
+
+	for (int i = 0; i < samples; i++){
+		for (int j = 0; j < samples; j++)
+			_memo[i*samples + j] = Gauss(i, j);
+	}
+	Logger::FunctionEnd();
+}
+
 MemoKernel::MemoKernel(const DataSet& ds)
 {
 	Logger::Stats("Kernel:", "Memo");
@@ -24,15 +39,8 @@ MemoKernel::MemoKernel(const DataSet& ds)
 	auto size = ds.nSamples*ds.nSamples;
 	_memo = (double*)malloc(size*sizeof(double));
 	x = (double*)malloc(features*samples*sizeof(double));
-	int i = 0;
-	for (int i = 0; i < samples; i++)
-		for (int j = 0; j < features; j++)
-			x[i*features + j] = ds.X[i][j];
 
-	for (int i = 0; i < samples; i++){
-		for (int j = 0; j < samples; j++)
-			_memo[i*samples + j] = Gauss(i, j);
-	}
+	LoadMemo(ds);
 }
 
 
@@ -62,7 +70,7 @@ double MemoKernel::K(int i, int j, const DataSet& ds)
 	return _memo[index];
 }
 
-int MemoKernel::GetMemoByteSize()
+long MemoKernel::GetMemoByteSize()
 {
-	return samples*samples*sizeof(double);
+	return (long)samples*(long)samples*sizeof(double);
 }

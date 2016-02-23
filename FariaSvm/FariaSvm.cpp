@@ -16,14 +16,18 @@ using namespace std;
 int main(int argc, char* argv[])
 {
 	try{
-		unsigned int seed = time(nullptr);
 		Logger::Init(argc, argv);
+
+		int seed;
+		string arg = Utils::GetComandVariable(argc, argv, "-s");
+		if (!Utils::TryParseInt(arg, seed))
+			seed = time(nullptr);
 		Logger::Stats("Seed", seed);
 		srand(seed);
 
 		DataSet ds(argc, argv);
 		
-		string arg = Utils::GetComandVariable(argc, argv, "-s");
+		arg = Utils::GetComandVariable(argc, argv, "-svm");
 		
 		BaseSvm *svm;
 		if(arg=="p")

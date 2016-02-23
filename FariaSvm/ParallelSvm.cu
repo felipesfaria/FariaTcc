@@ -12,10 +12,6 @@ __global__ void partialSum(double *saida, const double *x, const double *alphaY,
 {
 	int idx = threadIdx.x + blockIdx.x * blockDim.x;
 
-	//int aIndex = posI[0] * nFeatures[0];
-	//int bIndex = idx*nFeatures[0];
-
-	//saida[idx] = bIndex;
 	int aIndex = posI[0] * nFeatures[0];
 	int bIndex = idx*nFeatures[0];
 	double sum = 0;
@@ -36,10 +32,11 @@ ParallelSvm::ParallelSvm(int argc, char** argv, const DataSet& ds)
 
 ParallelSvm::ParallelSvm(int argc, char** argv, DataSet *ds)
 {
+	Logger::Stats("SVM:", "Parallel");
 	this->ds = ds;
 	string arg = Utils::GetComandVariable(argc, argv, "-k");
 	int doubleSize = sizeof(double);
-	int memoByteSize = ds->nSamples*ds->nSamples*doubleSize;
+	long memoByteSize = (long)ds->nSamples*(long)ds->nSamples*(long)doubleSize;
 	switch (arg[0])
 	{
 	case 'm':
@@ -55,8 +52,8 @@ ParallelSvm::ParallelSvm(int argc, char** argv, DataSet *ds)
 		break;
 
 	default:
-		int oneGigaByte = 1 << 30;
-		if (memoByteSize < oneGigaByte){
+		int oneGigaByte = 1 << 29;
+		if (memoByteSize < oneGigaByte && memoByteSize>0){
 			kernel = new MemoKernel(*ds);
 			CopyAllToGpu();
 		}
