@@ -35,7 +35,11 @@ int main(int argc, char* argv[])
 		else
 			svm = new SequentialSvm(argc, argv, &ds);
 
-		auto nFolds = 3;
+		int nFolds;
+
+		arg = Utils::GetComandVariable(argc, argv, "-f");
+		if (!Utils::TryParseInt(arg,nFolds))
+			nFolds = 3;
 		auto totalCorrect = 0;
 		int correct;
 		for (auto i = 1; i <= nFolds; i++){
