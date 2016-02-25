@@ -15,7 +15,7 @@
 
 using namespace std;
 
-__global__ void partialSum(double *saida, const double *x, const double *alphaY, const double gama, const int posI, const int nFeatures,const int max)
+__global__ void classificationKernel(double *saida, const double *x, const double *alphaY, const double gama, const int posI, const int nFeatures, const int max)
 {
 	int idx = threadIdx.x + blockIdx.x * blockDim.x;
 	//Sem isso ocorre erro com alguns conjuntos de dados
@@ -33,6 +33,40 @@ __global__ void partialSum(double *saida, const double *x, const double *alphaY,
 	saida[idx] = alphaY[idx] * exp(-gama * sum);
 }
 
+__global__ void trainingKernel(double *alpha, const double *x, const double *y, const double gama, const int nFeatures, const int nSamples, const double step, const double C, const int validationStart, const int validationEnd)
+{
+	int idx = threadIdx.x + blockIdx.x * blockDim.x;
+	//Sem isso ocorre erro com alguns conjuntos de dados
+	if (idx > nSamples || (idx >= validationStart && idx < validationEnd)) return;
+	int bIndex = idx*nFeatures;
+	double outerSum = 0;
+	for (int i = 0; i < nSamples; i++){
+		int aIndex = i * nFeatures;
+		double product;
+		double innerSum = 0;
+		for (int j = 0; j < nFeatures; ++j)
+		{
+			product = x[aIndex + j] - x[bIndex + j];
+			product *= product;
+			innerSum += product;
+		}
+		outerSum += alpha[i] * y[i] * exp(-gama * innerSum);
+	}
+	double deltaAlpha = step - step*y[idx] * outerSum;
+	double newAlpha = deltaAlpha + alpha[idx];
+	if (newAlpha > C)
+		newAlpha = C;
+	else if (newAlpha < 0)
+		newAlpha = 0.0;
+	alpha[idx] = newAlpha;
+}
+
+__global__ void initArray(double *array, const double value)
+{
+	int idx = threadIdx.x + blockIdx.x * blockDim.x;
+	array[idx] = value;
+}
+
 ParallelSvm::ParallelSvm(int argc, char** argv, DataSet *ds)
 {
 	Logger::Stats("SVM", "Parallel");
@@ -42,11 +76,11 @@ ParallelSvm::ParallelSvm(int argc, char** argv, DataSet *ds)
 	int halfGigaByte = 1 << 29;
 	long gpuByteSize = ds->nSamples*ds->nFeatures*sizeof(double);
 
-	if (gpuByteSize > halfGigaByte || gpuByteSize<0)
+	if (gpuByteSize > halfGigaByte || gpuByteSize < 0)
 		throw exception("gpuByteSize to big for gpu.");
 
 	string arg = Utils::GetComandVariable(argc, argv, "-tpb");
-	if (!Utils::TryParseInt(arg,_threadsPerBlock) ||_threadsPerBlock % 32 != 0)
+	if (!Utils::TryParseInt(arg, _threadsPerBlock) || _threadsPerBlock % 32 != 0)
 		_threadsPerBlock = 128;
 	_blocks = 1 + _ds->nSamples / _threadsPerBlock;
 
@@ -56,12 +90,16 @@ ParallelSvm::ParallelSvm(int argc, char** argv, DataSet *ds)
 
 
 	double* hst_x = (double*)malloc(sizeof(double)*_ds->nSamples*_ds->nFeatures);
+	double* hst_y = (double*)malloc(sizeof(double)*_ds->nSamples);
 	hst_s = (double*)malloc(sizeof(double)*_ds->nSamples);
-	hst_aY = (double*)malloc(sizeof(double)*_ds->nSamples);
+	hst_a = (double*)malloc(sizeof(double)*_ds->nSamples);
 
 	for (int i = 0; i < _ds->nSamples; i++)
 		for (int j = 0; j < _ds->nFeatures; j++)
 			hst_x[i*_ds->nFeatures + j] = _ds->X[i][j];
+
+	for (int i = 0; i < _ds->nSamples; i++)
+		hst_y[i] = _ds->Y[i];
 
 	g = 1 / (2 * _ds->Gama*_ds->Gama);
 
@@ -69,12 +107,15 @@ ParallelSvm::ParallelSvm(int argc, char** argv, DataSet *ds)
 
 	CUDA_SAFE_CALL(cudaMalloc((void**)&dev_x, _ds->nSamples * _ds->nFeatures * sizeof(double)));
 	CUDA_SAFE_CALL(cudaMalloc((void**)&dev_s, _ds->nSamples * sizeof(double)));
-	CUDA_SAFE_CALL(cudaMalloc((void**)&dev_aY, _ds->nSamples * sizeof(double)));
+	CUDA_SAFE_CALL(cudaMalloc((void**)&dev_a, _ds->nSamples * sizeof(double)));
+	CUDA_SAFE_CALL(cudaMalloc((void**)&dev_y, _ds->nSamples * sizeof(double)));
 
 
 	CUDA_SAFE_CALL(cudaMemcpy(dev_x, hst_x, _ds->nSamples * _ds->nFeatures * sizeof(double), cudaMemcpyHostToDevice));
+	CUDA_SAFE_CALL(cudaMemcpy(dev_y, hst_y, _ds->nSamples * sizeof(double), cudaMemcpyHostToDevice));
 
 	free(hst_x);
+	free(hst_y);
 	Logger::FunctionEnd();
 }
 
@@ -82,29 +123,30 @@ ParallelSvm::~ParallelSvm()
 {
 	cudaFree(dev_x);
 	cudaFree(dev_s);
-	cudaFree(dev_aY);
+	cudaFree(dev_a);
+	cudaFree(dev_y);
 	free(hst_s);
-	free(hst_aY);
+	free(hst_a);
 }
 
 void ParallelSvm::CopyResultToGpu(vector<double>& alpha)
 {
 	for (int i = 0; i < _ds->nSamples; i++)
 	{
-		hst_aY[i] = alpha[i] * _ds->Y[i];
+		hst_a[i] = alpha[i] * _ds->Y[i];
 	}
 
-	CUDA_SAFE_CALL(cudaMemcpy(dev_aY, hst_aY, _ds->nSamples * sizeof(double), cudaMemcpyHostToDevice));
+	CUDA_SAFE_CALL(cudaMemcpy(dev_a, hst_a, _ds->nSamples * sizeof(double), cudaMemcpyHostToDevice));
 }
 
 int ParallelSvm::Classify(int index, vector<double>& alpha, double& b)
 {
-	partialSum << <_blocks, _threadsPerBlock >> >(dev_s, dev_x, dev_aY, g, index, _ds->nFeatures, _ds->nSamples);
+	classificationKernel << <_blocks, _threadsPerBlock >> >(dev_s, dev_x, dev_a, g, index, _ds->nFeatures, _ds->nSamples);
 
 	CUDA_SAFE_CALL(cudaGetLastError());
-	
+
 	CUDA_SAFE_CALL(cudaDeviceSynchronize());
-	
+
 	CUDA_SAFE_CALL(cudaMemcpy(hst_s, dev_s, _ds->nSamples * sizeof(double), cudaMemcpyDeviceToHost));
 
 	double cudaSum = 0.0;
@@ -123,15 +165,11 @@ int ParallelSvm::Classify(int index, vector<double>& alpha, double& b)
 void ParallelSvm::Train(int validationStart, int validationEnd, vector<double>& alpha, double& b)
 {
 	Logger::FunctionStart("Train");
-	alpha.clear();
-	vector<double> oldAlpha;
-	int samples = _ds->nSamples;
-	for (int i = 0; i < samples; ++i){
-		alpha.push_back(0);
-		oldAlpha.push_back(1);
-	}
-	vector<vector<double>> x = _ds->X;
-	vector<double> y = _ds->Y;
+	vector<double> oldAlpha(_ds->nSamples);
+	for (int i = 0; i < _ds->nSamples; i++)
+		oldAlpha[i] = 0;
+	initArray << <_blocks, _threadsPerBlock >> >(dev_a, 0.0);
+	CUDA_SAFE_CALL(cudaDeviceSynchronize());
 	int count = 0;
 	double lastDif = 0.0;
 	double difAlpha;
@@ -140,61 +178,37 @@ void ParallelSvm::Train(int validationStart, int validationEnd, vector<double>& 
 	double precision = _ds->Precision;
 	do
 	{
-		count++;
+		trainingKernel << <_blocks, _threadsPerBlock >> >(dev_a, dev_x, dev_y, g, _ds->nFeatures, _ds->nSamples, step, _ds->C, validationStart, validationEnd);
+
+		CUDA_SAFE_CALL(cudaGetLastError());
+
+		CUDA_SAFE_CALL(cudaDeviceSynchronize());
+
+		CUDA_SAFE_CALL(cudaMemcpy(hst_a, dev_a, _ds->nSamples * sizeof(double), cudaMemcpyDeviceToHost));
 
 		difAlpha = 0;
-		for (int i = 0; i < samples; ++i){
-			difAlpha += alpha[i] - oldAlpha[i];
-			oldAlpha[i] = alpha[i];
+		for (int i = 0; i < _ds->nSamples; ++i){
+			difAlpha += hst_a[i] - oldAlpha[i];
+			oldAlpha[i] = hst_a[i];
 		}
 
-		if (count>1)
-			Logger::ClassifyProgress(count, step, lastDif, difAlpha);
+		Logger::ClassifyProgress(count, step, lastDif, difAlpha);
 
-		if (abs(difAlpha) < precision)
-			break;
 		if (abs(difAlpha - lastDif) > difAlpha / 10.0)
 			step = step / 2;
 		lastDif = difAlpha;
-		if (count>1)
-			CopyResultToGpu(oldAlpha);
-		for (int i = 0; i < samples; ++i)
-		{
-			if (i == validationStart){
-				i = validationEnd;
-				if (i == samples)break;
-			}
-
-			double cudaSum = 0.0;
-			if (count > 1){
-				partialSum << <_blocks, _threadsPerBlock >> >(dev_s, dev_x, dev_aY, g, i, _ds->nFeatures, _ds->nSamples);
-
-				CUDA_SAFE_CALL(cudaGetLastError());
-
-				CUDA_SAFE_CALL(cudaDeviceSynchronize());
-
-				CUDA_SAFE_CALL(cudaMemcpy(hst_s, dev_s, _ds->nSamples * sizeof(double), cudaMemcpyDeviceToHost));
-
-				for (int i = 0; i < _ds->nSamples; i++)
-					cudaSum += hst_s[i];
-			}
-			double value = oldAlpha[i] + step - step*y[i] * cudaSum;
-			if (value > C)
-				alpha[i] = C;
-			else if (value < 0)
-				alpha[i] = 0.0;
-			else
-				alpha[i] = value;
-		}
-
-	} while (true);
+		count++;
+	} while ((abs(difAlpha) > precision && count < 100) || count <= 1);
+	alpha.clear();
+	for (int i = 0; i < _ds->nSamples; i++)
+		alpha.push_back(hst_a[i]);
 	int nSupportVectors = 0;
 	for (int i = validationStart; i < validationEnd; i++)
 		alpha[i] = 0;
-	for (int i = 0; i < samples; ++i){
+	for (int i = 0; i < _ds->nSamples; ++i){
 		if (i == validationStart){
 			i = validationEnd;
-			if (i == samples)break;
+			if (i == _ds->nSamples)break;
 		}
 		if (alpha[i] != 0)
 			nSupportVectors++;

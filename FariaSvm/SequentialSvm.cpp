@@ -85,25 +85,6 @@ void SequentialSvm::Train(int validationStart, int validationEnd, vector<double>
 	double precision = _ds->Precision;
 	do
 	{
-		count++;
-
-		difAlpha = 0;
-		for (int i = 0; i < samples; ++i){
-			if (i == validationStart)
-				i = validationEnd;
-			if (i == samples)break;
-			difAlpha += alpha[i] - oldAlpha[i];
-			oldAlpha[i] = alpha[i];
-		}
-
-		if (count>0)
-			Logger::ClassifyProgress(count, step, lastDif, difAlpha);
-
-		if (abs(difAlpha) < precision)
-			break;
-		if (abs(difAlpha - lastDif) > difAlpha / 10.0)
-			step = step / 2;
-		lastDif = difAlpha;
 		for (int i = 0; i < samples; ++i)
 		{
 			if (i == validationStart){
@@ -128,7 +109,20 @@ void SequentialSvm::Train(int validationStart, int validationEnd, vector<double>
 			else
 				alpha[i] = value;
 		}
-	} while (true);
+
+		difAlpha = 0;
+		for (int i = 0; i < _ds->nSamples; ++i){
+			difAlpha += alpha[i] - oldAlpha[i];
+			oldAlpha[i] = alpha[i];
+		}
+
+		Logger::ClassifyProgress(count, step, lastDif, difAlpha);
+
+		if (abs(difAlpha - lastDif) > difAlpha / 10.0)
+			step = step / 2;
+		lastDif = difAlpha;
+		count++;
+	} while ((abs(difAlpha) > precision && count < 100) || count <= 1);
 	int nSupportVectors = 0;
 	for (int i = 0; i < samples; ++i){
 		if (i == validationStart){
