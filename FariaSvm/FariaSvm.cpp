@@ -35,19 +35,14 @@ int main(int argc, char* argv[])
 		else
 			svm = new SequentialSvm(argc, argv, &ds);
 
-		int nFolds;
-		arg = Utils::GetComandVariable(argc, argv, "-f");
-		if (!Utils::TryParseInt(arg,nFolds))
-			nFolds = 3;
-
 		auto totalCorrect = 0;
 		int correct;
-		for (auto i = 1; i <= nFolds; i++){
+		for (auto i = 1; i <= ds.nFolds; i++){
 			Logger::Fold(i);
 			vector<double> alpha1;
 			double b1;
-			int validationStart = ds.nSamples*(i - 1) / nFolds;
-			int validationEnd = ds.nSamples*i / nFolds;
+			int validationStart = ds.nSamples*(i - 1) / ds.nFolds;
+			int validationEnd = ds.nSamples*i / ds.nFolds;
 			svm->Train(validationStart, validationEnd, alpha1, b1);
 			svm->Test(validationStart, validationEnd, alpha1, b1, correct);
 			totalCorrect += correct;

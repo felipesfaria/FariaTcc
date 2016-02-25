@@ -8,7 +8,17 @@ using namespace std;
 DataSet::DataSet(int argc, char** argv)
 {
 	string arg = Utils::GetComandVariable(argc, argv, "-d");
-	Init(arg);
+	InitData(arg);
+
+	arg = Utils::GetComandVariable(argc, argv, "-f");
+	if (!Utils::TryParseInt(arg, nFolds))
+		nFolds = 3;
+	nTrainingSize = nSamples - nSamples / nFolds;
+
+	arg = Utils::GetComandVariable(argc, argv, "-p");
+	if (!Utils::TryParseDouble(arg, Precision))
+		Precision = 3;
+
 	Logger::Stats("FileName", FileName);
 	Logger::Stats("Samples", nSamples);
 	Logger::Stats("Features", nFeatures);
@@ -17,6 +27,7 @@ DataSet::DataSet(int argc, char** argv)
 	Logger::Stats("Gama", Gama);
 	Logger::Stats("Precision", Precision);
 	Logger::Stats("InitialStepSize", Step);
+	Logger::Stats("Folds", nFolds);
 	ReadFile();
 	Utils::Shuffle(X, Y);
 }
@@ -25,7 +36,7 @@ DataSet::~DataSet()
 {
 }
 
-void DataSet::Init(string arg)
+void DataSet::InitData(string arg)
 {
 	kernelType = KernelType::GAUSSIAN;
 	switch (arg[0])

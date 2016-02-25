@@ -18,14 +18,16 @@ public:
 	KernelType kernelType;
 	double Gama;
 	double Step;
-	double Precision = 1e-9;
+	double Precision;
+	int nFolds;
+	int nTrainingSize;
 	vector<vector<double>> X;
 	vector<double> Y;
 	std::string const& operator[](size_t index) const;
 	size_t size() const;
 	DataSet(int argc,char** argv);
 	~DataSet();
-	void Init(string arg="");
+	void InitData(string arg="");
 private:
 	vector<double> m_doubles;
 	vector<long> m_longs;
