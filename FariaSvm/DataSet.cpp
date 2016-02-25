@@ -9,15 +9,14 @@ DataSet::DataSet(int argc, char** argv)
 {
 	string arg = Utils::GetComandVariable(argc, argv, "-d");
 	Init(arg);
-	Logger::Line("DataSet2:");
-	Logger::Stats("FileName: ", FileName);
-	Logger::Stats("Samples: ", nSamples);
-	Logger::Stats("Features: ", nFeatures);
-	Logger::Stats("Classes: ", nClasses);
-	Logger::Stats("C: ", C);
-	Logger::Stats("Gama: ", Gama);
-	Logger::Stats("Precision: ", Precision);
-	Logger::Stats("InitialStepSize: ", Step);
+	Logger::Stats("FileName", FileName);
+	Logger::Stats("Samples", nSamples);
+	Logger::Stats("Features", nFeatures);
+	Logger::Stats("Classes", nClasses);
+	Logger::Stats("C", C);
+	Logger::Stats("Gama", Gama);
+	Logger::Stats("Precision", Precision);
+	Logger::Stats("InitialStepSize", Step);
 	ReadFile();
 	Utils::Shuffle(X, Y);
 }

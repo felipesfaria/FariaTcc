@@ -21,7 +21,7 @@ void MemoKernel::LoadMemo(const DataSet& ds)
 
 MemoKernel::MemoKernel(const DataSet& ds)
 {
-	Logger::Stats("Kernel:", "Memo");
+	Logger::Stats("Kernel", "Memo");
 	_type = ds.kernelType;
 	switch (_type)
 	{
@@ -34,7 +34,7 @@ MemoKernel::MemoKernel(const DataSet& ds)
 	samples = ds.nSamples;
 	features = ds.nFeatures;
 
-	Logger::Stats("MemoByteSize:", GetMemoByteSize());
+	Logger::Stats("MemoByteSize", GetMemoByteSize());
 
 	auto size = ds.nSamples*ds.nSamples;
 	_memo = (double*)malloc(size*sizeof(double));

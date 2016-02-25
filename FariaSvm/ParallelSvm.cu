@@ -33,67 +33,27 @@ __global__ void partialSum(double *saida, const double *x, const double *alphaY,
 	saida[idx] = alphaY[idx] * exp(-gama * sum);
 }
 
-ParallelSvm::ParallelSvm(int argc, char** argv, const DataSet& ds)
-{
-	throw(exception("Not Implemented"));
-}
-
 ParallelSvm::ParallelSvm(int argc, char** argv, DataSet *ds)
 {
-	Logger::Stats("SVM:", "Parallel");
+	Logger::Stats("SVM", "Parallel");
+	Logger::FunctionStart("ParallelSvm");
 	_ds = ds;
-	string arg = Utils::GetComandVariable(argc, argv, "-k");
 
-	int oneGigaByte = 1 << 30;
-	long memoByteSize = ds->nSamples*ds->nSamples*sizeof(double);
 	int halfGigaByte = 1 << 29;
 	long gpuByteSize = ds->nSamples*ds->nFeatures*sizeof(double);
-	switch (arg[0])
-	{
-	case 'm':
-	case 'M':
-		kernel = new MemoKernel(*ds);
-		CopyAllToGpu();
-		break;
 
-	case 's':
-	case 'S':
-		throw(exception("Not Implemented"));
-		kernel = new SequentialKernel(*ds);
-		break;
+	if (gpuByteSize > halfGigaByte || gpuByteSize<0)
+		throw exception("gpuByteSize to big for gpu.");
 
-	default:
-		if (memoByteSize < oneGigaByte && memoByteSize>0)
-			kernel = new MemoKernel(*ds);
-		else
-			kernel = new SequentialKernel(*ds);
-
-		if (gpuByteSize < halfGigaByte && gpuByteSize>0)
-			CopyAllToGpu();
-		else
-			throw exception("Not Implemented");
-		break;
-	}
-}
-
-ParallelSvm::~ParallelSvm()
-{
-	cudaFree(dev_x);
-	cudaFree(dev_s);
-	cudaFree(dev_aY);
-	free(hst_s);
-	free(hst_aY);
-	free(kernel);
-}
-
-void ParallelSvm::CopyAllToGpu()
-{
-	Logger::FunctionStart("CopyAllToGpu");
-
-	_threadsPerBlock = 256;
-	Logger::Stats("ThreadsPerBlock:", _threadsPerBlock);
+	string arg = Utils::GetComandVariable(argc, argv, "-tpb");
+	if (!Utils::TryParseInt(arg,_threadsPerBlock) ||_threadsPerBlock % 32 != 0)
+		_threadsPerBlock = 128;
 	_blocks = 1 + _ds->nSamples / _threadsPerBlock;
-	Logger::Stats("Blocks:", _blocks);
+
+	Logger::Stats("Blocks", _blocks);
+	Logger::Stats("ThreadsPerBlock", _threadsPerBlock);
+	Logger::Stats("Threads", _threadsPerBlock * _blocks);
+
 
 	double* hst_x = (double*)malloc(sizeof(double)*_ds->nSamples*_ds->nFeatures);
 	hst_s = (double*)malloc(sizeof(double)*_ds->nSamples);
@@ -116,6 +76,15 @@ void ParallelSvm::CopyAllToGpu()
 
 	free(hst_x);
 	Logger::FunctionEnd();
+}
+
+ParallelSvm::~ParallelSvm()
+{
+	cudaFree(dev_x);
+	cudaFree(dev_s);
+	cudaFree(dev_aY);
+	free(hst_s);
+	free(hst_aY);
 }
 
 void ParallelSvm::CopyResultToGpu(vector<double>& alpha)
@@ -175,14 +144,11 @@ void ParallelSvm::Train(int validationStart, int validationEnd, vector<double>& 
 
 		difAlpha = 0;
 		for (int i = 0; i < samples; ++i){
-			if (i == validationStart)
-				i = validationEnd;
-			if (i == samples)break;
 			difAlpha += alpha[i] - oldAlpha[i];
 			oldAlpha[i] = alpha[i];
 		}
 
-		if (count>0)
+		if (count>1)
 			Logger::ClassifyProgress(count, step, lastDif, difAlpha);
 
 		if (abs(difAlpha) < precision)
@@ -190,23 +156,29 @@ void ParallelSvm::Train(int validationStart, int validationEnd, vector<double>& 
 		if (abs(difAlpha - lastDif) > difAlpha / 10.0)
 			step = step / 2;
 		lastDif = difAlpha;
+		if (count>1)
+			CopyResultToGpu(oldAlpha);
 		for (int i = 0; i < samples; ++i)
 		{
 			if (i == validationStart){
 				i = validationEnd;
 				if (i == samples)break;
 			}
-			double sum = 0;
-			for (int j = 0; j < samples; ++j)
-			{
-				if (j == validationStart){
-					j = validationEnd;
-					if (j == samples)break;
-				}
-				if (oldAlpha[j] == 0) continue;
-				sum += y[j] * oldAlpha[j] * kernel->K(j, i, *_ds);
+
+			double cudaSum = 0.0;
+			if (count > 1){
+				partialSum << <_blocks, _threadsPerBlock >> >(dev_s, dev_x, dev_aY, g, i, _ds->nFeatures, _ds->nSamples);
+
+				CUDA_SAFE_CALL(cudaGetLastError());
+
+				CUDA_SAFE_CALL(cudaDeviceSynchronize());
+
+				CUDA_SAFE_CALL(cudaMemcpy(hst_s, dev_s, _ds->nSamples * sizeof(double), cudaMemcpyDeviceToHost));
+
+				for (int i = 0; i < _ds->nSamples; i++)
+					cudaSum += hst_s[i];
 			}
-			double value = oldAlpha[i] + step - step*y[i] * sum;
+			double value = oldAlpha[i] + step - step*y[i] * cudaSum;
 			if (value > C)
 				alpha[i] = C;
 			else if (value < 0)

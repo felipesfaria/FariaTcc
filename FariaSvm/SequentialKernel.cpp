@@ -6,6 +6,7 @@ using namespace std;
 
 SequentialKernel::SequentialKernel(const DataSet& ds)
 {
+	Logger::Stats("Kernel", "Sequential");
 	_type = ds.kernelType;
 	switch (_type)
 	{

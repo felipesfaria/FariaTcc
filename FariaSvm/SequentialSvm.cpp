@@ -11,7 +11,7 @@ using namespace std;
 
 SequentialSvm::SequentialSvm(int argc, char** argv, DataSet *ds)
 {
-	Logger::Stats("SVM:", "Sequential");
+	Logger::Stats("SVM", "Sequential");
 	_ds = ds;
 	string arg = Utils::GetComandVariable(argc, argv, "-k");
 	int doubleSize = sizeof(double);
@@ -74,6 +74,7 @@ void SequentialSvm::Train(int validationStart, int validationEnd, vector<double>
 		alpha.push_back(0);
 		oldAlpha.push_back(1);
 	}
+	b = 0.0;
 	vector<vector<double>> x = _ds->X;
 	vector<double> y = _ds->Y;
 	int count = 0;
@@ -127,7 +128,6 @@ void SequentialSvm::Train(int validationStart, int validationEnd, vector<double>
 			else
 				alpha[i] = value;
 		}
-
 	} while (true);
 	int nSupportVectors = 0;
 	for (int i = 0; i < samples; ++i){
@@ -135,10 +135,9 @@ void SequentialSvm::Train(int validationStart, int validationEnd, vector<double>
 			i = validationEnd;
 			if (i == samples)break;
 		}
-		if (alpha[i] != 0)
+		if (alpha[i] > 0)
 			nSupportVectors++;
 	}
-	b = 0.0;
 	Logger::Stats("nSupportVectors", nSupportVectors);
 	Logger::FunctionEnd();
 }

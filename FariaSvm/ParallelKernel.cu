@@ -20,7 +20,7 @@ __global__ void myFunc(double *saida, const double *x, const int *posI, const in
 
 ParallelKernel::ParallelKernel(const DataSet& ds)
 {
-	Logger::Stats("Kernel:", "Parallel");
+	Logger::Stats("Kernel", "Parallel");
 	_type = ds.kernelType;
 	cudaError_t cudaStatus;
 	switch (_type)

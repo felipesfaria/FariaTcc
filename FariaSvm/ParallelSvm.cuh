@@ -7,11 +7,8 @@ class ParallelSvm :
 	public BaseSvm
 {
 public:
-	BaseKernel *kernel;
-	ParallelSvm(int argc, char** argv, const DataSet& ds);
 	ParallelSvm(int argc, char** argv, DataSet* ds);
 	~ParallelSvm();
-	void CopyAllToGpu();
 	void CopyResultToGpu(vector<double>& alpha);
 	int Classify(int index, vector<double>& alpha, double& b) override;
 	void Train(int validationStart, int validationEnd, vector<double>& alpha, double& b) override;
