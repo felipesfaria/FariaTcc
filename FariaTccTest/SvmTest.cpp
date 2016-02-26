@@ -4,8 +4,6 @@
 #include "../FariaSvm/SequentialSvm.h"
 #include "../FariaSvm/ParallelSvm.cuh"
 #include "../FariaSvm/Utils.h"
-#include "../FariaSvm/ParallelKernel.cuh"
-#include <MemoKernel.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace std;

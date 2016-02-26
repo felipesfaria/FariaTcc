@@ -150,14 +150,10 @@
     <ClInclude Include="BaseSet.h" />
     <ClInclude Include="BaseSvm.h" />
     <ClInclude Include="Enums.h" />
-    <ClInclude Include="MemoKernel.h" />
-    <ClInclude Include="ParallelKernel.cuh" />
     <ClInclude Include="DataSet.h" />
     <ClInclude Include="ParallelSvm.cuh" />
-    <ClInclude Include="SequentialKernel.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="BaseKernel.h" />
     <ClInclude Include="SequentialSvm.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TrainingSet.h" />
@@ -167,16 +163,11 @@
   <ItemGroup>
     <ClCompile Include="BaseSet.cpp" />
     <ClCompile Include="ValidationSet.cpp" />
-    <CudaCompile Include="ParallelKernel.cu">
-      <FileType>Document</FileType>
-    </CudaCompile>
     <ClCompile Include="BaseSvm.cpp" />
     <ClCompile Include="DataSet.cpp" />
-    <ClCompile Include="MemoKernel.cpp" />
     <CudaCompile Include="ParallelSvm.cu">
       <FileType>CppCode</FileType>
     </CudaCompile>
-    <ClCompile Include="SequentialKernel.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -185,7 +176,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="FariaSvm.cpp" />
-    <ClCompile Include="BaseKernel.cpp" />
     <ClCompile Include="SequentialSvm.cpp" />
     <ClCompile Include="TrainingSet.cpp" />
     <ClCompile Include="Utils.cpp" />

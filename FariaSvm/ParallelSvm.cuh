@@ -1,6 +1,5 @@
 #pragma once
 #include "BaseSvm.h"
-#include "BaseKernel.h"
 #include <driver_types.h>
 
 class ParallelSvm :

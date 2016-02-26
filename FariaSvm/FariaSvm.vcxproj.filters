@@ -36,18 +36,6 @@
     <ClInclude Include="DataSet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SequentialKernel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ParallelKernel.cuh">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MemoKernel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BaseKernel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Enums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -84,15 +72,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FariaSvm.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SequentialKernel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MemoKernel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BaseKernel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BaseSvm.cpp">
@@ -174,9 +153,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <CudaCompile Include="ParallelKernel.cu">
-      <Filter>Source Files</Filter>
-    </CudaCompile>
     <CudaCompile Include="ParallelSvm.cu">
       <Filter>Source Files</Filter>
     </CudaCompile>

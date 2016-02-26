@@ -1,11 +1,9 @@
 #include "stdafx.h"
 #include "ParallelSvm.cuh"
-#include "SequentialKernel.h"
-#include "ParallelKernel.cuh"
-#include "MemoKernel.h"
 #include "Logger.h"
 #include <locale>
 #include "Utils.h"
+#include <device_launch_parameters.h>
 
 #define CUDA_SAFE_CALL(call) { \
    cudaError_t err = call;     \

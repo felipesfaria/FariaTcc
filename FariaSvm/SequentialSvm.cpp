@@ -1,8 +1,5 @@
 #include "stdafx.h"
 #include "SequentialSvm.h"
-#include "SequentialKernel.h"
-#include "ParallelKernel.cuh"
-#include "MemoKernel.h"
 #include "Logger.h"
 #include <locale>
 #include "Utils.h"
@@ -13,40 +10,15 @@ SequentialSvm::SequentialSvm(int argc, char** argv, DataSet *ds)
 {
 	Logger::Stats("SVM", "Sequential");
 	_ds = ds;
-	string arg = Utils::GetComandVariable(argc, argv, "-k");
-	int doubleSize = sizeof(double);
-	long memoByteSize = _ds->nSamples*_ds->nSamples*doubleSize;
-	switch (arg[0])
-	{
-	case 'm':
-	case 'M':
-		kernel = new MemoKernel(*ds);
-		break;
-
-	case 's':
-	case 'S':
-		kernel = new SequentialKernel(*ds);
-		break;
-
-	default:
-		int oneGigaByte = 1 << 30;
-		if (memoByteSize<oneGigaByte && memoByteSize>0)
-			kernel = new MemoKernel(*ds);
-		else
-			kernel = new SequentialKernel(*ds);
-		break;
-	}
+	g = 1 / (2 * _ds->Gama*_ds->Gama);
 }
 
 SequentialSvm::~SequentialSvm()
 {
-	free(kernel);
 }
-
 
 int SequentialSvm::Classify(int index, vector<double>& alpha, double& b)
 {
-	auto x = _ds->X;
 	auto y = _ds->Y;
 	auto precision = 0;
 	auto size = alpha.size();
@@ -54,7 +26,7 @@ int SequentialSvm::Classify(int index, vector<double>& alpha, double& b)
 	for (auto i = 0; i < alpha.size(); ++i)
 	{
 		if (alpha[i] == 0) continue;
-		sum += alpha[i] * y[i] * kernel->K(i, index, *_ds);
+		sum += alpha[i] * y[i] * K(_ds->X[i],_ds->X[index]);
 	}
 	auto sign = sum - b;
 	if (sign > precision)
@@ -75,7 +47,6 @@ void SequentialSvm::Train(int validationStart, int validationEnd, vector<double>
 		oldAlpha.push_back(1);
 	}
 	b = 0.0;
-	vector<vector<double>> x = _ds->X;
 	vector<double> y = _ds->Y;
 	int count = 0;
 	double lastDif = 0.0;
@@ -99,7 +70,7 @@ void SequentialSvm::Train(int validationStart, int validationEnd, vector<double>
 					if (j == samples)break;
 				}
 				if (oldAlpha[j] == 0) continue;
-				sum += y[j] * oldAlpha[j] * kernel->K(j, i, *_ds);
+				sum += y[j] * oldAlpha[j] * K(_ds->X[j],_ds->X[i]);
 			}
 			double value = oldAlpha[i] + step - step*y[i] * sum;
 			if (value > C)
@@ -154,4 +125,17 @@ void SequentialSvm::Test(int validationStart, int validationEnd, vector<double>&
 	auto percentageCorrect = static_cast<double>(nCorrect) / nValidators;
 	Logger::Percentage(nCorrect, nValidators, percentageCorrect);
 	Logger::FunctionEnd();
+}
+
+double SequentialSvm::K(vector<double> x, vector<double> y)
+{
+	double sum = 0;
+	double product;
+	for (int i = 0; i < x.size(); ++i)
+	{
+		product = x[i] - y[i];
+		product *= product;
+		sum += product;
+	}
+	return exp(-g*sum);
 }
