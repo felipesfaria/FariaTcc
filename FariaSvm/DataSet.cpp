@@ -290,3 +290,18 @@ void DataSet::readCsvData(istream& str)
 	X.push_back(x);
 	Y.push_back(y);
 }
+
+void DataSet::InitFoldSets(TrainingSet *ts, ValidationSet*vs, int fold)
+{
+	int vStart = nSamples*(fold - 1) / nFolds;
+	int vEnd = nSamples*fold / nFolds;
+	ts->Init(nSamples - (vEnd - vStart), nFeatures);
+	vs->Init((vEnd - vStart), nFeatures);
+	for (int i = 0; i < nSamples; i++)
+	{
+		if (i >= vStart&&i<vEnd)
+			vs->PushSample(X[i], Y[i]);
+		else
+			ts->PushSample(X[i], Y[i]);
+	}
+}

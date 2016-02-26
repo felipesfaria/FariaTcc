@@ -2,6 +2,8 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 #include "../FariaSvm/DataSet.h"
+#include "../FariaSvm/TrainingSet.h"
+#include "../FariaSvm/ValidationSet.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace std;
@@ -20,6 +22,7 @@ namespace FariaTccTest
 				argv[2] = args[i];
 				DataSet ds(3, argv);
 			}
+			Assert::IsTrue(true);
 		}
 
 		TEST_METHOD(DataSet_Constructor_Adult)
@@ -32,6 +35,7 @@ namespace FariaTccTest
 				argv[2] = args[i];
 				DataSet ds(3, argv);
 			}
+			Assert::IsTrue(true);
 		}
 
 		TEST_METHOD(DataSet_Constructor_Web)
@@ -44,6 +48,7 @@ namespace FariaTccTest
 				argv[2] = args[i];
 				DataSet ds(3, argv);
 			}
+			Assert::IsTrue(true);
 		}
 
 		TEST_METHOD(DataSet_ReadFile)
@@ -55,5 +60,63 @@ namespace FariaTccTest
 			Assert::AreNotEqual(notExpected, actual);
 		}
 
+		TEST_METHOD(TrainingSet_Constructor)
+		{
+			TrainingSet ts;
+			Assert::IsFalse(ts.initialised);
+		}
+
+		TEST_METHOD(TrainingSet_Init)
+		{
+			TrainingSet ts;
+			int width = 4;
+			int height = 4;
+			ts.Init(height, width);
+
+			int lastX = (height - 1)*width + (width - 1);
+			int lastY = (height - 1);
+			int lastAlpha = lastY;
+
+			ts.x[lastX] = 0;
+			ts.y[lastY] = 0;
+			ts.alpha[lastAlpha] = 0;
+
+			Assert::IsTrue(ts.initialised);
+		}
+
+		TEST_METHOD(ValidationSet_Init)
+		{
+			ValidationSet vs;
+			int width = 4;
+			int height = 4;
+			vs.Init(height, width);
+
+			int lastX = (height - 1)*width + (width - 1);
+			int lastY = (height - 1);
+
+			vs.x[lastX] = 0;
+			vs.y[lastY] = 0;
+
+			Assert::IsTrue(vs.initialised);
+		}
+
+		TEST_METHOD(ValidationSet_Constructor)
+		{
+			ValidationSet vs;
+			Assert::IsFalse(vs.initialised);
+		}
+
+		TEST_METHOD(DataSet_InitFoldSets)
+		{
+			int argc = 3;
+			char *argv[] = { "exe path", "-d", "i" };
+			DataSet ds(argc, argv);
+			TrainingSet ts;
+			ValidationSet vs;
+			for (auto i = 1; i <= ds.nFolds; i++){
+				ds.InitFoldSets(&ts, &vs, i);
+				Assert::IsTrue(ts.height + vs.height == ds.nSamples);
+			}
+		}
 	};
 }

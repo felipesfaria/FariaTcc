@@ -1,7 +1,8 @@
 #pragma once
-#include <string>
-#include <vector>
 #include "Enums.h"
+#include "ValidationSet.h"
+#include "TrainingSet.h"
+#include <vector>
 
 using namespace std;
 
@@ -28,6 +29,7 @@ public:
 	DataSet(int argc,char** argv);
 	~DataSet();
 	void InitData(string arg="");
+	void InitFoldSets(TrainingSet *ts, ValidationSet *vs, int fold);
 private:
 	vector<double> m_doubles;
 	vector<long> m_longs;

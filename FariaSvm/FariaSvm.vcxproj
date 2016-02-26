@@ -147,6 +147,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BaseSet.h" />
     <ClInclude Include="BaseSvm.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="MemoKernel.h" />
@@ -159,9 +160,13 @@
     <ClInclude Include="BaseKernel.h" />
     <ClInclude Include="SequentialSvm.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="TrainingSet.h" />
     <ClInclude Include="Utils.h" />
+    <ClInclude Include="ValidationSet.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BaseSet.cpp" />
+    <ClCompile Include="ValidationSet.cpp" />
     <CudaCompile Include="ParallelKernel.cu">
       <FileType>Document</FileType>
     </CudaCompile>
@@ -182,6 +187,7 @@
     <ClCompile Include="FariaSvm.cpp" />
     <ClCompile Include="BaseKernel.cpp" />
     <ClCompile Include="SequentialSvm.cpp" />
+    <ClCompile Include="TrainingSet.cpp" />
     <ClCompile Include="Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
