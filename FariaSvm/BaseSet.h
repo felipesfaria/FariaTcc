@@ -17,5 +17,6 @@ public:
 	void Init(int height, int width);
 	void BaseInit(int height, int width);
 	void PushSample(vector<double> x, double y);
+	double* GetSample(int i);
 };
 

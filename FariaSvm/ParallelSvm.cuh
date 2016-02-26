@@ -2,26 +2,41 @@
 #include "BaseSvm.h"
 #include <driver_types.h>
 
+class CudaArray
+{
+public:
+	double* device = NULL;
+	double* host = NULL;
+	int size = 0;
+	bool initialized = false;
+	bool deviceOnly = false;
+	~CudaArray();
+	void Init(double* host, int size);
+	void Init(int size);
+	void CopyToDevice();
+	void CopyToHost();
+	double GetSum();
+};
+
 class ParallelSvm :
 	public BaseSvm
 {
 public:
 	ParallelSvm(int argc, char** argv, DataSet* ds);
 	~ParallelSvm();
-	void CopyResultToGpu(vector<double>& alpha);
-	int Classify(int index, vector<double>& alpha, double& b) override;
-	void Train(int validationStart, int validationEnd, vector<double>& alpha, double& b) override;
-	void Test(int validationStart, int validationEnd, vector<double>& alpha1, double& b1, int& nCorrect) override;
+	int Classify(TrainingSet *ts, int index);
+	void UpdateBlocks(TrainingSet* ts);
+	void Train(TrainingSet *ts) override;
+	void Test(TrainingSet *ts, ValidationSet *vs) override;
 private:
-	cudaError_t cudaStatus;;
+	cudaError_t cudaStatus;
 	int _blocks;
 	int _threadsPerBlock;
 
-	double* dev_x;
-	double* dev_s;
-	double* hst_s;
-	double* dev_a;
-	double* hst_a;
-	double* dev_y;
+	CudaArray caTrainingX;
+	CudaArray caTrainingY;
+	CudaArray caValidationX;
+	CudaArray caAlpha;
+	CudaArray caSum;
 };
 

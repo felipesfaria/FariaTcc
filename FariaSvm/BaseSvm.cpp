@@ -24,17 +24,12 @@ BaseSvm::BaseSvm(int argc, char** argv, DataSet *ds)
 	Logger::Stats("Step", Step);
 }
 
-int BaseSvm::Classify(int index, vector<double>& alpha, double& b)
+void BaseSvm::Train(TrainingSet *ts)
 {
 	throw(exception("Not Implemented."));
 }
 
-void BaseSvm::Train(int validationStart, int validationEnd, vector<double>& alpha, double& b)
-{
-	throw(exception("Not Implemented."));
-}
-
-void BaseSvm::Test(int validationStart, int validationEnd, vector<double>& alpha1, double& b1, int& nCorrect)
+void BaseSvm::Test(TrainingSet *ts, ValidationSet *vs)
 {
 	throw(exception("Not Implemented."));
 }

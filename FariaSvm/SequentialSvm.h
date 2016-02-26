@@ -7,10 +7,10 @@ class SequentialSvm:
 public:
 	SequentialSvm(int argc, char** argv, DataSet *ds);
 	~SequentialSvm();
-	int Classify(int index, vector<double>& alpha, double& b) override;
-	void Train(int validationStart, int validationEnd, vector<double>& alpha, double& b) override;
-	void Test(int validationStart, int validationEnd, vector<double>& alpha1, double& b1, int& nCorrect) override;
+	int Classify(TrainingSet* ts, double* sample);
+	void Train(TrainingSet *ts) override;
+	void Test(TrainingSet *ts, ValidationSet *vs) override;
+	double K(double* x, double* y, int size);
 private:
-	double K(vector<double> x, vector<double> y);
 };
 

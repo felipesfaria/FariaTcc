@@ -35,17 +35,15 @@ int main(int argc, char* argv[])
 		else
 			svm = new SequentialSvm(argc, argv, &ds);
 
+		TrainingSet ts;
+		ValidationSet vs;
 		auto totalCorrect = 0;
-		int correct;
 		for (auto i = 1; i <= ds.nFolds; i++){
 			Logger::Fold(i);
-			vector<double> alpha1;
-			double b1;
-			int validationStart = ds.nSamples*(i - 1) / ds.nFolds;
-			int validationEnd = ds.nSamples*i / ds.nFolds;
-			svm->Train(validationStart, validationEnd, alpha1, b1);
-			svm->Test(validationStart, validationEnd, alpha1, b1, correct);
-			totalCorrect += correct;
+			ds.InitFoldSets(&ts, &vs, i);
+			svm->Train(&ts);
+			svm->Test(&ts,&vs);
+			totalCorrect += vs.nCorrect;
 		}
 		double averagePercentageCorrect = 100.0*totalCorrect / ds.nSamples;
 		Logger::Stats("AveragePercentage", averagePercentageCorrect);

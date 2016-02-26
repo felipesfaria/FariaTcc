@@ -42,3 +42,8 @@ void BaseSet::PushSample(vector<double> x, double y)
 	this->y[last] = y;
 	last++;
 }
+
+double* BaseSet::GetSample(int i)
+{
+	return x + i*width;
+}

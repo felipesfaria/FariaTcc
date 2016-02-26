@@ -8,6 +8,7 @@ public:
 	int nPositiveWrong = 0;
 	int nNegativeWrong = 0;
 	int nNullWrong = 0;
+	void Init(int height, int width);
 	ValidationSet();
 	~ValidationSet();
 };

@@ -5,7 +5,6 @@
 #include "Utils.h"
 using namespace std;
 
-
 SequentialSvm::SequentialSvm(int argc, char** argv, DataSet *ds)
 	: BaseSvm(argc, argv, ds)
 {
@@ -16,37 +15,32 @@ SequentialSvm::~SequentialSvm()
 {
 }
 
-int SequentialSvm::Classify(int index, vector<double>& alpha, double& b)
+int SequentialSvm::Classify(TrainingSet *ts, double* sample)
 {
-	auto y = _ds->Y;
-	auto precision = 0;
-	auto size = alpha.size();
 	auto sum = 0.0;
-	for (auto i = 0; i < alpha.size(); ++i)
+	for (auto i = 0; i < ts->height; ++i)
 	{
-		if (alpha[i] == 0) continue;
-		sum += alpha[i] * y[i] * K(_ds->X[i],_ds->X[index]);
+		if (ts->alpha[i] == 0) continue;
+		sum += ts->alpha[i] * ts->y[i] * K(ts->GetSample(i), sample,ts->width);
 	}
-	auto sign = sum - b;
-	if (sign > precision)
+	auto sign = sum - ts->b;
+	if (sign > Precision)
 		return 1;
-	if (sign < -precision)
+	if (sign < Precision)
 		return -1;
 	return 0;
 }
 
-void SequentialSvm::Train(int validationStart, int validationEnd, vector<double>& alpha, double& b)
+void SequentialSvm::Train(TrainingSet *ts)
 {
 	Logger::FunctionStart("Train");
-	alpha.clear();
+	double* alpha = ts->alpha;
 	vector<double> oldAlpha;
 	int samples = _ds->nSamples;
-	for (int i = 0; i < samples; ++i){
-		alpha.push_back(0);
-		oldAlpha.push_back(1);
+	for (int i = 0; i < ts->height; ++i){
+		alpha[i] = 0;
+		oldAlpha.push_back(0);
 	}
-	b = 0.0;
-	vector<double> y = _ds->Y;
 	int count = 0;
 	double lastDif = 0.0;
 	double difAlpha;
@@ -54,23 +48,15 @@ void SequentialSvm::Train(int validationStart, int validationEnd, vector<double>
 	double C = _ds->C;
 	do
 	{
-		for (int i = 0; i < samples; ++i)
+		for (int i = 0; i < ts->height; ++i)
 		{
-			if (i == validationStart){
-				i = validationEnd;
-				if (i == samples)break;
-			}
 			double sum = 0;
-			for (int j = 0; j < samples; ++j)
+			for (int j = 0; j < ts->height; ++j)
 			{
-				if (j == validationStart){
-					j = validationEnd;
-					if (j == samples)break;
-				}
 				if (oldAlpha[j] == 0) continue;
-				sum += y[j] * oldAlpha[j] * K(_ds->X[j],_ds->X[i]);
+				sum += ts->y[j] * oldAlpha[j] * K(ts->GetSample(i), ts->GetSample(j), ts->width);
 			}
-			double value = oldAlpha[i] + step - step*y[i] * sum;
+			double value = oldAlpha[i] + step - step*ts->y[i] * sum;
 			if (value > C)
 				alpha[i] = C;
 			else if (value < 0)
@@ -80,7 +66,7 @@ void SequentialSvm::Train(int validationStart, int validationEnd, vector<double>
 		}
 
 		difAlpha = 0;
-		for (int i = 0; i < _ds->nSamples; ++i){
+		for (int i = 0; i < ts->height; ++i){
 			difAlpha += alpha[i] - oldAlpha[i];
 			oldAlpha[i] = alpha[i];
 		}
@@ -93,11 +79,7 @@ void SequentialSvm::Train(int validationStart, int validationEnd, vector<double>
 		count++;
 	} while ((abs(difAlpha) > Precision && count < 100) || count <= 1);
 	int nSupportVectors = 0;
-	for (int i = 0; i < samples; ++i){
-		if (i == validationStart){
-			i = validationEnd;
-			if (i == samples)break;
-		}
+	for (int i = 0; i < ts->height; ++i){
 		if (alpha[i] > 0)
 			nSupportVectors++;
 	}
@@ -105,31 +87,28 @@ void SequentialSvm::Train(int validationStart, int validationEnd, vector<double>
 	Logger::FunctionEnd();
 }
 
-void SequentialSvm::Test(int validationStart, int validationEnd, vector<double>& alpha1, double& b1, int& nCorrect)
+void SequentialSvm::Test(TrainingSet *ts, ValidationSet *vs)
 {
 	Logger::FunctionStart("Test");
 	auto start = clock();
-	nCorrect = 0;
-	int nSamples = _ds->nSamples;
-	int nValidators = validationEnd - validationStart;
-	for (auto i = validationStart; i < validationEnd; ++i)
+	for (auto i = 0; i < vs->height; ++i)
 	{
-		int classifiedY = Classify(i, alpha1, b1);
-		if (classifiedY == _ds->Y[i]){
-			nCorrect++;
+		int classifiedY = Classify(ts,vs->GetSample(i));
+		if (classifiedY == vs->y[i]){
+			vs->nCorrect++;
 		}
 	}
-	Logger::Stats("AverageClassificationTime ", (clock() - start) / nValidators);
-	auto percentageCorrect = static_cast<double>(nCorrect) / nValidators;
-	Logger::Percentage(nCorrect, nValidators, percentageCorrect);
+	Logger::Stats("AverageClassificationTime ", (clock() - start) / vs->height);
+	auto percentageCorrect = static_cast<double>(vs->nCorrect) / vs->height;
+	Logger::Percentage(vs->nCorrect, vs->height, percentageCorrect);
 	Logger::FunctionEnd();
 }
 
-double SequentialSvm::K(vector<double> x, vector<double> y)
+double SequentialSvm::K(double* x, double* y, int size)
 {
 	double sum = 0;
 	double product;
-	for (int i = 0; i < x.size(); ++i)
+	for (int i = 0; i < size; ++i)
 	{
 		product = x[i] - y[i];
 		product *= product;

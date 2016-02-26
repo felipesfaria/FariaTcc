@@ -15,22 +15,20 @@ namespace FariaTccTest
 		TEST_METHOD(SequentialSvm_i_100Prcnt)
 		{
 			int argc = 3;
-			char *argv[] = { "exePath", "-d", "i","-s","p" };
+			char *argv[] = { "exePath", "-d", "i"};
 			DataSet ds(argc, argv);
 
 			BaseSvm *svm = new SequentialSvm(argc, argv, &ds);
 
 			auto nFolds = 3;
-			auto totalCorrect = 0;
-			int correct;
+			TrainingSet ts;
+			ValidationSet vs;
+			int totalCorrect = 0;
 			for (auto i = 1; i <= nFolds; i++){
-				vector<double> alpha1;
-				double b1;
-				int validationStart = ds.nSamples*(i - 1) / nFolds;
-				int validationEnd = ds.nSamples*i / nFolds;
-				svm->Train(validationStart, validationEnd, alpha1, b1);
-				svm->Test(validationStart, validationEnd, alpha1, b1, correct);
-				totalCorrect += correct;
+				ds.InitFoldSets(&ts, &vs, i);
+				svm->Train(&ts);
+				svm->Test(&ts,&vs);
+				totalCorrect += vs.nCorrect;
 			}
 			double expected = 100.0;
 			double actual = 100.0*totalCorrect / ds.nSamples;
@@ -46,16 +44,14 @@ namespace FariaTccTest
 			BaseSvm *svm = new ParallelSvm(argc, argv, &ds);
 
 			auto nFolds = 3;
-			auto totalCorrect = 0;
-			int correct;
+			TrainingSet ts;
+			ValidationSet vs;
+			int totalCorrect = 0;
 			for (auto i = 1; i <= nFolds; i++){
-				vector<double> alpha1;
-				double b1;
-				int validationStart = ds.nSamples*(i - 1) / nFolds;
-				int validationEnd = ds.nSamples*i / nFolds;
-				svm->Train(validationStart, validationEnd, alpha1, b1);
-				svm->Test(validationStart, validationEnd, alpha1, b1, correct);
-				totalCorrect += correct;
+				ds.InitFoldSets(&ts, &vs, i);
+				svm->Train(&ts);
+				svm->Test(&ts, &vs);
+				totalCorrect += vs.nCorrect;
 			}
 			double expected = 100.0;
 			double actual = 100.0*totalCorrect / ds.nSamples;
@@ -71,16 +67,14 @@ namespace FariaTccTest
 			BaseSvm *svm = new ParallelSvm(argc, argv, &ds);
 
 			auto nFolds = 3;
-			auto totalCorrect = 0;
-			int correct;
+			TrainingSet ts;
+			ValidationSet vs;
+			int totalCorrect = 0;
 			for (auto i = 1; i <= nFolds; i++){
-				vector<double> alpha1;
-				double b1;
-				int validationStart = ds.nSamples*(i - 1) / nFolds;
-				int validationEnd = ds.nSamples*i / nFolds;
-				svm->Train(validationStart, validationEnd, alpha1, b1);
-				svm->Test(validationStart, validationEnd, alpha1, b1, correct);
-				totalCorrect += correct;
+				ds.InitFoldSets(&ts, &vs, i);
+				svm->Train(&ts);
+				svm->Test(&ts, &vs);
+				totalCorrect += vs.nCorrect;
 			}
 			double expected = true;
 			double actual = 100.0*totalCorrect / ds.nSamples > 70.0;

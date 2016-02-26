@@ -10,33 +10,31 @@
    cudaError_t err = call;     \
    if(err != cudaSuccess) {    \
       fprintf(stderr,"Erro no arquivo '%s', linha %i: %s.\n",__FILE__,  __LINE__,cudaGetErrorString(err)); \
-      exit(EXIT_FAILURE); } } 
+      throw exception(cudaGetErrorString(err)); } } 
 
 using namespace std;
 
-__global__ void classificationKernel(double *saida, const double *x, const double *alphaY, const double gama, const int posI, const int nFeatures, const int max)
+__global__ void classificationKernel(double *saida, const double *tX, const double *tY, const double *vX, const double *alpha, const double gama, const int index, const int width, const int max)
 {
 	int idx = threadIdx.x + blockIdx.x * blockDim.x;
-	//Sem isso ocorre erro com alguns conjuntos de dados
-	if (idx > max) return;
-	int aIndex = posI * nFeatures;
-	int bIndex = idx*nFeatures;
+	if (idx > max)return;
+	int vIndex = index * width;
+	int tIndex = idx*width;
 	double sum = 0;
 	double product;
-	for (int i = 0; i < nFeatures; ++i)
+	for (int i = 0; i < width; ++i)
 	{
-		product = x[aIndex + i] - x[bIndex + i];
+		product = vX[vIndex + i] - tX[tIndex + i];
 		product *= product;
 		sum += product;
 	}
-	saida[idx] = alphaY[idx] * exp(-gama * sum);
+	saida[idx] = tY[idx] * alpha[idx] * exp(-gama * sum);
 }
 
-__global__ void trainingKernel(double *alpha, const double *x, const double *y, const double gama, const int nFeatures, const int nSamples, const double step, const double C, const int validationStart, const int validationEnd)
+__global__ void trainingKernel(double *alpha, const double *x, const double *y, const double gama, const int nFeatures, const int nSamples, const double step, const double C)
 {
 	int idx = threadIdx.x + blockIdx.x * blockDim.x;
-	//Sem isso ocorre erro com alguns conjuntos de dados
-	if (idx > nSamples || (idx >= validationStart && idx < validationEnd)) return;
+	if (idx > nSamples) return;
 	int bIndex = idx*nFeatures;
 	double outerSum = 0;
 	for (int i = 0; i < nSamples; i++){
@@ -65,9 +63,61 @@ __global__ void initArray(double *array, const double value)
 	int idx = threadIdx.x + blockIdx.x * blockDim.x;
 	array[idx] = value;
 }
+CudaArray::~CudaArray()
+{
+	if (initialized)
+		cudaFree(device);
+	if (deviceOnly)
+		free(host);
+}
+
+void CudaArray::Init(int size)
+{
+	deviceOnly = true;
+	if (size != this->size)
+	{
+		if (initialized)
+			free(host);
+		host = (double*)malloc(size*sizeof(double));
+	}
+	Init(host, size);
+}
+
+void CudaArray::Init(double* host, int size)
+{
+	if (size != this->size)
+	{
+		if (initialized)
+			cudaFree(device);
+		CUDA_SAFE_CALL(cudaMalloc((void**)&device, size * sizeof(double)));
+	}
+	initialized = true;
+	this->size = size;
+	this->host = host;
+}
+
+void CudaArray::CopyToDevice()
+{
+	CUDA_SAFE_CALL(cudaMemcpy(device, host, size* sizeof(double), cudaMemcpyHostToDevice));
+}
+
+void CudaArray::CopyToHost()
+{
+	CUDA_SAFE_CALL(cudaMemcpy(host, device, size* sizeof(double), cudaMemcpyDeviceToHost));
+}
+
+double CudaArray::GetSum()
+{
+	double sum = 0;
+	for (int i = 0; i < size; i++)
+	{
+		sum += host[i];
+	}
+	return sum;
+}
 
 ParallelSvm::ParallelSvm(int argc, char** argv, DataSet *ds)
-	: BaseSvm(argc,argv,ds)
+	: BaseSvm(argc, argv, ds)
 {
 	Logger::FunctionStart("ParallelSvm");
 
@@ -80,79 +130,26 @@ ParallelSvm::ParallelSvm(int argc, char** argv, DataSet *ds)
 	string arg = Utils::GetComandVariable(argc, argv, "-tpb");
 	if (!Utils::TryParseInt(arg, _threadsPerBlock) || _threadsPerBlock % 32 != 0)
 		_threadsPerBlock = 128;
-	_blocks = 1 + _ds->nSamples / _threadsPerBlock;
-
-	Logger::Stats("Blocks", _blocks);
-	Logger::Stats("ThreadsPerBlock", _threadsPerBlock);
-	Logger::Stats("Threads", _threadsPerBlock * _blocks);
-
-
-	double* hst_x = (double*)malloc(sizeof(double)*_ds->nSamples*_ds->nFeatures);
-	double* hst_y = (double*)malloc(sizeof(double)*_ds->nSamples);
-	hst_s = (double*)malloc(sizeof(double)*_ds->nSamples);
-	hst_a = (double*)malloc(sizeof(double)*_ds->nSamples);
-
-	for (int i = 0; i < _ds->nSamples; i++)
-		for (int j = 0; j < _ds->nFeatures; j++)
-			hst_x[i*_ds->nFeatures + j] = _ds->X[i][j];
-
-	for (int i = 0; i < _ds->nSamples; i++)
-		hst_y[i] = _ds->Y[i];
-
-	g = 1 / (2 * _ds->Gama*_ds->Gama);
 
 	CUDA_SAFE_CALL(cudaSetDevice(0));
 
-	CUDA_SAFE_CALL(cudaMalloc((void**)&dev_x, _ds->nSamples * _ds->nFeatures * sizeof(double)));
-	CUDA_SAFE_CALL(cudaMalloc((void**)&dev_s, _ds->nSamples * sizeof(double)));
-	CUDA_SAFE_CALL(cudaMalloc((void**)&dev_a, _ds->nSamples * sizeof(double)));
-	CUDA_SAFE_CALL(cudaMalloc((void**)&dev_y, _ds->nSamples * sizeof(double)));
-
-
-	CUDA_SAFE_CALL(cudaMemcpy(dev_x, hst_x, _ds->nSamples * _ds->nFeatures * sizeof(double), cudaMemcpyHostToDevice));
-	CUDA_SAFE_CALL(cudaMemcpy(dev_y, hst_y, _ds->nSamples * sizeof(double), cudaMemcpyHostToDevice));
-
-	free(hst_x);
-	free(hst_y);
 	Logger::FunctionEnd();
 }
 
 ParallelSvm::~ParallelSvm()
 {
-	cudaFree(dev_x);
-	cudaFree(dev_s);
-	cudaFree(dev_a);
-	cudaFree(dev_y);
-	free(hst_s);
-	free(hst_a);
 }
 
-void ParallelSvm::CopyResultToGpu(vector<double>& alpha)
+int ParallelSvm::Classify(TrainingSet *ts, int index)
 {
-	for (int i = 0; i < _ds->nSamples; i++)
-	{
-		hst_a[i] = alpha[i] * _ds->Y[i];
-	}
+	classificationKernel << <_blocks, _threadsPerBlock >> >(caSum.device, caTrainingX.device, caTrainingY.device, caValidationX.device, caAlpha.device, g, index, ts->width, ts->height);
 
-	CUDA_SAFE_CALL(cudaMemcpy(dev_a, hst_a, _ds->nSamples * sizeof(double), cudaMemcpyHostToDevice));
-}
+	caSum.CopyToHost();
 
-int ParallelSvm::Classify(int index, vector<double>& alpha, double& b)
-{
-	classificationKernel << <_blocks, _threadsPerBlock >> >(dev_s, dev_x, dev_a, g, index, _ds->nFeatures, _ds->nSamples);
-
-	CUDA_SAFE_CALL(cudaGetLastError());
-
-	CUDA_SAFE_CALL(cudaDeviceSynchronize());
-
-	CUDA_SAFE_CALL(cudaMemcpy(hst_s, dev_s, _ds->nSamples * sizeof(double), cudaMemcpyDeviceToHost));
-
-	double cudaSum = 0.0;
-	for (int i = 0; i < _ds->nSamples; i++)
-		cudaSum += hst_s[i];
+	double cudaSum = caSum.GetSum();
 
 	auto precision = 0;
-	auto sign = cudaSum - b;
+	auto sign = cudaSum - ts->b;
 	if (sign > precision)
 		return 1;
 	if (sign < -precision)
@@ -160,14 +157,33 @@ int ParallelSvm::Classify(int index, vector<double>& alpha, double& b)
 	return 0;
 }
 
-void ParallelSvm::Train(int validationStart, int validationEnd, vector<double>& alpha, double& b)
+void ParallelSvm::UpdateBlocks(TrainingSet *ts)
+{
+	int newBlockSize = (ts->height + _threadsPerBlock - 1) / _threadsPerBlock;;
+	if (newBlockSize == _blocks) return;
+	if (newBlockSize<1)
+	{
+		_blocks = 1;
+		return;
+	}
+	_blocks = newBlockSize;
+	Logger::Stats("Blocks", _blocks);
+	Logger::Stats("ThreadsPerBlock", _threadsPerBlock);
+	Logger::Stats("Threads", _threadsPerBlock * _blocks);
+}
+
+void ParallelSvm::Train(TrainingSet *ts)
 {
 	Logger::FunctionStart("Train");
-	vector<double> oldAlpha(_ds->nSamples);
-	for (int i = 0; i < _ds->nSamples; i++)
-		oldAlpha[i] = 0;
-	initArray << <_blocks, _threadsPerBlock >> >(dev_a, 0.0);
-	CUDA_SAFE_CALL(cudaDeviceSynchronize());
+	UpdateBlocks(ts);
+	caTrainingX.Init(ts->x, ts->height*ts->width);
+	caTrainingX.CopyToDevice();
+	caTrainingY.Init(ts->y, ts->height);
+	caTrainingY.CopyToDevice();
+
+	caAlpha.Init(ts->alpha, ts->height);
+	initArray << <_blocks, _threadsPerBlock >> >(caAlpha.device, Step);
+	double* oldAlpha = (double*)malloc(ts->height*sizeof(double));
 	int count = 0;
 	double lastDif = 0.0;
 	double difAlpha;
@@ -175,18 +191,14 @@ void ParallelSvm::Train(int validationStart, int validationEnd, vector<double>& 
 	double C = _ds->C;
 	do
 	{
-		trainingKernel << <_blocks, _threadsPerBlock >> >(dev_a, dev_x, dev_y, g, _ds->nFeatures, _ds->nSamples, step, _ds->C, validationStart, validationEnd);
-
-		CUDA_SAFE_CALL(cudaGetLastError());
-
-		CUDA_SAFE_CALL(cudaDeviceSynchronize());
-
-		CUDA_SAFE_CALL(cudaMemcpy(hst_a, dev_a, _ds->nSamples * sizeof(double), cudaMemcpyDeviceToHost));
+		trainingKernel << <_blocks, _threadsPerBlock >> >(caAlpha.device, caTrainingX.device, caTrainingY.device, g, ts->width, ts->height, step, _ds->C);
+		
+		caAlpha.CopyToHost();
 
 		difAlpha = 0;
-		for (int i = 0; i < _ds->nSamples; ++i){
-			difAlpha += hst_a[i] - oldAlpha[i];
-			oldAlpha[i] = hst_a[i];
+		for (int i = 0; i < ts->height; ++i){
+			difAlpha += ts->alpha[i] - oldAlpha[i];
+			oldAlpha[i] = ts->alpha[i];
 		}
 
 		Logger::ClassifyProgress(count, step, lastDif, difAlpha);
@@ -196,42 +208,45 @@ void ParallelSvm::Train(int validationStart, int validationEnd, vector<double>& 
 		lastDif = difAlpha;
 		count++;
 	} while ((abs(difAlpha) > Precision && count < 100) || count <= 1);
-	alpha.clear();
-	for (int i = 0; i < _ds->nSamples; i++)
-		alpha.push_back(hst_a[i]);
+
 	int nSupportVectors = 0;
-	for (int i = validationStart; i < validationEnd; i++)
-		alpha[i] = 0;
-	for (int i = 0; i < _ds->nSamples; ++i){
-		if (i == validationStart){
-			i = validationEnd;
-			if (i == _ds->nSamples)break;
-		}
-		if (alpha[i] != 0)
+	for (int i = 0; i < ts->height; ++i){
+		if (ts->alpha[i] != 0)
 			nSupportVectors++;
 	}
-	b = 0.0;
 	Logger::Stats("nSupportVectors", nSupportVectors);
 	Logger::FunctionEnd();
 }
 
-void ParallelSvm::Test(int validationStart, int validationEnd, vector<double>& alpha1, double& b1, int& nCorrect)
+void ParallelSvm::Test(TrainingSet *ts, ValidationSet *vs)
 {
 	Logger::FunctionStart("Test");
 	auto start = clock();
-	nCorrect = 0;
-	int nSamples = _ds->nSamples;
-	int nValidators = validationEnd - validationStart;
-	CopyResultToGpu(alpha1);
-	for (auto i = validationStart; i < validationEnd; ++i)
+	caValidationX.Init(vs->x, vs->height*vs->width);
+	caValidationX.CopyToDevice();
+	caSum.Init(ts->height);
+	for (auto i = 0; i < vs->height; ++i)
 	{
-		int classifiedY = Classify(i, alpha1, b1);
-		if (classifiedY == _ds->Y[i]){
-			nCorrect++;
+		int classifiedY = Classify(ts,i);
+		if (classifiedY == vs->y[i]){
+			vs->nCorrect++;
 		}
+		else if (classifiedY<0)
+		{
+			vs->nNegativeWrong++;
+		}
+		else if (classifiedY>0)
+		{
+			vs->nPositiveWrong++;
+		}
+		else
+			vs->nNullWrong++;
 	}
-	Logger::Stats("AverageClassificationTime ", (clock() - start) / nValidators);
-	auto percentageCorrect = static_cast<double>(nCorrect) / nValidators;
-	Logger::Percentage(nCorrect, nValidators, percentageCorrect);
+	Logger::Stats("nNegativeWrong ", vs->nNegativeWrong);
+	Logger::Stats("nPositiveWrong ", vs->nPositiveWrong);
+	Logger::Stats("nNullWrong ", vs->nNullWrong);
+	Logger::Stats("AverageClassificationTime ", (clock() - start) / vs->height);
+	auto percentageCorrect = static_cast<double>(vs->nCorrect) / vs->height;
+	Logger::Percentage(vs->nCorrect, vs->height, percentageCorrect);
 	Logger::FunctionEnd();
 }
