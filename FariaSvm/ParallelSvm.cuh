@@ -23,6 +23,5 @@ private:
 	double* dev_a;
 	double* hst_a;
 	double* dev_y;
-	double g;
 };
 

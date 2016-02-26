@@ -9,25 +9,18 @@ DataSet::DataSet(int argc, char** argv)
 {
 	string arg = Utils::GetComandVariable(argc, argv, "-d");
 	InitData(arg);
-
-	arg = Utils::GetComandVariable(argc, argv, "-f");
-	if (!Utils::TryParseInt(arg, nFolds))
-		nFolds = 3;
-	nTrainingSize = nSamples - nSamples / nFolds;
-
-	arg = Utils::GetComandVariable(argc, argv, "-p");
-	if (!Utils::TryParseDouble(arg, Precision))
-		Precision = 3;
-
+	
 	Logger::Stats("FileName", FileName);
 	Logger::Stats("Samples", nSamples);
 	Logger::Stats("Features", nFeatures);
 	Logger::Stats("Classes", nClasses);
 	Logger::Stats("C", C);
-	Logger::Stats("Gama", Gama);
-	Logger::Stats("Precision", Precision);
-	Logger::Stats("InitialStepSize", Step);
-	Logger::Stats("Folds", nFolds);
+
+	arg = Utils::GetComandVariable(argc, argv, "-f");
+	if (!Utils::TryParseInt(arg, nFolds))
+		nFolds = 3;
+	Logger::Stats("nFolds", nFolds);
+
 	ReadFile();
 	Utils::Shuffle(X, Y);
 }
@@ -64,53 +57,43 @@ void DataSet::InitAdult(int n)
 	nClasses = 2;
 	C = 100;
 	Gama = 0.5;
-	Step = 1e-12;
 	switch (n)
 	{
 	case 1:
 		FileName = "Data/adult1.data";
 		nSamples = 1605;
-		nTesters = 16281;
 		break;
 	case 2:
 		FileName = "Data/adult2.data";
 		nSamples = 2265;
-		nTesters = 16281;
 		break;
 	case 3: 
 		FileName = "Data/adult3.data";
 		nSamples = 3185;
-		nTesters = 16281;
 		break;
 	case 4:
 		FileName = "Data/adult4.data";
 		nSamples = 4781;
-		nTesters = 16281;
 		break;
 	case 5:
 		FileName = "Data/adult5.data";
 		nSamples = 6414;
-		nTesters = 16281;
 		break;
 	case 6:
 		FileName = "Data/adult6.data";
 		nSamples = 11220;
-		nTesters = 16281;
 		break;
 	case 7: 
 		FileName = "Data/adult7.data";
 		nSamples = 16100;
-		nTesters = 16281;
 		break;
 	case 8: 
 		FileName = "Data/adult8.data";
 		nSamples = 22696;
-		nTesters = 16281;
 		break;
 	case 9: 
 		FileName = "Data/adult9.data";
 		nSamples = 32561;
-		nTesters = 16281;
 		break;
 	default:
 		throw(exception("Invalid adult type"));
@@ -128,8 +111,6 @@ void DataSet::InitWeb(int n)
 	nClasses = 2;
 	C = 64;
 	Gama = 7.8125;
-	Step = 1e-13;
-	nTesters = 0;
 	switch (n)
 	{
 	case 1:
@@ -174,12 +155,10 @@ void DataSet::InitIris()
 	FileName = "Data/iris.csv";
 	IsCsv = true;
 	nSamples = 100;
-	nTesters = 20;
 	nFeatures = 4;
 	nClasses = 2;
 	C = 16;
 	Gama = 0.5;
-	Step = 0.0001;
 }
 
 bool DataSet::readNextRow(istream& str)

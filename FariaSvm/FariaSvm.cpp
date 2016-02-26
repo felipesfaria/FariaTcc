@@ -19,7 +19,7 @@ int main(int argc, char* argv[])
 		Logger::Init(argc, argv);
 
 		int seed;
-		string arg = Utils::GetComandVariable(argc, argv, "-s");
+		string arg = Utils::GetComandVariable(argc, argv, "-sd");
 		if (!Utils::TryParseInt(arg, seed))
 			seed = time(nullptr);
 		Logger::Stats("Seed", seed);

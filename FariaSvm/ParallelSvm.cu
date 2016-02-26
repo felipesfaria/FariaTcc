@@ -4,6 +4,7 @@
 #include <locale>
 #include "Utils.h"
 #include <device_launch_parameters.h>
+#include <cuda_runtime_api.h>
 
 #define CUDA_SAFE_CALL(call) { \
    cudaError_t err = call;     \
@@ -66,10 +67,9 @@ __global__ void initArray(double *array, const double value)
 }
 
 ParallelSvm::ParallelSvm(int argc, char** argv, DataSet *ds)
+	: BaseSvm(argc,argv,ds)
 {
-	Logger::Stats("SVM", "Parallel");
 	Logger::FunctionStart("ParallelSvm");
-	_ds = ds;
 
 	int halfGigaByte = 1 << 29;
 	long gpuByteSize = ds->nSamples*ds->nFeatures*sizeof(double);
@@ -171,9 +171,8 @@ void ParallelSvm::Train(int validationStart, int validationEnd, vector<double>& 
 	int count = 0;
 	double lastDif = 0.0;
 	double difAlpha;
-	double step = _ds->Step;
+	double step = Step;
 	double C = _ds->C;
-	double precision = _ds->Precision;
 	do
 	{
 		trainingKernel << <_blocks, _threadsPerBlock >> >(dev_a, dev_x, dev_y, g, _ds->nFeatures, _ds->nSamples, step, _ds->C, validationStart, validationEnd);
@@ -196,7 +195,7 @@ void ParallelSvm::Train(int validationStart, int validationEnd, vector<double>& 
 			step = step / 2;
 		lastDif = difAlpha;
 		count++;
-	} while ((abs(difAlpha) > precision && count < 100) || count <= 1);
+	} while ((abs(difAlpha) > Precision && count < 100) || count <= 1);
 	alpha.clear();
 	for (int i = 0; i < _ds->nSamples; i++)
 		alpha.push_back(hst_a[i]);

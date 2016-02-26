@@ -7,10 +7,9 @@ using namespace std;
 
 
 SequentialSvm::SequentialSvm(int argc, char** argv, DataSet *ds)
+	: BaseSvm(argc, argv, ds)
 {
 	Logger::Stats("SVM", "Sequential");
-	_ds = ds;
-	g = 1 / (2 * _ds->Gama*_ds->Gama);
 }
 
 SequentialSvm::~SequentialSvm()
@@ -51,9 +50,8 @@ void SequentialSvm::Train(int validationStart, int validationEnd, vector<double>
 	int count = 0;
 	double lastDif = 0.0;
 	double difAlpha;
-	double step = _ds->Step;
+	double step = Step;
 	double C = _ds->C;
-	double precision = _ds->Precision;
 	do
 	{
 		for (int i = 0; i < samples; ++i)
@@ -93,7 +91,7 @@ void SequentialSvm::Train(int validationStart, int validationEnd, vector<double>
 			step = step / 2;
 		lastDif = difAlpha;
 		count++;
-	} while ((abs(difAlpha) > precision && count < 100) || count <= 1);
+	} while ((abs(difAlpha) > Precision && count < 100) || count <= 1);
 	int nSupportVectors = 0;
 	for (int i = 0; i < samples; ++i){
 		if (i == validationStart){

@@ -12,16 +12,12 @@ public:
 	string FileName;
 	bool IsCsv;
 	int nSamples;
-	int nTesters;
 	int nFeatures;
 	int nClasses;
+	int nFolds;
 	int C;
 	KernelType kernelType;
-	double Gama;
-	double Step;
-	double Precision;
-	int nFolds;
-	int nTrainingSize;
+	double Gama=-1;
 	vector<vector<double>> X;
 	vector<double> Y;
 	std::string const& operator[](size_t index) const;

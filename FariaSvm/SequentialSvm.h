@@ -5,7 +5,6 @@ class SequentialSvm:
 	public BaseSvm
 {
 public:
-	double g;
 	SequentialSvm(int argc, char** argv, DataSet *ds);
 	~SequentialSvm();
 	int Classify(int index, vector<double>& alpha, double& b) override;
