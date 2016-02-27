@@ -8,7 +8,6 @@ public:
 	double* device = NULL;
 	double* host = NULL;
 	int size = 0;
-	bool initialized = false;
 	bool deviceOnly = false;
 	~CudaArray();
 	void Init(double* host, int size);

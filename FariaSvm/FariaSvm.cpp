@@ -48,6 +48,7 @@ int main(int argc, char* argv[])
 		double averagePercentageCorrect = 100.0*totalCorrect / ds.nSamples;
 		Logger::Stats("AveragePercentage", averagePercentageCorrect);
 		Logger::End();
+		delete(svm);
 		return 0;
 	}
 	catch (exception& e)

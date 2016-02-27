@@ -31,13 +31,13 @@ __global__ void classificationKernel(double *saida, const double *tX, const doub
 	saida[idx] = tY[idx] * alpha[idx] * exp(-gama * sum);
 }
 
-__global__ void trainingKernel(double *alpha, const double *x, const double *y, const double gama, const int nFeatures, const int nSamples, const double step, const double C)
+__global__ void trainingKernelLoop(double *sum,const double *alpha, const double *x, const double *y, const double gama, const int nFeatures, const int nSamples,const int batchStart, const int batchEnd)
 {
 	int idx = threadIdx.x + blockIdx.x * blockDim.x;
 	if (idx > nSamples) return;
 	int bIndex = idx*nFeatures;
-	double outerSum = 0;
-	for (int i = 0; i < nSamples; i++){
+	double outerSum = sum[idx];
+	for (int i = batchStart; i < batchEnd; i++){
 		int aIndex = i * nFeatures;
 		double product;
 		double innerSum = 0;
@@ -49,7 +49,14 @@ __global__ void trainingKernel(double *alpha, const double *x, const double *y, 
 		}
 		outerSum += alpha[i] * y[i] * exp(-gama * innerSum);
 	}
-	double deltaAlpha = step - step*y[idx] * outerSum;
+	sum[idx] = outerSum;
+}
+
+__global__ void trainingKernelFinish(double *alpha,const double *sum, const double *y, const int nSamples, const double step, const double C)
+{
+	int idx = threadIdx.x + blockIdx.x * blockDim.x;
+	if (idx > nSamples) return;
+	double deltaAlpha = step - step*y[idx] * sum[idx];
 	double newAlpha = deltaAlpha + alpha[idx];
 	if (newAlpha > C)
 		newAlpha = C;
@@ -63,11 +70,12 @@ __global__ void initArray(double *array, const double value)
 	int idx = threadIdx.x + blockIdx.x * blockDim.x;
 	array[idx] = value;
 }
+
 CudaArray::~CudaArray()
 {
-	if (initialized)
+	if (device!=NULL)
 		cudaFree(device);
-	if (deviceOnly)
+	if (deviceOnly && host != NULL)
 		free(host);
 }
 
@@ -76,7 +84,7 @@ void CudaArray::Init(int size)
 	deviceOnly = true;
 	if (size != this->size)
 	{
-		if (initialized)
+		if (host!=NULL)
 			free(host);
 		host = (double*)malloc(size*sizeof(double));
 	}
@@ -87,11 +95,10 @@ void CudaArray::Init(double* host, int size)
 {
 	if (size != this->size)
 	{
-		if (initialized)
+		if (device!=NULL)
 			cudaFree(device);
 		CUDA_SAFE_CALL(cudaMalloc((void**)&device, size * sizeof(double)));
 	}
-	initialized = true;
 	this->size = size;
 	this->host = host;
 }
@@ -181,6 +188,7 @@ void ParallelSvm::Train(TrainingSet *ts)
 	caTrainingY.Init(ts->y, ts->height);
 	caTrainingY.CopyToDevice();
 
+	caSum.Init(ts->height);
 	caAlpha.Init(ts->alpha, ts->height);
 	initArray << <_blocks, _threadsPerBlock >> >(caAlpha.device, Step);
 	double* oldAlpha = (double*)malloc(ts->height*sizeof(double));
@@ -189,10 +197,20 @@ void ParallelSvm::Train(TrainingSet *ts)
 	double difAlpha;
 	double step = Step;
 	double C = _ds->C;
+	int batchSize = 1000;
+	int batchStart;
+	int batchEnd;
 	do
 	{
-		trainingKernel << <_blocks, _threadsPerBlock >> >(caAlpha.device, caTrainingX.device, caTrainingY.device, g, ts->width, ts->height, step, _ds->C);
-		
+		for (batchStart = 0; batchStart < ts->height; batchStart += batchSize)
+		{
+			if (batchStart + batchSize>ts->height)
+				batchEnd = ts->height;
+			else
+				batchEnd = batchStart + batchSize;
+			trainingKernelLoop << <_blocks, _threadsPerBlock >> >(caSum.device, caAlpha.device, caTrainingX.device, caTrainingY.device, g, ts->width, ts->height, batchStart, batchEnd);
+		}
+		trainingKernelFinish << <_blocks, _threadsPerBlock >> >(caAlpha.device, caSum.device, caTrainingY.device, ts->width, step, C);
 		caAlpha.CopyToHost();
 
 		difAlpha = 0;
