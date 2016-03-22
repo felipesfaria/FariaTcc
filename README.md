@@ -13,5 +13,6 @@ Desenvolver uma implementação de SVM usando CUDA, o algoritmo implementado é 
 - *FariaSVM/FariaSVM.cpp* : main
 - *FariaSVM/ParallelSVM.cu* : versão paralela
 - *FariaSVM/SequentialSVM.cu* : versão sequencial
+- *FariaSVM/Data/* : conjuntos de dados analisados
 - *FariaTccTests/* : Testes unitários
 - *Latex/* : projeto escrito em Latex
