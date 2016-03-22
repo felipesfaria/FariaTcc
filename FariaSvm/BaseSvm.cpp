@@ -8,7 +8,7 @@ BaseSvm::BaseSvm(int argc, char** argv, DataSet *ds)
 
 	auto arg = Utils::GetComandVariable(argc, argv, "-p");
 	if (!Utils::TryParseDouble(arg, Precision))
-		Precision = 1e-12;
+		Precision = 1e-15;
 	Logger::Stats("Precision", Precision);
 	
 	double gama;
@@ -20,7 +20,7 @@ BaseSvm::BaseSvm(int argc, char** argv, DataSet *ds)
 
 	arg = Utils::GetComandVariable(argc, argv, "-st");
 	if (!Utils::TryParseDouble(arg, Step))
-		Step = 1e-9;
+		Step = 1;
 	Logger::Stats("Step", Step);
 }
 

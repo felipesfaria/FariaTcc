@@ -16,6 +16,7 @@ protected:
 	double Precision;
 	double g;
 	double Step;
+	int MaxIterations=256;
 private:
 };
 

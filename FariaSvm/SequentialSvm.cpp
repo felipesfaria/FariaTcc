@@ -42,8 +42,13 @@ void SequentialSvm::Train(TrainingSet *ts)
 		oldAlpha.push_back(0);
 	}
 	int count = 0;
-	double lastDif = 0.0;
+	double *lastDif = (double*)malloc(ts->height*sizeof(double));
+	for (int i = 0; i < ts->height; i++)
+		lastDif[i] = 0;
 	double difAlpha;
+	double *steps = (double*)malloc(ts->height*sizeof(double));
+	for (int i = 0; i < ts->height; i++)
+		steps[i] = Step;
 	double step = Step;
 	double C = _ds->C;
 	do
@@ -56,28 +61,32 @@ void SequentialSvm::Train(TrainingSet *ts)
 				if (oldAlpha[j] == 0) continue;
 				sum += ts->y[j] * oldAlpha[j] * K(ts->GetSample(i), ts->GetSample(j), ts->width);
 			}
-			double value = oldAlpha[i] + step - step*ts->y[i] * sum;
+			double value = oldAlpha[i] + steps[i] - steps[i]*ts->y[i] * sum;
 			if (value > C)
-				alpha[i] = C;
+				value = C;
 			else if (value < 0)
-				alpha[i] = 0.0;
-			else
-				alpha[i] = value;
+				value = 0.0;
+			
+			auto dif = value - alpha[i];
+			if (dif*lastDif[i] < 0)
+				steps[i] /= 2;
+			lastDif[i] = dif;
+			alpha[i] = value;
 		}
-
 		difAlpha = 0;
+		step = 0;
 		for (int i = 0; i < ts->height; ++i){
-			difAlpha += alpha[i] - oldAlpha[i];
+			difAlpha += lastDif[i];
+			step += lastDif[i];
 			oldAlpha[i] = alpha[i];
 		}
+		difAlpha /= ts->height;
+		step /= ts->height;
 
-		Logger::ClassifyProgress(count, step, lastDif, difAlpha);
+		Logger::ClassifyProgress(count, step, 0, difAlpha);
 
-		if (abs(difAlpha - lastDif) > difAlpha / 10.0)
-			step = step / 2;
-		lastDif = difAlpha;
 		count++;
-	} while ((abs(difAlpha) > Precision && count < 100) || count <= 1);
+	} while ((abs(difAlpha) > Precision && count < MaxIterations) || count <= 1);
 	int nSupportVectors = 0;
 	for (int i = 0; i < ts->height; ++i){
 		if (alpha[i] > 0)

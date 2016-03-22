@@ -37,5 +37,7 @@ private:
 	CudaArray caValidationX;
 	CudaArray caAlpha;
 	CudaArray caSum;
+	CudaArray caStep;
+	CudaArray caLastDif;
 };
 

@@ -52,16 +52,20 @@ __global__ void trainingKernelLoop(double *sum,const double *alpha, const double
 	sum[idx] = outerSum;
 }
 
-__global__ void trainingKernelFinish(double *alpha,const double *sum, const double *y, const int nSamples, const double step, const double C)
+__global__ void trainingKernelFinish(double *alpha, const double *sum, const double *y, const int nSamples, double *step, double *last, const double C)
 {
 	int idx = threadIdx.x + blockIdx.x * blockDim.x;
 	if (idx > nSamples) return;
-	double deltaAlpha = step - step*y[idx] * sum[idx];
+	double deltaAlpha = step[idx] - step[idx]*y[idx] * sum[idx];
 	double newAlpha = deltaAlpha + alpha[idx];
 	if (newAlpha > C)
 		newAlpha = C;
 	else if (newAlpha < 0)
 		newAlpha = 0.0;
+	auto dif = newAlpha - alpha[idx];
+	if (dif*last[idx] < 0)
+		step[idx] /= 2;
+	last[idx] = dif;
 	alpha[idx] = newAlpha;
 }
 
@@ -136,7 +140,7 @@ ParallelSvm::ParallelSvm(int argc, char** argv, DataSet *ds)
 
 	string arg = Utils::GetComandVariable(argc, argv, "-tpb");
 	if (!Utils::TryParseInt(arg, _threadsPerBlock) || _threadsPerBlock % 32 != 0)
-		_threadsPerBlock = 128;
+		_threadsPerBlock = 512;
 
 	CUDA_SAFE_CALL(cudaSetDevice(0));
 
@@ -189,17 +193,27 @@ void ParallelSvm::Train(TrainingSet *ts)
 	caTrainingY.CopyToDevice();
 
 	caSum.Init(ts->height);
+
+	caStep.Init(ts->height);
+	initArray << <_blocks, _threadsPerBlock >> >(caStep.device, Step);
+
+	caLastDif.Init(ts->height);
+	initArray << <_blocks, _threadsPerBlock >> >(caLastDif.device, 0);
+
 	caAlpha.Init(ts->alpha, ts->height);
 	initArray << <_blocks, _threadsPerBlock >> >(caAlpha.device, Step);
+
 	double* oldAlpha = (double*)malloc(ts->height*sizeof(double));
 	int count = 0;
 	double lastDif = 0.0;
 	double difAlpha;
 	double step = Step;
 	double C = _ds->C;
-	int batchSize = 1000;
+	int batchSize = 512;
 	int batchStart;
 	int batchEnd;
+	double avgStep;
+	CUDA_SAFE_CALL(cudaDeviceSynchronize());
 	do
 	{
 		for (batchStart = 0; batchStart < ts->height; batchStart += batchSize)
@@ -209,24 +223,21 @@ void ParallelSvm::Train(TrainingSet *ts)
 			else
 				batchEnd = batchStart + batchSize;
 			trainingKernelLoop << <_blocks, _threadsPerBlock >> >(caSum.device, caAlpha.device, caTrainingX.device, caTrainingY.device, g, ts->width, ts->height, batchStart, batchEnd);
+			CUDA_SAFE_CALL(cudaDeviceSynchronize());
 		}
-		trainingKernelFinish << <_blocks, _threadsPerBlock >> >(caAlpha.device, caSum.device, caTrainingY.device, ts->width, step, C);
-		caAlpha.CopyToHost();
+		trainingKernelFinish << <_blocks, _threadsPerBlock >> >(caAlpha.device, caSum.device, caTrainingY.device, ts->width, caStep.device, caLastDif.device, C);
+		//caAlpha.CopyToHost();
+		caLastDif.CopyToHost();
+		caStep.CopyToHost();
 
-		difAlpha = 0;
-		for (int i = 0; i < ts->height; ++i){
-			difAlpha += ts->alpha[i] - oldAlpha[i];
-			oldAlpha[i] = ts->alpha[i];
-		}
+		difAlpha = caLastDif.GetSum() / ts->height;
+		avgStep = caStep.GetSum() / ts->height;
 
-		Logger::ClassifyProgress(count, step, lastDif, difAlpha);
+		Logger::ClassifyProgress(count, avgStep, lastDif, difAlpha);
 
-		if (abs(difAlpha - lastDif) > difAlpha / 10.0)
-			step = step / 2;
-		lastDif = difAlpha;
 		count++;
-	} while ((abs(difAlpha) > Precision && count < 100) || count <= 1);
-
+	} while ((abs(difAlpha) > Precision && count < MaxIterations) || count <=1);
+	caAlpha.CopyToHost();
 	int nSupportVectors = 0;
 	for (int i = 0; i < ts->height; ++i){
 		if (ts->alpha[i] != 0)
