@@ -1,4 +1,20 @@
 \chapter{Programação Paralela}\label{chp:LABEL_CHP_3}
+\section{Computação Heterogenea}
+Computação heterogêna é o conceito de utilizar arquiteturas diferentes, como GPUs e FPGAs, para otimizar o processamento das aplicações que executam em um nó computacional, por isso essas arquiteturas são chamadas de aceleradores.
+
+É importante ressaltar que nem todo algoritmo será melhor se executado por um acelerador, então o desenvolvedor deve saber decidir quando optar por uma CPU tradicional ou pela computação heterogênea.
+
+A seguir, mostramos uma imagem da empresa AMD mostrando a evolução do desempenho dos processadores.
+
+Figura 1.1. Evolução do desempenho dos processadores
+A empresa AMD considera que temos 3 eras de evolução. A primeira era é caracterizada pelo processamento em um núcleo único. Os processadores de núcleo único evoluíram até se tornarem muito complexos, mas são limitados por questões de dissipação de energia.
+
+A seguir, vem a era dos múltiplos núcleos (Multi-Core), na qual os processadores passam a ter mais de um núcleo de processamento. Segundo a AMD, esse processo de adição de mais núcleos de processamento está chegando no limite em que novos avanços não irão melhorar a performance, devido a problemas na dissipação de energia e falta de aplicações que sejam otimizadas para os múltiplos núcleos dos processadores modernos.
+
+A era da computação heterogênea está começando agora e ainda há um espaço enorme para melhorias nesse tipo de processador. Entretanto, o que ainda é um obstáculo são os problemas de comunicação entre os subsistemas e os modelos de programação que ainda estão vinculados ao paradigma anterior.
+
+Exemplos de API voltada ao modelo de programação heterogênea são o OpenCL e o CUDA, mas suas linguagens de baixo nível podem chegar a repelir novos desenvolvedores (sendo o OpenCL ainda mais complexo).
+
 \section{CUDA: Compute Unified Device Architecture}\label{sec:LABEL_CHP_3_SEC_A}
 Bacon ipsum dolor amet corned beef hamburger shoulder, t-bone tenderloin venison tongue jerky tri-tip landjaeger salami. Chicken jowl strip steak, flank sausage andouille jerky leberkas tri-tip salami cow pork loin. Ground round rump shankle kielbasa tenderloin frankfurter alcatra pork belly swine kevin cupim hamburger biltong. Porchetta pastrami shank rump. Ham hock filet mignon ribeye capicola.
 

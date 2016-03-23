@@ -1,29 +1,184 @@
 \chapter{Maquina de Vetores Suporte}\label{chp:LABEL_CHP_2}
 
-\section{SVM: Support Vector Machine}\label{sec:LABEL_CHP_2_SEC_A}
-Support Vector Machines é uma classe de aprendizado de maquina que surgiu nos anos 90. Hoje em dia são usadas em diversas areas como reconhecimento de escrita, bioinformatica e mineração de dados.	Essencialmente eles são metodos de aprendizado supervisionado que podem ser usados para classificação ou regressão e podem ser binários ou multiclasse. Por simplicidade vou abordar aqui os os classificadores binários. São os algoritmos que a partir de um conjunto de dados de treinamento aprende a classificar um novo exemplo como sendo de uma de duas classes.
-SVMs são uma evolução de Linear Decision Surface Functions que são classificadores binários. Dado um conjunto de dados (Xi,Yi) onde Xi pertence a Rn é o conjunto de dados e Yi pertence a {-1,+1} é a classe que você deseja classificar, um Linear Decision Surface Function obtém uma superficie linear (reta, plano ou hiperplano) que separa esse conjunto de dados (se o conjunto for linearmente separavel).
-Bacon ipsum dolor amet corned beef hamburger shoulder, t-bone tenderloin venison tongue jerky tri-tip landjaeger salami. Chicken jowl strip steak, flank sausage andouille jerky leberkas tri-tip salami cow pork loin. Ground round rump shankle kielbasa tenderloin frankfurter alcatra pork belly swine kevin cupim hamburger biltong. Porchetta pastrami shank rump. Ham hock filet mignon ribeye capicola.
+%\section{Definição}\label{sec:LABEL_CHP_2_SEC_A}
+Support Vector Machines é uma classe de aprendizado de maquina que surgiu nos anos 90. Hoje em dia são usadas em diversas áreas como reconhecimento de escrita, bioinformática e mineração de dados.	Essencialmente eles são métodos de aprendizado supervisionado que podem ser usados para classificação ou regressão e podem ser binários ou multi-classe. Por simplicidade vou abordar aqui os os classificadores binários. São os algoritmos que a partir de um conjunto de dados de treinamento aprende a classificar um novo exemplo como sendo de uma de duas classes.
 
-Pancetta frankfurter capicola alcatra, chuck ribeye boudin sausage turducken brisket hamburger tenderloin. Prosciutto shankle chuck tail, beef pork flank. Tongue ribeye sausage, ball tip bacon pork belly ham hock beef. Picanha hamburger jowl tenderloin shoulder, pork loin porchetta pork chop. Meatball rump fatback doner, pork t-bone ham hock pork belly drumstick pork chop leberkas venison kevin. Ham kevin jowl swine salami, alcatra bresaola. Corned beef tail tri-tip ham alcatra prosciutto pork.
+\section{Função de Decisão de Superfície Linear}
+SVMs são uma evolução de Linear Decision Surface Functions que são classificadores binários. Dado um conjunto de dados $(\bar{x}_i,y_i)$ onde $\bar{x}_i \in \mathbb{R}^n$ é o conjunto de dados e $y_i \in \{ -1,+1 \}$ é a classe que você deseja classificar. Uma Linear Decision Surface Function obtém uma superfície linear (reta, plano ou hiperplano) que separa esse conjunto de dados, se ele for linearmente separável.
 
-Meatloaf shankle turducken short loin swine bacon biltong shank t-bone pork belly beef ribs. Tongue shoulder brisket, filet mignon meatloaf cupim turkey. Beef capicola corned beef bresaola sausage pork belly bacon swine. Tail swine bresaola venison capicola brisket turkey strip steak ham hock tenderloin andouille pork loin tongue.
+Uma vez encontrado o plano separador a classificação fica fácil. Se definirmos nosso plano como $\bar{d}\cdot \bar{x} = \bar{d}\cdot \bar{c}$ onde $\bar{d}$ é o vetor ortogonal ao plano, $\bar{c}$ é o vetor de deslocamento de $\bar{d}$ e $\bar{x}$ são os pontos pertencentes a reta. Podemos classificar um ponto $\bar{\alpha}$ como pertencendo a uma classe usando a formula \ref{eq:LABEL_EQ_1}.
 
-Pig pork belly flank beef ribs pork chop picanha drumstick short ribs shoulder shankle rump jerky beef capicola sausage. Porchetta spare ribs meatball bresaola ball tip beef filet mignon andouille bacon. Cupim pancetta drumstick, shank ham short loin ribeye brisket meatball. Filet mignon fatback shank, landjaeger pork belly ribeye pancetta kevin meatball jowl leberkas picanha ham. Shankle venison capicola pig. Landjaeger beef ribs rump sausage capicola hamburger, pork loin tail chuck prosciutto beef shank.
+\begin{equation}
+f(\bar{\alpha})=sgn((\bar{\alpha}-\bar{c})\cdot\bar{d})
+    \label{eq:LABEL_EQ_1}
+\end{equation}
 
-Pastrami bresaola landjaeger turkey short loin hamburger jowl meatloaf tenderloin shank. Prosciutto pig meatloaf salami ham hock pancetta shank landjaeger. Hamburger chuck bacon porchetta, tri-tip venison salami landjaeger pork capicola ball tip. Landjaeger spare ribs prosciutto kielbasa chuck tongue. Prosciutto rump tenderloin cupim beef ribs. Chuck pork alcatra picanha ball tip, prosciutto beef ribs ground round.
+\begin{figure}
+  \centering
+  \includegraphics[width=0.4\textwidth]{imagens/svm_1.png}
+  \caption{Classificação de um ponto $\bar{\alpha}$ por uma superfície de decisão linear}
+  \label{fig:LABEL_FIG_1}
+\end{figure}
 
-Does your lorem ipsum text long for something a little meatier? Give our generator a try… it’s tasty!
+Para encontrar essa superfície usamos o perceptron.  Considerado o precursor das redes neurais é também o próximo passo na evolução da maquina de suporte de vetores. Inicialmente o perceptron da valores aleatórios a $\bar{c}$ e $\bar{d}$ e avalia o quão bem ele classifica o conjunto de dados corrigindo seus valores de acordo com o erro, se aproximando do plano desejado incrementalmente.Eventualmente se os dados forem linearmente separáveis o perceptron vai chegar em uma superfície de separação mas essa superfície pode não separar tão bem o conjunto real que você quer classificar.
 
-\section{CUDA: Compute Unified Device Architecture}\label{sec:LABEL_CHP_2_SEC_B}
-Bacon ipsum dolor amet corned beef hamburger shoulder, t-bone tenderloin venison tongue jerky tri-tip landjaeger salami. Chicken jowl strip steak, flank sausage andouille jerky leberkas tri-tip salami cow pork loin. Ground round rump shankle kielbasa tenderloin frankfurter alcatra pork belly swine kevin cupim hamburger biltong. Porchetta pastrami shank rump. Ham hock filet mignon ribeye capicola.
+Usando a figura \ref{fig:LABEL_FIG_2} como exemplo vamos supor que o perceptron chegou na linha cinza como superfície de separação. A superfície preta seria mais adequada já que a chance de ter um ponto real do outro lado da superfície cinza é maior.
+%trocar linha cinza por pontilhada
+\begin{figure}
+  \centering
+  \includegraphics[width=0.4\textwidth]{imagens/svm_2.png}
+  \caption{A linha escura representa a melhor separação e as linhas claras representam linhas com maior chance de erro}
+  \label{fig:LABEL_FIG_2}
+\end{figure}
 
-Pancetta frankfurter capicola alcatra, chuck ribeye boudin sausage turducken brisket hamburger tenderloin. Prosciutto shankle chuck tail, beef pork flank. Tongue ribeye sausage, ball tip bacon pork belly ham hock beef. Picanha hamburger jowl tenderloin shoulder, pork loin porchetta pork chop. Meatball rump fatback doner, pork t-bone ham hock pork belly drumstick pork chop leberkas venison kevin. Ham kevin jowl swine salami, alcatra bresaola. Corned beef tail tri-tip ham alcatra prosciutto pork.
+\section{Classificadores de Margem Máxima}
+Isso nos leva ao próximo conceito, classificadores de margem máxima. Essas técnicas tem como objetivo encontrar a superfície central entre dois conjuntos de dados (A linha preta, na figura anterior) para minimizar a chance de erro na classificação.
 
-Meatloaf shankle turducken short loin swine bacon biltong shank t-bone pork belly beef ribs. Tongue shoulder brisket, filet mignon meatloaf cupim turkey. Beef capicola corned beef bresaola sausage pork belly bacon swine. Tail swine bresaola venison capicola brisket turkey strip steak ham hock tenderloin andouille pork loin tongue.
+Como estamos procurando a margem máxima dado um conjunto de margens possíveis faz sentido abordar o problema como um problema de otimização.
 
-Pig pork belly flank beef ribs pork chop picanha drumstick short ribs shoulder shankle rump jerky beef capicola sausage. Porchetta spare ribs meatball bresaola ball tip beef filet mignon andouille bacon. Cupim pancetta drumstick, shank ham short loin ribeye brisket meatball. Filet mignon fatback shank, landjaeger pork belly ribeye pancetta kevin meatball jowl leberkas picanha ham. Shankle venison capicola pig. Landjaeger beef ribs rump sausage capicola hamburger, pork loin tail chuck prosciutto beef shank.
+Formalmente problemas de otimização são definidos como: $\underset{\bar{x}}{min}\phi(\bar{x})$ dado que $h_i(\bar{x})\ge c_i$ $\forall \bar{x} \in \mathbb{R}^n$. Onde $\phi: \mathbb{R}^n\rightarrow \mathbb{R}$ é a função objetivo que se quer minimizar e $h_i:\mathbb{R}^n\rightarrow\mathbb{R}$ é o limitante da função com limite $c_i$
 
-Pastrami bresaola landjaeger turkey short loin hamburger jowl meatloaf tenderloin shank. Prosciutto pig meatloaf salami ham hock pancetta shank landjaeger. Hamburger chuck bacon porchetta, tri-tip venison salami landjaeger pork capicola ball tip. Landjaeger spare ribs prosciutto kielbasa chuck tongue. Prosciutto rump tenderloin cupim beef ribs. Chuck pork alcatra picanha ball tip, prosciutto beef ribs ground round.
+\begin{figure}
+  \centering
+  \includegraphics[width=0.7\textwidth]{imagens/svm_3.png}
+  \caption{Superfície de decisão ótima e seus vetores e hiperplanos de suporte}
+  \label{fig:LABEL_FIG_3}
+\end{figure}
 
-Does your lorem ipsum text long for something a little meatier? Give our generator a try… it’s tasty!
+Podemos então traduzir o problema de separar o conjunto de dados em um problema de otimização onde o objetivo é maximizar a distancia entre as superfícies de suporte. As superfícies de suporte são definidas como hiperplanos paralelos que tangenciam os conjuntos de dados de cada classe. E vetores de suporte são pontos pertencentes a essas superfícies. Assim o que nós queremos é a função da superfície de decisão ótima $\bar{w}^*\cdot\bar{x}=b^*$ onde a projeção entre os vetores de suporte $m^*=|\bar{x}_p - \bar{x}_q|cos\gamma$ é máximo.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=0.4\textwidth]{imagens/svm_4.png}
+  \caption{Calculando a margem $m^*$ entre os planos de suporte}
+  \label{fig:LABEL_FIG_4}
+\end{figure}
+
+Para prosseguir nossos cálculos vamos precisar rescrever $m^*$ como: $\frac{2k}{|\bar{w}^*|}$.
+
+\begin{equation}
+m^* = |\bar{x}_p-\bar{x}_q|cos\gamma
+    \label{eq:LABEL_EQ_2}
+\end{equation}
+
+\begin{equation}
+= \frac{\bar{w}^*\cdot(\bar{x}_p-\bar{x}_q)}{|\bar{w}^*|}
+    \label{eq:LABEL_EQ_3}
+\end{equation}
+
+\begin{equation}
+= \frac{\bar{w}^*\cdot\bar{x}_p-\bar{w}^*\cdot\bar{x}_q}{|\bar{w}^*|}
+    \label{eq:LABEL_EQ_4}
+\end{equation}
+
+\begin{equation}
+= \frac{(b^*+k)-(b^*-k)}{|\bar{w}^*|}
+    \label{eq:LABEL_EQ_5}
+\end{equation}
+
+\begin{equation}
+= \frac{2k}{|\bar{w}^*|}
+    \label{eq:LABEL_EQ_6}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+m^* &= |\bar{x}_p-\bar{x}_q|cos\gamma\\
+    &= \frac{\bar{w}^*\cdot(\bar{x}_p-\bar{x}_q)}{|\bar{w}^*|}\\
+    &= \frac{\bar{w}^*\cdot\bar{x}_p-\bar{w}^*\cdot\bar{x}_q}{|\bar{w}^*|}\\
+    &= \frac{(b^*+k)-(b^*-k)}{|\bar{w}^*|}\\
+    &= \frac{2k}{|\bar{w}^*|}
+\end{split}
+\end{equation}
+
+Queremos $m^*$ máximo mas para facilitar nossos cálculos mais a frente vamos reescrever nossa função objetivo como:
+
+\begin{equation}
+\begin{split}
+m^* &= max \frac{2k}{|\bar{w}|} \\
+    &= min \frac{|\bar{w}|}{2k} \\
+    &= min \frac{|\bar{w}|^2}{2k}  \\
+    &= min \frac{1}{2k} \bar{w}\cdot\bar{w}  \\
+    &= min \frac{1}{2} \bar{w}\cdot\bar{w}
+\end{split}
+\end{equation}
+
+Nossas restrições podem ser escritas como:
+%essa notação ta certa o tal que? precisa de uma chave aí?
+\begin{equation}
+\begin{split}
+\bar{w}^*\cdot\bar{x}_i \ge b^*+k \quad \forall (\bar{x}_i,y_i)\in D \quad | \quad y_i=+1 \\
+\bar{w}^*\cdot\bar{x}_i \le b^*-k \quad \forall (\bar{x}_i,y_i)\in D \quad | \quad y_i=-1 \\
+\bar{w}^*\cdot\bar{x}_i \ge 1+b \quad \forall (\bar{x}_i,y_i)\in D \quad | \quad y_i=+1 \\
+\bar{w}^*\cdot(-\bar{x}_i) \ge 1-b \quad \forall (\bar{x}_i,y_i)\in D \quad | \quad y_i=-1 \\
+\bar{w}^*\cdot(y_i\bar{x}_i) \ge 1+y_i b \quad \forall (\bar{x}_i,y_i)\in D
+\end{split}
+\end{equation}
+
+Assim um classificador por margem máxima fica definido como: Dado um conjunto de dados linearmente separaveis $D=(\bar{x}_i,y_i) \subseteq \mathbb{R}^n\times\{+1,1\}$, podemos encontrar a superficie máxima de separação, $\bar{w}^*\cdot\bar{x}=b^*$, otimizando o problema $min\phi(\bar{w},b)=\underset{\bar{w},b}{min}\frac{1}{2}\bar{w}\cdot\bar{w}$ sujeito as restrições de $\bar{w}^*\cdot(y_i\bar{x}_i) \ge 1+y_i b \quad \forall (\bar{x}_i,y_i)\in D$.\par
+
+Uma maquina de suporte de vetor é o problema dual do classificador de margem máxima. Podemos entender um problema dual como uma versão análoga do problema onde invés de encontrar o vetor de define a superfície de separação $w$, queremos encontrar o conjunto de valores de $a$ do qual podemos inferir $w$. Para resolver esse problema dual utilizamos a técnica dual Lagrangiana.
+
+O método de otimização Lagrangiana reescreve um problema de otimização da forma:
+\begin{equation}
+\underset{\bar{x}}{min}\phi(\bar{x}) \quad \text{dado que} \quad h_i(\bar{x})\ge c_i
+\end{equation}
+como:
+\begin{equation}
+\underset{\bar{\alpha}}{max} \underset{\bar{x}}{min} L(\bar{\alpha},\bar{x}) = \underset{\bar{\alpha}}{max} \underset{\bar{x}}{min}\bigg(\phi(\bar{x})-\sum_{i=1}^{l}\alpha_i g_i(\bar{x})\bigg)
+    \label{eq:LABEL_EQ_7}
+\end{equation}
+dado que
+\begin{equation}
+\alpha_i\ge0
+    \label{eq:LABEL_EQ_8}
+\end{equation}
+Encontrados os valores máximo de $a^*$ e minimo de $x^*$ a solução do problema dual vai ser o mesmo do problema primal contanto que as seguintes condições se apliquem:
+
+\begin{equation}
+\begin{split}
+\frac{\partial L}{\partial \bar{x}}(\bar{\alpha}^*,\bar{x})&=\bar{0}, \\
+\alpha_i^*g_i(\bar{x}^*)&=\bar{0}, \\
+g_i(\bar{x}^*)&\ge\bar{0} , \\
+\bar{\alpha}_i^*(\bar{x}^*)&\ge\bar{0} 
+\end{split}
+\end{equation}
+
+Essas condições são conhecidas como as condições de Karush-Kuhn-Tucker ou KKT e podemos usar elas para reescrever nosso problema dependendo somente de $\alpha$ facilitando nossa busca. Agora podemos aplicar essa técnica no nosso problema de margem máxima, escrevemos nossa função lagrangiana como:
+
+\begin{equation}
+\begin{split}
+L(\bar{\alpha},\bar{w},b) &=\phi(\bar{w},b) -  \sum_{i=1}^{l}\alpha_i g_i (\bar{w},b) \\
+ &=\frac{1}{2}\bar{w}\cdot\bar{w} - \sum_{i=1}^{l}\alpha_i (y_i(\bar{w}\cdot \bar{x}_i -b)-1) \\
+ &=\frac{1}{2}\bar{w}\cdot\bar{w} - \sum_{i=1}^{l}\alpha_i y_i \bar{w}\cdot \bar{x}_i + b \sum_{i=1}^{l}\alpha_i y_i + \sum_{i=1}^{l}\alpha_i\\
+\end{split}
+\end{equation}
+
+Aplicando as KKTs chegamos no nosso classificador de margem máxima dual:
+\begin{equation}
+    \underset{\bar{\alpha}}{max} \phi' (\bar{\alpha}) = \underset{\bar{\alpha}}{max} \Bigg( \sum_{i=1}^{l}\alpha_i - \frac{1}{2}\sum_{i=1}^{l}\sum_{j=1}^{l}\alpha_i \alpha_j y_i y_j \bar{x}_i\cdot \bar{x}_j \Bigg)
+\end{equation}
+dado que:
+\begin{equation}
+    \sum_{i=1}^{l}\alpha_i y_i = 0 \quad \text{e} \quad \alpha_i \ge 0 \forall \quad i \in \{1,l\}
+\end{equation}
+Uma vez encontrado nosso $\bar{\alpha}^*$ ótimo podemos classificar um novo ponto $\bar{x}$ com a formula:
+\begin{equation}
+    f(\bar{x}) = sgn\Bigg(
+        \sum_{i=1}^{l} \alpha_i^*y_i\bar{x}_i\cdot\bar{x}
+        -\sum_{i=1}^{l} \alpha_i^*y_i\bar{x}_i\cdot\bar{x}_{sv+}
+        +1
+    \Bigg)
+\end{equation}
+
+Onde $\alpha_i^*=0$ implica que $\bar{x}_i$ não influencia no resultado, $\alpha_j^*> 0$ implica que $\bar{x}_j$ é um vetor de suporte, e $\bar{x}_{sv+}$ é um vetor de suporte positivo qualquer.
+
+\section{O Truque do Kernel}
+Com isso conseguimos uma maquina de vetores de suporte linear. Acontece que poucos conjuntos de dados na pratica são linearmente separáveis. Para aplicar nossa maquina em um conjunto de dados que não seja linearmente separáveis precisamos projeta-los de forma que fiquem linearmente separáveis:
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1\textwidth]{imagens/svm_5.png}
+  \caption{Em (a) não é possível separar os conjuntos de forma linear, mas transformando os dados em $\mathbb{R}^2\rightarrow \mathbb{R}^3$ em (b) conseguimos separa-los linearmente}
+  \label{fig:LABEL_FIG_5}
+\end{figure}
