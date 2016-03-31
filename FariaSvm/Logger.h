@@ -31,7 +31,7 @@ private:
 	map<string, Timer*> FunctionTimers;
 	map<string, Metric*> Metrics;
 	map<string, string> StatsMap;
-	string FormatClock(int milliseconds);
+	string FormatClock(unsigned milliseconds);
 	string FormatClock();
 	unsigned int _programStart;
 	static Logger *s_instance;

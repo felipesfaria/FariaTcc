@@ -1,62 +1,62 @@
-0:0:0:388	Program Started
-0:0:0:389	Seed: 0
-0:0:0:389	FileName: Data/iris.csv
-0:0:0:389	Samples: 100
-0:0:0:389	Features: 4
-0:0:0:389	Classes: 2
-0:0:0:389	C: 16
-0:0:0:389	nFolds: 3
-0:0:0:389	ReadFile starting...
-0:0:0:424	ReadFile finished in 0:0:0:35	
-0:0:0:424	Shuffle starting...
-0:0:0:424	Shuffle finished in 0:0:0:0	
-0:0:0:425	Precision: 1e-015
-0:0:0:425	Gama: 0.5
-0:0:0:425	Step: 1
-0:0:0:425	ParallelSvm starting...
-0:0:0:461	ParallelSvm finished in 0:0:0:36	
-0:0:0:461	Fold: 1
-0:0:0:461	Train starting...
-0:0:0:461	Blocks: 1
-0:0:0:461	ThreadsPerBlock: 512
-0:0:0:462	Threads: 512
-0:0:0:509	Iteration: 0	step: 1	lastDif:0	difAlpha:-0.0746269
-0:0:0:510	Iteration: 1	step: 1	lastDif:0	difAlpha:0
-0:0:0:511	nSupportVectors: 62
-0:0:0:511	Train finished in 0:0:0:50	
-0:0:0:511	Test starting...
-0:0:0:514	nNegativeWrong : 0
-0:0:0:514	nPositiveWrong : 0
-0:0:0:514	nNullWrong : 0
-0:0:0:514	AverageClassificationTime : 0
-0:0:0:514	Percentage correct: 33/33 = 100%
-0:0:0:514	Test finished in 0:0:0:3	
-0:0:0:514	Fold: 2
-0:0:0:515	Train starting...
-0:0:0:516	Iteration: 0	step: 1	lastDif:0	difAlpha:-0.0746269
-0:0:0:516	Iteration: 1	step: 1	lastDif:0	difAlpha:0
-0:0:0:516	nSupportVectors: 62
-0:0:0:516	Train finished in 0:0:0:1	
-0:0:0:516	Test starting...
-0:0:0:519	nNegativeWrong : 0
-0:0:0:519	nPositiveWrong : 0
-0:0:0:519	nNullWrong : 0
-0:0:0:519	AverageClassificationTime : 0
-0:0:0:519	Percentage correct: 33/33 = 100%
-0:0:0:520	Test finished in 0:0:0:4	
-0:0:0:520	Fold: 3
-0:0:0:520	Train starting...
-0:0:0:521	Iteration: 0	step: 1	lastDif:0	difAlpha:-0.0757576
-0:0:0:522	Iteration: 1	step: 1	lastDif:0	difAlpha:0
-0:0:0:522	nSupportVectors: 61
-0:0:0:522	Train finished in 0:0:0:2	
-0:0:0:522	Test starting...
-0:0:0:524	nNegativeWrong : 0
-0:0:0:524	nPositiveWrong : 0
-0:0:0:525	nNullWrong : 0
-0:0:0:525	AverageClassificationTime : 0
-0:0:0:525	Percentage correct: 34/34 = 100%
-0:0:0:525	Test finished in 0:0:0:3	
-0:0:0:525	AveragePercentage: 100
-0:0:0:525	Program Finished in 0:0:0:137	
+0:0:0:404	Program Started
+0:0:0:404	Seed: 0
+0:0:0:404	FileName: Data/iris.csv
+0:0:0:404	Samples: 100
+0:0:0:404	Features: 4
+0:0:0:404	Classes: 2
+0:0:0:405	C: 16
+0:0:0:405	nFolds: 3
+0:0:0:405	ReadFile starting...
+0:0:0:441	ReadFile finished in 0:0:0:36	
+0:0:0:441	Shuffle starting...
+0:0:0:442	Shuffle finished in 0:0:0:1	
+0:0:0:442	Precision: 1e-015
+0:0:0:442	Gama: 0.5
+0:0:0:443	Step: 1
+0:0:0:443	ParallelSvm starting...
+0:0:0:474	ParallelSvm finished in 0:0:0:31	
+0:0:0:475	Fold: 1
+0:0:0:475	Train starting...
+0:0:0:475	Blocks: 1
+0:0:0:475	ThreadsPerBlock: 512
+0:0:0:475	Threads: 512
+0:0:0:524	Iteration: 0	step: 1	lastDif:0	difAlpha:-0.0746269
+0:0:0:525	Iteration: 1	step: 1	lastDif:0	difAlpha:0
+0:0:0:526	nSupportVectors: 62
+0:0:0:526	Train finished in 0:0:0:51	
+0:0:0:526	Test starting...
+0:0:0:529	nNegativeWrong : 0
+0:0:0:529	nPositiveWrong : 0
+0:0:0:530	nNullWrong : 0
+0:0:0:530	AverageClassificationTime : 0
+0:0:0:530	Percentage correct: 33/33 = 100%
+0:0:0:530	Test finished in 0:0:0:4	
+0:0:0:530	Fold: 2
+0:0:0:530	Train starting...
+0:0:0:532	Iteration: 0	step: 1	lastDif:0	difAlpha:-0.0746269
+0:0:0:532	Iteration: 1	step: 1	lastDif:0	difAlpha:0
+0:0:0:532	nSupportVectors: 62
+0:0:0:532	Train finished in 0:0:0:2	
+0:0:0:532	Test starting...
+0:0:0:536	nNegativeWrong : 0
+0:0:0:536	nPositiveWrong : 0
+0:0:0:536	nNullWrong : 0
+0:0:0:536	AverageClassificationTime : 0
+0:0:0:536	Percentage correct: 33/33 = 100%
+0:0:0:536	Test finished in 0:0:0:4	
+0:0:0:536	Fold: 3
+0:0:0:537	Train starting...
+0:0:0:538	Iteration: 0	step: 1	lastDif:0	difAlpha:-0.0757576
+0:0:0:538	Iteration: 1	step: 1	lastDif:0	difAlpha:0
+0:0:0:539	nSupportVectors: 61
+0:0:0:539	Train finished in 0:0:0:2	
+0:0:0:539	Test starting...
+0:0:0:542	nNegativeWrong : 0
+0:0:0:542	nPositiveWrong : 0
+0:0:0:542	nNullWrong : 0
+0:0:0:542	AverageClassificationTime : 0
+0:0:0:542	Percentage correct: 34/34 = 100%
+0:0:0:542	Test finished in 0:0:0:3	
+0:0:0:542	AveragePercentage: 100
+0:0:0:543	Program Finished in 0:0:0:138	
 

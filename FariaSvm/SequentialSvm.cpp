@@ -17,6 +17,7 @@ SequentialSvm::~SequentialSvm()
 
 int SequentialSvm::Classify(TrainingSet *ts, double* sample)
 {
+	auto m = Logger::instance()->StartMetric("Classify");
 	auto sum = 0.0;
 	for (auto i = 0; i < ts->height; ++i)
 	{
@@ -24,6 +25,7 @@ int SequentialSvm::Classify(TrainingSet *ts, double* sample)
 		sum += ts->alpha[i] * ts->y[i] * K(ts->GetSample(i), sample,ts->width);
 	}
 	auto sign = sum - ts->b;
+	m->Stop();
 	if (sign > Precision)
 		return 1;
 	if (sign < Precision)
@@ -33,6 +35,7 @@ int SequentialSvm::Classify(TrainingSet *ts, double* sample)
 
 void SequentialSvm::Train(TrainingSet *ts)
 {
+	auto m = Logger::instance()->StartMetric("Train");
 	Logger::instance()->FunctionStart("Train");
 	double* alpha = ts->alpha;
 	vector<double> oldAlpha;
@@ -94,10 +97,12 @@ void SequentialSvm::Train(TrainingSet *ts)
 	}
 	Logger::instance()->Stats("nSupportVectors", nSupportVectors);
 	Logger::instance()->FunctionEnd("Train");
+	m->Stop();
 }
 
 void SequentialSvm::Test(TrainingSet *ts, ValidationSet *vs)
 {
+	auto m = Logger::instance()->StartMetric("Test");
 	Logger::instance()->FunctionStart("Test");
 	auto start = clock();
 	for (auto i = 0; i < vs->height; ++i)
@@ -111,6 +116,7 @@ void SequentialSvm::Test(TrainingSet *ts, ValidationSet *vs)
 	auto percentageCorrect = static_cast<double>(vs->nCorrect) / vs->height;
 	Logger::instance()->Percentage(vs->nCorrect, vs->height, percentageCorrect);
 	Logger::instance()->FunctionEnd("Test");
+	m->Stop();
 }
 
 double SequentialSvm::K(double* x, double* y, int size)

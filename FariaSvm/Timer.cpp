@@ -22,9 +22,9 @@ string Timer::GetName() const
 	return name;
 }
 
-double Metric::GetAverage() const
+unsigned Metric::GetAverage() const
 {
-	return ((double)acumulated) / count;
+	return acumulated / count;
 }
 
 Metric::Metric(string name)

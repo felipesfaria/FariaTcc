@@ -20,12 +20,12 @@ public:
 	~Metric();
 	void Start();
 	void Stop();
-	double GetAverage() const;
+	unsigned GetAverage() const;
 	string GetName() const;
 private:
 	bool isRunning = false;
 	string name;
-	unsigned int start;
-	unsigned int acumulated;
+	unsigned int start=0;
+	unsigned int acumulated=0;
 	unsigned int count = 0;
 };

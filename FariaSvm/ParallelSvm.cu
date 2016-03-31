@@ -267,7 +267,7 @@ void ParallelSvm::Test(TrainingSet *ts, ValidationSet *vs)
 {
 	Logger::instance()->FunctionStart("Test");
 	auto start = clock();
-	auto m = Logger::instance()->StartMetric("Train");
+	auto m = Logger::instance()->StartMetric("Test");
 	caValidationX.Init(vs->x, vs->height*vs->width);
 	caValidationX.CopyToDevice();
 	caSum.Init(ts->height);

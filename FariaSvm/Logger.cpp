@@ -136,14 +136,13 @@ void Logger::End()
 	}
 	else
 		resultFile.open("results.txt", fstream::out | fstream::app);
-
 	resultFile << endl;
-
+	
 	for (auto it = StatsMap.begin(); it != StatsMap.end(); ++it)
 		resultFile << it->second << "\t";
 
 	for (auto it = Metrics.begin(); it != Metrics.end(); ++it)
-		resultFile << it->second->GetAverage() << "\t";
+		resultFile << FormatClock(it->second->GetAverage()) << "\t";
 
 	resultFile.close();
 }
@@ -153,7 +152,7 @@ void Logger::Percentage(double correct, double total, double percentage, string 
 	logFile << FormatClock() << title << "Percentage correct: " << correct << "/" << total << " = " << percentage*100.0 << "%" << endl;
 }
 
-std::string Logger::FormatClock(int milliseconds)
+std::string Logger::FormatClock(unsigned milliseconds)
 {
 	std::stringstream ss;
 	auto hours = milliseconds / (60 * 60 * CLOCKS_PER_SEC);
