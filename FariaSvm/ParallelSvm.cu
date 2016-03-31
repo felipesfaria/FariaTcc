@@ -165,6 +165,7 @@ ParallelSvm::~ParallelSvm()
 
 int ParallelSvm::Classify(TrainingSet *ts, int index)
 {
+	auto m = Logger::instance()->StartMetric("Classify");
 	classificationKernel << <_blocks, _threadsPerBlock >> >(caSum.device, caTrainingX.device, caTrainingY.device, caValidationX.device, caAlpha.device, g, index, ts->width, ts->height);
 
 	caSum.CopyToHost();
@@ -173,6 +174,7 @@ int ParallelSvm::Classify(TrainingSet *ts, int index)
 
 	auto precision = 0;
 	auto sign = cudaSum - ts->b;
+	m->Stop();
 	if (sign > precision)
 		return 1;
 	if (sign < -precision)
@@ -197,6 +199,7 @@ void ParallelSvm::UpdateBlocks(TrainingSet *ts)
 
 void ParallelSvm::Train(TrainingSet *ts)
 {
+	auto m = Logger::instance()->StartMetric("Train");
 	Logger::instance()->FunctionStart("Train");
 	UpdateBlocks(ts);
 	caTrainingX.Init(ts->x, ts->height*ts->width);
@@ -257,12 +260,14 @@ void ParallelSvm::Train(TrainingSet *ts)
 	}
 	Logger::instance()->Stats("nSupportVectors", nSupportVectors);
 	Logger::instance()->FunctionEnd("Train");
+	m->Stop();
 }
 
 void ParallelSvm::Test(TrainingSet *ts, ValidationSet *vs)
 {
 	Logger::instance()->FunctionStart("Test");
 	auto start = clock();
+	auto m = Logger::instance()->StartMetric("Train");
 	caValidationX.Init(vs->x, vs->height*vs->width);
 	caValidationX.CopyToDevice();
 	caSum.Init(ts->height);
@@ -283,6 +288,7 @@ void ParallelSvm::Test(TrainingSet *ts, ValidationSet *vs)
 		else
 			vs->nNullWrong++;
 	}
+	m->Stop();
 	Logger::instance()->Stats("nNegativeWrong ", vs->nNegativeWrong);
 	Logger::instance()->Stats("nPositiveWrong ", vs->nPositiveWrong);
 	Logger::instance()->Stats("nNullWrong ", vs->nNullWrong);

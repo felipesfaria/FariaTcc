@@ -1,0 +1,4 @@
+AverageClassificationTime 	AveragePercentage	Blocks	C	Classes	Features	FileName	Gama	Precision	Samples	Seed	Step	Threads	ThreadsPerBlock	nFolds	nNegativeWrong 	nNullWrong 	nPositiveWrong 	nSupportVectors	Classify	Train	
+0	100	1	16	2	4	Data/iris.csv	0.5	1e-015	100	0	1	512	512	3	0	0	0	61	3.45282e+007	5.75469e+008	
+0	100	1	16	2	4	Data/iris.csv	0.5	1e-015	100	0	1	512	512	3	0	0	0	61	3.45282e+007	5.75469e+008	
+0	100	1	16	2	4	Data/iris.csv	0.5	1e-015	100	0	1	512	512	3	0	0	0	61	3.45282e+007	5.75469e+008	

@@ -15,8 +15,6 @@ using namespace std;
 int main(int argc, char* argv[])
 {
 	try{
-		Logger::instance()->Init(argc, argv);
-
 		int seed;
 		string arg = Utils::GetComandVariable(argc, argv, "-sd");
 		if (!Utils::TryParseInt(arg, seed))

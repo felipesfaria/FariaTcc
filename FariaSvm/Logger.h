@@ -9,15 +9,8 @@ using namespace std;
 class Logger
 {
 public:
-	enum LoggerType
-	{
-		DISABLED,
-		VERBOSE,
-		CSV
-	};
 	static Logger *instance();
 	~Logger();
-	void Init(int argc, char** argv);
 	void Seed(unsigned int seed);
 	void Fold(int i);
 	void Percentage(double totalCorrect, double totalSamples, double averagePercentageCorrect, string title = "");
@@ -25,6 +18,7 @@ public:
 	void Error(exception exception);
 	void FunctionStart(string functionName);
 	void FunctionEnd(string functionName);
+	Metric* StartMetric(string name);
 	void ClassifyProgress(int count, double step, double lastDif, double difAlpha);
 	void Stats(string statName, long stat);
 	void Stats(string statName, int stat);
@@ -34,11 +28,12 @@ public:
 	void Line(string s);
 private:
 	fstream logFile;
-	map<string,Timer*> FunctionTimers;
+	map<string, Timer*> FunctionTimers;
+	map<string, Metric*> Metrics;
+	map<string, string> StatsMap;
 	string FormatClock(int milliseconds);
 	string FormatClock();
 	unsigned int _programStart;
-	LoggerType _type;
 	static Logger *s_instance;
 	Logger();
 };

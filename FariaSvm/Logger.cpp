@@ -11,6 +11,8 @@ Logger *Logger::s_instance = nullptr;
 Logger::Logger()
 {
 	logFile.open("log.txt", fstream::out | fstream::trunc);
+	_programStart = clock();
+	logFile << FormatClock() << "Program Started" << endl;;
 }
 
 Logger* Logger::instance()
@@ -25,25 +27,6 @@ Logger::~Logger()
 	logFile.close();
 }
 
-void Logger::Init(int argc, char** argv)
-{
-	_programStart = clock();
-	string argument = Utils::GetComandVariable(argc, argv, "-l");
-	if (argument == "v")
-		_type = VERBOSE;
-	else if (argument == "c")
-		_type = CSV;
-	else if (argument == "d" || argument == "")
-		_type = DISABLED;
-	else
-	{
-		string message = "Invalid argument for -l:" + argument;
-		throw(exception(message.c_str()));
-	}
-
-	logFile << FormatClock() << "Program Started" << endl;;
-}
-
 void Logger::Seed(unsigned seed)
 {
 	logFile << FormatClock() << "seed: " << seed << endl;
@@ -51,7 +34,6 @@ void Logger::Seed(unsigned seed)
 
 void Logger::Fold(int i)
 {
-	if (_type != VERBOSE) return;
 	logFile << FormatClock() << "Fold: " << i << endl;
 }
 
@@ -62,8 +44,7 @@ void Logger::Error(exception exception)
 
 void Logger::FunctionStart(string functionName)
 {
-	auto value = FunctionTimers.find(functionName);
-	if (value != FunctionTimers.end())
+	if (FunctionTimers.count(functionName))
 		throw exception(("FunctionTimer:" + functionName + " allready started").c_str());
 	FunctionTimers[functionName] = new Timer(functionName);
 	logFile << FormatClock() << functionName << " starting..." << endl;
@@ -71,14 +52,21 @@ void Logger::FunctionStart(string functionName)
 void Logger::FunctionEnd(string functionName)
 {
 	unsigned elapsed;
-	auto value = FunctionTimers.find(functionName);
-	if (value == FunctionTimers.end())
+	if (!FunctionTimers.count(functionName))
 		throw exception(("FunctionTimer:" + functionName + " hasn't started").c_str());
 	auto timer = FunctionTimers[functionName];
 	FunctionTimers.erase(functionName);
 	elapsed = timer->GetElapsed();
 	delete(timer);
 	logFile << FormatClock() << functionName << " finished in " << FormatClock(elapsed) << endl;
+}
+
+Metric* Logger::StartMetric(string name)
+{
+	if (Metrics.count(name)==0)
+		Metrics[name] = new Metric(name);
+	Metrics[name]->Start();
+	return Metrics[name];
 }
 
 void Logger::ClassifyProgress(int count, double step, double lastDif, double difAlpha)
@@ -113,6 +101,7 @@ void Logger::Stats(string statName, double stat)
 }
 void Logger::Stats(string statName, string stat)
 {
+	StatsMap[statName] = stat;
 	logFile << FormatClock() << statName << ": " << stat << endl;
 }
 
@@ -126,6 +115,37 @@ void Logger::End()
 	int end = clock();
 	logFile << FormatClock() << "Program Finished in " << FormatClock(end - _programStart) << endl;
 	logFile << endl;
+
+	fstream resultFile;
+	stringstream headerStream;
+	for (auto it = StatsMap.begin(); it != StatsMap.end();++it)
+		headerStream << it->first << "\t";
+
+	for (auto it = Metrics.begin(); it != Metrics.end(); ++it)
+		headerStream << it->first << "\t";
+	auto header = headerStream.str();
+
+	resultFile.open("results.txt", fstream::in);
+	string         line;
+	getline(resultFile, line);
+
+	resultFile.close();
+	if (headerStream.str() != line){
+		resultFile.open("results.txt", fstream::out | fstream::trunc);
+		resultFile << headerStream.str();
+	}
+	else
+		resultFile.open("results.txt", fstream::out | fstream::app);
+
+	resultFile << endl;
+
+	for (auto it = StatsMap.begin(); it != StatsMap.end(); ++it)
+		resultFile << it->second << "\t";
+
+	for (auto it = Metrics.begin(); it != Metrics.end(); ++it)
+		resultFile << it->second->GetAverage() << "\t";
+
+	resultFile.close();
 }
 
 void Logger::Percentage(double correct, double total, double percentage, string title)
