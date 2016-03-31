@@ -183,6 +183,7 @@ void DataSet::ReadFile()
 
 	for (int i = 0; i < nSamples; i++)
 		readNextRow(file);
+	file.close();
 	Logger::instance()->FunctionEnd("ReadFile");
 
 }

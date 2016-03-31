@@ -10,8 +10,7 @@ Logger *Logger::s_instance = nullptr;
 
 Logger::Logger()
 {
-	_type = Logger::DISABLED;
-	_programStart = 0;
+	logFile.open("log.txt", fstream::out | fstream::trunc);
 }
 
 Logger* Logger::instance()
@@ -23,6 +22,7 @@ Logger* Logger::instance()
 
 Logger::~Logger()
 {
+	logFile.close();
 }
 
 void Logger::Init(int argc, char** argv)
@@ -44,10 +44,10 @@ void Logger::Init(int argc, char** argv)
 	switch (_type)
 	{
 	case VERBOSE:
-		cout << FormatClock() << "Program Started" << endl;;
+		logFile << FormatClock() << "Program Started" << endl;;
 		break;
 	case CSV:
-		cout << "DataSet;Samples;TrainingSize;TrainingSpeed;TestSize;TestSize;CompleteTime;Folds;Precision;" << endl;;
+		logFile << "DataSet;Samples;TrainingSize;TrainingSpeed;TestSize;TestSize;CompleteTime;Folds;Precision;" << endl;;
 		break;
 	default:
 		break;
@@ -59,7 +59,7 @@ void Logger::Seed(unsigned seed)
 	switch (_type)
 	{
 	case VERBOSE:
-		cout << FormatClock() << "seed: " << seed << endl;
+		logFile << FormatClock() << "seed: " << seed << endl;
 		break;
 	case CSV:
 
@@ -72,12 +72,12 @@ void Logger::Seed(unsigned seed)
 void Logger::Fold(int i)
 {
 	if (_type != VERBOSE) return;
-	cout << FormatClock() << "Fold: " << i << endl;
+	logFile << FormatClock() << "Fold: " << i << endl;
 }
 
 void Logger::Error(exception exception)
 {
-	cout << FormatClock() << "Fatal error ocurred: " << exception.what() << endl;
+	logFile << FormatClock() << "Fatal error ocurred: " << exception.what() << endl;
 }
 
 void Logger::FunctionStart(string functionName)
@@ -86,17 +86,7 @@ void Logger::FunctionStart(string functionName)
 	if (value != FunctionTimers.end())
 		throw exception(("FunctionTimer:"+functionName+" allready started").c_str());
 	FunctionTimers[functionName] = new Timer(functionName);
-	switch (_type)
-	{
-	case VERBOSE:
-		cout << FormatClock() << functionName << " starting..." << endl;
-		break;
-	case CSV:
-
-		break;
-	default:
-		break;
-	}
+	logFile << FormatClock() << functionName << " starting..." << endl;
 }
 void Logger::FunctionEnd(string functionName)
 {
@@ -108,17 +98,7 @@ void Logger::FunctionEnd(string functionName)
 	FunctionTimers.erase(functionName);
 	elapsed = timer->GetElapsed();
 	delete(timer);
-	switch (_type)
-	{
-	case VERBOSE:
-		cout << FormatClock() << functionName << " finished in " << FormatClock(elapsed) << endl;
-		break;
-	case CSV:
-
-		break;
-	default:
-		break;
-	}
+	logFile << FormatClock() << functionName << " finished in " << FormatClock(elapsed) << endl;
 }
 
 void Logger::ClassifyProgress(int count, double step, double lastDif, double difAlpha)
@@ -126,7 +106,7 @@ void Logger::ClassifyProgress(int count, double step, double lastDif, double dif
 	switch (_type)
 	{
 	case VERBOSE:
-		cout << FormatClock() << "Iteration: " << count << "\tstep: " << step << "\tlastDif:" << lastDif << "\tdifAlpha:" << difAlpha << endl;
+		logFile << FormatClock() << "Iteration: " << count << "\tstep: " << step << "\tlastDif:" << lastDif << "\tdifAlpha:" << difAlpha << endl;
 		break;
 	case CSV:
 
@@ -166,7 +146,7 @@ void Logger::Stats(string statName, string stat)
 	switch (_type)
 	{
 	case VERBOSE:
-		cout << FormatClock() << statName << ": " << stat << endl;
+		logFile << FormatClock() << statName << ": " << stat << endl;
 		break;
 	case CSV:
 
@@ -181,7 +161,7 @@ void Logger::Line(string s)
 	switch (_type)
 	{
 	case VERBOSE:
-		cout << s << endl;
+		logFile << s << endl;
 		break;
 	case CSV:
 
@@ -198,8 +178,8 @@ void Logger::End()
 	{
 	case VERBOSE:
 		end = clock();
-		cout << FormatClock() << "Program Finished in " << FormatClock(end - _programStart) << endl;
-		cout << endl;
+		logFile << FormatClock() << "Program Finished in " << FormatClock(end - _programStart) << endl;
+		logFile << endl;
 		break;
 	case CSV:
 
@@ -214,7 +194,7 @@ void Logger::Percentage(double correct, double total, double percentage, string 
 	switch (_type)
 	{
 	case VERBOSE:
-		cout << FormatClock() << title << "Percentage correct: " << correct << "/" << total << " = " << percentage*100.0 << "%" << endl;
+		logFile << FormatClock() << title << "Percentage correct: " << correct << "/" << total << " = " << percentage*100.0 << "%" << endl;
 		break;
 	case CSV:
 

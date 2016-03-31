@@ -3,6 +3,7 @@
 #include <vector>
 #include "Timer.h"
 #include <map>
+#include <fstream>
 using namespace std;
 
 class Logger
@@ -32,6 +33,7 @@ public:
 	void Stats(string statName, string stat);
 	void Line(string s);
 private:
+	fstream logFile;
 	map<string,Timer*> FunctionTimers;
 	string FormatClock(int milliseconds);
 	string FormatClock();
