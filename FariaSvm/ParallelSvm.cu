@@ -156,7 +156,7 @@ ParallelSvm::ParallelSvm(int argc, char** argv, DataSet *ds)
 
 	CUDA_SAFE_CALL(cudaSetDevice(0));
 
-	Logger::instance()->FunctionEnd();
+	Logger::instance()->FunctionEnd("ParallelSvm");
 }
 
 ParallelSvm::~ParallelSvm()
@@ -256,7 +256,7 @@ void ParallelSvm::Train(TrainingSet *ts)
 			nSupportVectors++;
 	}
 	Logger::instance()->Stats("nSupportVectors", nSupportVectors);
-	Logger::instance()->FunctionEnd();
+	Logger::instance()->FunctionEnd("Train");
 }
 
 void ParallelSvm::Test(TrainingSet *ts, ValidationSet *vs)
@@ -289,5 +289,5 @@ void ParallelSvm::Test(TrainingSet *ts, ValidationSet *vs)
 	Logger::instance()->Stats("AverageClassificationTime ", (clock() - start) / vs->height);
 	auto percentageCorrect = static_cast<double>(vs->nCorrect) / vs->height;
 	Logger::instance()->Percentage(vs->nCorrect, vs->height, percentageCorrect);
-	Logger::instance()->FunctionEnd();
+	Logger::instance()->FunctionEnd("Test");
 }

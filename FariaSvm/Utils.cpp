@@ -83,7 +83,7 @@ void Utils::Shuffle(vector<vector<double>> &x, vector<double> &y)
 		x[i] = tx;
 		y[i] = ty;
 	}
-	Logger::instance()->FunctionEnd();
+	Logger::instance()->FunctionEnd("Shuffle");
 }
 
 void Utils::Reverse(vector<vector<double>> &x, vector<double> &y)
@@ -100,5 +100,5 @@ void Utils::Reverse(vector<vector<double>> &x, vector<double> &y)
 		x[i] = tx;
 		y[i] = ty;
 	}
-	Logger::instance()->FunctionEnd();
+	Logger::instance()->FunctionEnd("Reverse");
 }

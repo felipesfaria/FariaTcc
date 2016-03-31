@@ -93,7 +93,7 @@ void SequentialSvm::Train(TrainingSet *ts)
 			nSupportVectors++;
 	}
 	Logger::instance()->Stats("nSupportVectors", nSupportVectors);
-	Logger::instance()->FunctionEnd();
+	Logger::instance()->FunctionEnd("Train");
 }
 
 void SequentialSvm::Test(TrainingSet *ts, ValidationSet *vs)
@@ -110,7 +110,7 @@ void SequentialSvm::Test(TrainingSet *ts, ValidationSet *vs)
 	Logger::instance()->Stats("AverageClassificationTime ", (clock() - start) / vs->height);
 	auto percentageCorrect = static_cast<double>(vs->nCorrect) / vs->height;
 	Logger::instance()->Percentage(vs->nCorrect, vs->height, percentageCorrect);
-	Logger::instance()->FunctionEnd();
+	Logger::instance()->FunctionEnd("Test");
 }
 
 double SequentialSvm::K(double* x, double* y, int size)

@@ -183,7 +183,7 @@ void DataSet::ReadFile()
 
 	for (int i = 0; i < nSamples; i++)
 		readNextRow(file);
-	Logger::instance()->FunctionEnd();
+	Logger::instance()->FunctionEnd("ReadFile");
 
 }
 void DataSet::readIndexedData(istream& str)

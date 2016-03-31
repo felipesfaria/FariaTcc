@@ -12,8 +12,6 @@ Logger::Logger()
 {
 	_type = Logger::DISABLED;
 	_programStart = 0;
-	_functionStart = 0;
-	_currentFunction = "";
 }
 
 Logger* Logger::instance()
@@ -29,7 +27,6 @@ Logger::~Logger()
 
 void Logger::Init(int argc, char** argv)
 {
-	_functionStart = -1;
 	_programStart = clock();
 	string argument = Utils::GetComandVariable(argc, argv, "-l");
 	if (argument == "v")
@@ -85,14 +82,12 @@ void Logger::Error(exception exception)
 
 void Logger::FunctionStart(string functionName)
 {
-	if (!_currentFunction.empty())
-		throw(exception("Called Logger.FunctionStart before Logger.FunctionEnd."));
-	_currentFunction = functionName;
-	_functionStart = clock();
+	Timer fti(functionName);
+	FunctionTimer.push_back(new Timer(functionName));
 	switch (_type)
 	{
 	case VERBOSE:
-		cout << FormatClock() << _currentFunction << " starting..." << endl;
+		cout << FormatClock() << functionName << " starting..." << endl;
 		break;
 	case CSV:
 
@@ -101,16 +96,28 @@ void Logger::FunctionStart(string functionName)
 		break;
 	}
 }
-void Logger::FunctionEnd()
+void Logger::FunctionEnd(string functionName)
 {
-	if (_currentFunction.empty())
-		throw(exception("Called Logger.FunctionEnd before Logger.FunctionStart."));
-
-	int end = clock();
+	unsigned int elapsed=0;
+	auto it = FunctionTimer.end();
+	while (it != FunctionTimer.begin())
+	{
+		--it;
+		if ((*it)->GetName() == functionName)
+		{
+			Timer *t = *it;
+			elapsed = t->GetElapsed();
+			FunctionTimer.erase(it);
+			delete t;
+			break;
+		}
+	}
+	if (elapsed == 0)
+		throw exception("FunctionEnded without starting.");
 	switch (_type)
 	{
 	case VERBOSE:
-		cout << FormatClock() << _currentFunction << " finished in " << FormatClock(end - _functionStart) << endl;
+		cout << FormatClock() << functionName << " finished in " << FormatClock(elapsed) << endl;
 		break;
 	case CSV:
 
@@ -118,7 +125,6 @@ void Logger::FunctionEnd()
 	default:
 		break;
 	}
-	_currentFunction.clear();
 }
 
 void Logger::ClassifyProgress(int count, double step, double lastDif, double difAlpha)

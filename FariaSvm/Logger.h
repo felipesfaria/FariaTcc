@@ -1,12 +1,9 @@
 #pragma once
 #include <string>
 #include <vector>
+#include "Timer.h"
 using namespace std;
-struct FunctionTimer
-{
-	string name;
-	unsigned int start;
-};
+
 class Logger
 {
 public:
@@ -17,10 +14,6 @@ public:
 		CSV
 	};
 	static Logger *instance();
-	LoggerType _type;
-	unsigned int _programStart;
-	unsigned int _functionStart;
-	string _currentFunction;
 	~Logger();
 	void Init(int argc, char** argv);
 	void Seed(unsigned int seed);
@@ -29,7 +22,7 @@ public:
 	void End();
 	void Error(exception exception);
 	void FunctionStart(string functionName);
-	void FunctionEnd();
+	void FunctionEnd(string functionName);
 	void ClassifyProgress(int count, double step, double lastDif, double difAlpha);
 	void Stats(string statName, long stat);
 	void Stats(string statName, int stat);
@@ -37,9 +30,12 @@ public:
 	void Stats(string statName, double stat);
 	void Stats(string statName, string stat);
 	void Line(string s);
+private:
+	vector<Timer*> FunctionTimer;
 	string FormatClock(int milliseconds);
 	string FormatClock();
-private:
+	unsigned int _programStart;
+	LoggerType _type;
 	static Logger *s_instance;
 	Logger();
 };
