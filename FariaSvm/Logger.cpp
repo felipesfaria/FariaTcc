@@ -41,32 +41,12 @@ void Logger::Init(int argc, char** argv)
 		throw(exception(message.c_str()));
 	}
 
-	switch (_type)
-	{
-	case VERBOSE:
-		logFile << FormatClock() << "Program Started" << endl;;
-		break;
-	case CSV:
-		logFile << "DataSet;Samples;TrainingSize;TrainingSpeed;TestSize;TestSize;CompleteTime;Folds;Precision;" << endl;;
-		break;
-	default:
-		break;
-	}
+	logFile << FormatClock() << "Program Started" << endl;;
 }
 
 void Logger::Seed(unsigned seed)
 {
-	switch (_type)
-	{
-	case VERBOSE:
-		logFile << FormatClock() << "seed: " << seed << endl;
-		break;
-	case CSV:
-
-		break;
-	default:
-		break;
-	}
+	logFile << FormatClock() << "seed: " << seed << endl;
 }
 
 void Logger::Fold(int i)
@@ -84,7 +64,7 @@ void Logger::FunctionStart(string functionName)
 {
 	auto value = FunctionTimers.find(functionName);
 	if (value != FunctionTimers.end())
-		throw exception(("FunctionTimer:"+functionName+" allready started").c_str());
+		throw exception(("FunctionTimer:" + functionName + " allready started").c_str());
 	FunctionTimers[functionName] = new Timer(functionName);
 	logFile << FormatClock() << functionName << " starting..." << endl;
 }
@@ -103,17 +83,7 @@ void Logger::FunctionEnd(string functionName)
 
 void Logger::ClassifyProgress(int count, double step, double lastDif, double difAlpha)
 {
-	switch (_type)
-	{
-	case VERBOSE:
-		logFile << FormatClock() << "Iteration: " << count << "\tstep: " << step << "\tlastDif:" << lastDif << "\tdifAlpha:" << difAlpha << endl;
-		break;
-	case CSV:
-
-		break;
-	default:
-		break;
-	}
+	logFile << FormatClock() << "Iteration: " << count << "\tstep: " << step << "\tlastDif:" << lastDif << "\tdifAlpha:" << difAlpha << endl;
 }
 
 void Logger::Stats(string statName, long stat)
@@ -143,65 +113,24 @@ void Logger::Stats(string statName, double stat)
 }
 void Logger::Stats(string statName, string stat)
 {
-	switch (_type)
-	{
-	case VERBOSE:
-		logFile << FormatClock() << statName << ": " << stat << endl;
-		break;
-	case CSV:
-
-		break;
-	default:
-		break;
-	}
+	logFile << FormatClock() << statName << ": " << stat << endl;
 }
 
 void Logger::Line(string s)
 {
-	switch (_type)
-	{
-	case VERBOSE:
-		logFile << s << endl;
-		break;
-	case CSV:
-
-		break;
-	default:
-		break;
-	}
+	logFile << s << endl;
 }
 
 void Logger::End()
 {
-	int end;
-	switch (_type)
-	{
-	case VERBOSE:
-		end = clock();
-		logFile << FormatClock() << "Program Finished in " << FormatClock(end - _programStart) << endl;
-		logFile << endl;
-		break;
-	case CSV:
-
-		break;
-	default:
-		break;
-	}
+	int end = clock();
+	logFile << FormatClock() << "Program Finished in " << FormatClock(end - _programStart) << endl;
+	logFile << endl;
 }
 
 void Logger::Percentage(double correct, double total, double percentage, string title)
 {
-	switch (_type)
-	{
-	case VERBOSE:
-		logFile << FormatClock() << title << "Percentage correct: " << correct << "/" << total << " = " << percentage*100.0 << "%" << endl;
-		break;
-	case CSV:
-
-		break;
-	default:
-		break;
-	}
+	logFile << FormatClock() << title << "Percentage correct: " << correct << "/" << total << " = " << percentage*100.0 << "%" << endl;
 }
 
 std::string Logger::FormatClock(int milliseconds)
