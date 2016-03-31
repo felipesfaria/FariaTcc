@@ -9,19 +9,19 @@ BaseSvm::BaseSvm(int argc, char** argv, DataSet *ds)
 	auto arg = Utils::GetComandVariable(argc, argv, "-p");
 	if (!Utils::TryParseDouble(arg, Precision))
 		Precision = 1e-15;
-	Logger::Stats("Precision", Precision);
+	Logger::instance()->Stats("Precision", Precision);
 	
 	double gama;
 	arg = Utils::GetComandVariable(argc, argv, "-g");
 	if (!Utils::TryParseDouble(arg, gama))
 		gama = _ds->Gama;
-	Logger::Stats("Gama", gama);
+	Logger::instance()->Stats("Gama", gama);
 	g = 1 / (2 * gama*gama);
 
 	arg = Utils::GetComandVariable(argc, argv, "-st");
 	if (!Utils::TryParseDouble(arg, Step))
 		Step = 1;
-	Logger::Stats("Step", Step);
+	Logger::instance()->Stats("Step", Step);
 }
 
 void BaseSvm::Train(TrainingSet *ts)

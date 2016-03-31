@@ -16,13 +16,13 @@ using namespace std;
 int main(int argc, char* argv[])
 {
 	try{
-		Logger::Init(argc, argv);
+		Logger::instance()->Init(argc, argv);
 
 		int seed;
 		string arg = Utils::GetComandVariable(argc, argv, "-sd");
 		if (!Utils::TryParseInt(arg, seed))
 			seed = time(nullptr);
-		Logger::Stats("Seed", seed);
+		Logger::instance()->Stats("Seed", seed);
 		srand(seed);
 
 		DataSet ds(argc, argv);
@@ -39,21 +39,21 @@ int main(int argc, char* argv[])
 		ValidationSet vs;
 		auto totalCorrect = 0;
 		for (auto i = 1; i <= ds.nFolds; i++){
-			Logger::Fold(i);
+			Logger::instance()->Fold(i);
 			ds.InitFoldSets(&ts, &vs, i);
 			svm->Train(&ts);
 			svm->Test(&ts,&vs);
 			totalCorrect += vs.nCorrect;
 		}
 		double averagePercentageCorrect = 100.0*totalCorrect / ds.nSamples;
-		Logger::Stats("AveragePercentage", averagePercentageCorrect);
-		Logger::End();
+		Logger::instance()->Stats("AveragePercentage", averagePercentageCorrect);
+		Logger::instance()->End();
 		delete(svm);
 		return 0;
 	}
 	catch (exception& e)
 	{
-		Logger::Error(e);
+		Logger::instance()->Error(e);
 		return 1;
 	}
 }

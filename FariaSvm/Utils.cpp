@@ -71,7 +71,7 @@ string Utils::GetComandVariable(int argc, char** argv, string comand)
 
 void Utils::Shuffle(vector<vector<double>> &x, vector<double> &y)
 {
-	Logger::FunctionStart("Shuffle");
+	Logger::instance()->FunctionStart("Shuffle");
 	int size = x.size();
 	for (auto i = 0; i < size; ++i)
 	{
@@ -83,12 +83,12 @@ void Utils::Shuffle(vector<vector<double>> &x, vector<double> &y)
 		x[i] = tx;
 		y[i] = ty;
 	}
-	Logger::FunctionEnd();
+	Logger::instance()->FunctionEnd();
 }
 
 void Utils::Reverse(vector<vector<double>> &x, vector<double> &y)
 {
-	Logger::FunctionStart("Reverse");
+	Logger::instance()->FunctionStart("Reverse");
 	int size = x.size();
 	for (auto i = 0; i < size / 2; ++i)
 	{
@@ -100,5 +100,5 @@ void Utils::Reverse(vector<vector<double>> &x, vector<double> &y)
 		x[i] = tx;
 		y[i] = ty;
 	}
-	Logger::FunctionEnd();
+	Logger::instance()->FunctionEnd();
 }

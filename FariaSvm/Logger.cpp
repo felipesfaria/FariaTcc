@@ -4,25 +4,35 @@
 #include <sstream>
 #include <iostream>
 #include "Utils.h"
+#include <fstream>
 using namespace std;
+Logger *Logger::s_instance = nullptr;
 
-Logger::LoggerType Logger::_type = Logger::DISABLED;
-unsigned int Logger::_programStart=0;
-unsigned int Logger::_functionStart=0;
-string Logger::_currentFunction="";
 Logger::Logger()
 {
+	_type = Logger::DISABLED;
+	_programStart = 0;
+	_functionStart = 0;
+	_currentFunction = "";
+}
+
+Logger* Logger::instance()
+{
+	if (!s_instance)
+		s_instance = new Logger();
+	return s_instance;
 }
 
 Logger::~Logger()
 {
 }
+
 void Logger::Init(int argc, char** argv)
 {
 	_functionStart = -1;
 	_programStart = clock();
 	string argument = Utils::GetComandVariable(argc, argv, "-l");
-	if (argument =="v")
+	if (argument == "v")
 		_type = VERBOSE;
 	else if (argument == "c")
 		_type = CSV;

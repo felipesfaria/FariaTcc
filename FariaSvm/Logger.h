@@ -1,6 +1,12 @@
 #pragma once
 #include <string>
+#include <vector>
 using namespace std;
+struct FunctionTimer
+{
+	string name;
+	unsigned int start;
+};
 class Logger
 {
 public:
@@ -10,29 +16,31 @@ public:
 		VERBOSE,
 		CSV
 	};
-	LoggerType static _type;
-	unsigned static int _programStart;
-	unsigned static int _functionStart;
-	string static _currentFunction;
-	Logger();
+	static Logger *instance();
+	LoggerType _type;
+	unsigned int _programStart;
+	unsigned int _functionStart;
+	string _currentFunction;
 	~Logger();
-	void static Init(int argc, char** argv);
-	void static Seed(unsigned int seed);
-	void static Fold(int i);
-	void static Percentage(double totalCorrect, double totalSamples, double averagePercentageCorrect, string title = "");
-	void static End();
-	void static Error(exception exception);
-	void static FunctionStart(string functionName);
-	void static FunctionEnd();
-	void static ClassifyProgress(int count, double step, double lastDif, double difAlpha);
-	void static Stats(string statName, long stat);
-	void static Stats(string statName, int stat);
-	void static Stats(string statName, unsigned int stat);
-	void static Stats(string statName, double stat);
-	void static Stats(string statName, string stat);
-	void static Line(string s);
-	string static FormatClock(int milliseconds);
-	string static FormatClock();
+	void Init(int argc, char** argv);
+	void Seed(unsigned int seed);
+	void Fold(int i);
+	void Percentage(double totalCorrect, double totalSamples, double averagePercentageCorrect, string title = "");
+	void End();
+	void Error(exception exception);
+	void FunctionStart(string functionName);
+	void FunctionEnd();
+	void ClassifyProgress(int count, double step, double lastDif, double difAlpha);
+	void Stats(string statName, long stat);
+	void Stats(string statName, int stat);
+	void Stats(string statName, unsigned int stat);
+	void Stats(string statName, double stat);
+	void Stats(string statName, string stat);
+	void Line(string s);
+	string FormatClock(int milliseconds);
+	string FormatClock();
 private:
+	static Logger *s_instance;
+	Logger();
 };
 

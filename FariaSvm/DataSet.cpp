@@ -10,16 +10,16 @@ DataSet::DataSet(int argc, char** argv)
 	string arg = Utils::GetComandVariable(argc, argv, "-d");
 	InitData(arg);
 	
-	Logger::Stats("FileName", FileName);
-	Logger::Stats("Samples", nSamples);
-	Logger::Stats("Features", nFeatures);
-	Logger::Stats("Classes", nClasses);
-	Logger::Stats("C", C);
+	Logger::instance()->Stats("FileName", FileName);
+	Logger::instance()->Stats("Samples", nSamples);
+	Logger::instance()->Stats("Features", nFeatures);
+	Logger::instance()->Stats("Classes", nClasses);
+	Logger::instance()->Stats("C", C);
 
 	arg = Utils::GetComandVariable(argc, argv, "-f");
 	if (!Utils::TryParseInt(arg, nFolds))
 		nFolds = 3;
-	Logger::Stats("nFolds", nFolds);
+	Logger::instance()->Stats("nFolds", nFolds);
 
 	ReadFile();
 	Utils::Shuffle(X, Y);
@@ -174,7 +174,7 @@ bool DataSet::readNextRow(istream& str)
 
 void DataSet::ReadFile()
 {
-	Logger::FunctionStart("ReadFile");
+	Logger::instance()->FunctionStart("ReadFile");
 	ifstream       file;
 	file.open(FileName, ifstream::in);
 
@@ -183,7 +183,7 @@ void DataSet::ReadFile()
 
 	for (int i = 0; i < nSamples; i++)
 		readNextRow(file);
-	Logger::FunctionEnd();
+	Logger::instance()->FunctionEnd();
 
 }
 void DataSet::readIndexedData(istream& str)

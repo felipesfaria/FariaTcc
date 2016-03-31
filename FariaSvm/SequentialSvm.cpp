@@ -8,7 +8,7 @@ using namespace std;
 SequentialSvm::SequentialSvm(int argc, char** argv, DataSet *ds)
 	: BaseSvm(argc, argv, ds)
 {
-	Logger::Stats("SVM", "Sequential");
+	Logger::instance()->Stats("SVM", "Sequential");
 }
 
 SequentialSvm::~SequentialSvm()
@@ -33,7 +33,7 @@ int SequentialSvm::Classify(TrainingSet *ts, double* sample)
 
 void SequentialSvm::Train(TrainingSet *ts)
 {
-	Logger::FunctionStart("Train");
+	Logger::instance()->FunctionStart("Train");
 	double* alpha = ts->alpha;
 	vector<double> oldAlpha;
 	int samples = _ds->nSamples;
@@ -83,7 +83,7 @@ void SequentialSvm::Train(TrainingSet *ts)
 		difAlpha /= ts->height;
 		step /= ts->height;
 
-		Logger::ClassifyProgress(count, step, 0, difAlpha);
+		Logger::instance()->ClassifyProgress(count, step, 0, difAlpha);
 
 		count++;
 	} while ((abs(difAlpha) > Precision && count < MaxIterations) || count <= 1);
@@ -92,13 +92,13 @@ void SequentialSvm::Train(TrainingSet *ts)
 		if (alpha[i] > 0)
 			nSupportVectors++;
 	}
-	Logger::Stats("nSupportVectors", nSupportVectors);
-	Logger::FunctionEnd();
+	Logger::instance()->Stats("nSupportVectors", nSupportVectors);
+	Logger::instance()->FunctionEnd();
 }
 
 void SequentialSvm::Test(TrainingSet *ts, ValidationSet *vs)
 {
-	Logger::FunctionStart("Test");
+	Logger::instance()->FunctionStart("Test");
 	auto start = clock();
 	for (auto i = 0; i < vs->height; ++i)
 	{
@@ -107,10 +107,10 @@ void SequentialSvm::Test(TrainingSet *ts, ValidationSet *vs)
 			vs->nCorrect++;
 		}
 	}
-	Logger::Stats("AverageClassificationTime ", (clock() - start) / vs->height);
+	Logger::instance()->Stats("AverageClassificationTime ", (clock() - start) / vs->height);
 	auto percentageCorrect = static_cast<double>(vs->nCorrect) / vs->height;
-	Logger::Percentage(vs->nCorrect, vs->height, percentageCorrect);
-	Logger::FunctionEnd();
+	Logger::instance()->Percentage(vs->nCorrect, vs->height, percentageCorrect);
+	Logger::instance()->FunctionEnd();
 }
 
 double SequentialSvm::K(double* x, double* y, int size)

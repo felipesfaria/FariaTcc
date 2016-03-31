@@ -12,6 +12,8 @@ public:
 	~CudaArray();
 	void Init(double* host, int size);
 	void Init(int size);
+	void SetAll(int value);
+	void SetAll(double value);
 	void CopyToDevice();
 	void CopyToHost();
 	double GetSum();

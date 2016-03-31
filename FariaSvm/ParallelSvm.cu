@@ -95,6 +95,18 @@ void CudaArray::Init(int size)
 	Init(host, size);
 }
 
+void CudaArray::SetAll(int value)
+{
+	deviceOnly = true;
+	if (size != this->size)
+	{
+		if (host != NULL)
+			free(host);
+		host = (double*)malloc(size*sizeof(double));
+	}
+	Init(host, size);
+}
+
 void CudaArray::Init(double* host, int size)
 {
 	if (size != this->size)
@@ -130,7 +142,7 @@ double CudaArray::GetSum()
 ParallelSvm::ParallelSvm(int argc, char** argv, DataSet *ds)
 	: BaseSvm(argc, argv, ds)
 {
-	Logger::FunctionStart("ParallelSvm");
+	Logger::instance()->FunctionStart("ParallelSvm");
 
 	int halfGigaByte = 1 << 29;
 	long gpuByteSize = ds->nSamples*ds->nFeatures*sizeof(double);
@@ -144,7 +156,7 @@ ParallelSvm::ParallelSvm(int argc, char** argv, DataSet *ds)
 
 	CUDA_SAFE_CALL(cudaSetDevice(0));
 
-	Logger::FunctionEnd();
+	Logger::instance()->FunctionEnd();
 }
 
 ParallelSvm::~ParallelSvm()
@@ -178,14 +190,14 @@ void ParallelSvm::UpdateBlocks(TrainingSet *ts)
 		return;
 	}
 	_blocks = newBlockSize;
-	Logger::Stats("Blocks", _blocks);
-	Logger::Stats("ThreadsPerBlock", _threadsPerBlock);
-	Logger::Stats("Threads", _threadsPerBlock * _blocks);
+	Logger::instance()->Stats("Blocks", _blocks);
+	Logger::instance()->Stats("ThreadsPerBlock", _threadsPerBlock);
+	Logger::instance()->Stats("Threads", _threadsPerBlock * _blocks);
 }
 
 void ParallelSvm::Train(TrainingSet *ts)
 {
-	Logger::FunctionStart("Train");
+	Logger::instance()->FunctionStart("Train");
 	UpdateBlocks(ts);
 	caTrainingX.Init(ts->x, ts->height*ts->width);
 	caTrainingX.CopyToDevice();
@@ -198,7 +210,7 @@ void ParallelSvm::Train(TrainingSet *ts)
 	initArray << <_blocks, _threadsPerBlock >> >(caStep.device, Step);
 
 	caLastDif.Init(ts->height);
-	initArray << <_blocks, _threadsPerBlock >> >(caLastDif.device, 0);
+	initArray << <_blocks, _threadsPerBlock >> >(caLastDif.device, 0.0);
 
 	caAlpha.Init(ts->alpha, ts->height);
 	initArray << <_blocks, _threadsPerBlock >> >(caAlpha.device, Step);
@@ -233,7 +245,7 @@ void ParallelSvm::Train(TrainingSet *ts)
 		difAlpha = caLastDif.GetSum() / ts->height;
 		avgStep = caStep.GetSum() / ts->height;
 
-		Logger::ClassifyProgress(count, avgStep, lastDif, difAlpha);
+		Logger::instance()->ClassifyProgress(count, avgStep, lastDif, difAlpha);
 
 		count++;
 	} while ((abs(difAlpha) > Precision && count < MaxIterations) || count <=1);
@@ -243,13 +255,13 @@ void ParallelSvm::Train(TrainingSet *ts)
 		if (ts->alpha[i] != 0)
 			nSupportVectors++;
 	}
-	Logger::Stats("nSupportVectors", nSupportVectors);
-	Logger::FunctionEnd();
+	Logger::instance()->Stats("nSupportVectors", nSupportVectors);
+	Logger::instance()->FunctionEnd();
 }
 
 void ParallelSvm::Test(TrainingSet *ts, ValidationSet *vs)
 {
-	Logger::FunctionStart("Test");
+	Logger::instance()->FunctionStart("Test");
 	auto start = clock();
 	caValidationX.Init(vs->x, vs->height*vs->width);
 	caValidationX.CopyToDevice();
@@ -271,11 +283,11 @@ void ParallelSvm::Test(TrainingSet *ts, ValidationSet *vs)
 		else
 			vs->nNullWrong++;
 	}
-	Logger::Stats("nNegativeWrong ", vs->nNegativeWrong);
-	Logger::Stats("nPositiveWrong ", vs->nPositiveWrong);
-	Logger::Stats("nNullWrong ", vs->nNullWrong);
-	Logger::Stats("AverageClassificationTime ", (clock() - start) / vs->height);
+	Logger::instance()->Stats("nNegativeWrong ", vs->nNegativeWrong);
+	Logger::instance()->Stats("nPositiveWrong ", vs->nPositiveWrong);
+	Logger::instance()->Stats("nNullWrong ", vs->nNullWrong);
+	Logger::instance()->Stats("AverageClassificationTime ", (clock() - start) / vs->height);
 	auto percentageCorrect = static_cast<double>(vs->nCorrect) / vs->height;
-	Logger::Percentage(vs->nCorrect, vs->height, percentageCorrect);
-	Logger::FunctionEnd();
+	Logger::instance()->Percentage(vs->nCorrect, vs->height, percentageCorrect);
+	Logger::instance()->FunctionEnd();
 }
