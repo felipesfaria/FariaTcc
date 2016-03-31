@@ -82,8 +82,10 @@ void Logger::Error(exception exception)
 
 void Logger::FunctionStart(string functionName)
 {
-	Timer fti(functionName);
-	FunctionTimer.push_back(new Timer(functionName));
+	auto value = FunctionTimers.find(functionName);
+	if (value != FunctionTimers.end())
+		throw exception(("FunctionTimer:"+functionName+" allready started").c_str());
+	FunctionTimers[functionName] = new Timer(functionName);
 	switch (_type)
 	{
 	case VERBOSE:
@@ -98,22 +100,14 @@ void Logger::FunctionStart(string functionName)
 }
 void Logger::FunctionEnd(string functionName)
 {
-	unsigned int elapsed=0;
-	auto it = FunctionTimer.end();
-	while (it != FunctionTimer.begin())
-	{
-		--it;
-		if ((*it)->GetName() == functionName)
-		{
-			Timer *t = *it;
-			elapsed = t->GetElapsed();
-			FunctionTimer.erase(it);
-			delete t;
-			break;
-		}
-	}
-	if (elapsed == 0)
-		throw exception("FunctionEnded without starting.");
+	unsigned elapsed;
+	auto value = FunctionTimers.find(functionName);
+	if (value == FunctionTimers.end())
+		throw exception(("FunctionTimer:" + functionName + " hasn't started").c_str());
+	auto timer = FunctionTimers[functionName];
+	FunctionTimers.erase(functionName);
+	elapsed = timer->GetElapsed();
+	delete(timer);
 	switch (_type)
 	{
 	case VERBOSE:

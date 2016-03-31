@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include "Timer.h"
+#include <map>
 using namespace std;
 
 class Logger
@@ -31,7 +32,7 @@ public:
 	void Stats(string statName, string stat);
 	void Line(string s);
 private:
-	vector<Timer*> FunctionTimer;
+	map<string,Timer*> FunctionTimers;
 	string FormatClock(int milliseconds);
 	string FormatClock();
 	unsigned int _programStart;

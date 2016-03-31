@@ -21,3 +21,33 @@ string Timer::GetName() const
 {
 	return name;
 }
+
+double Metric::GetAverage() const
+{
+	return ((double)acumulated) / count;
+}
+
+Metric::Metric(string name)
+{
+	this->name = name;
+}
+Metric::~Metric()
+{
+}
+
+void Metric::Start()
+{
+	if (isRunning)
+		throw new exception("Tried to start Metric when metric was allready running.");
+	isRunning = true;
+	start = clock();
+}
+
+void Metric::Stop()
+{
+	if (!isRunning)
+		throw new exception("Tried to start Metric when metric was allready stopped.");
+	isRunning = false;
+	acumulated += clock() - start;
+	count++;
+}
