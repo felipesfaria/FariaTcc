@@ -14,7 +14,7 @@ public:
 	int nSamples;
 	int nFeatures;
 	int nClasses;
-	int nFolds;
+	unsigned nFolds;
 	int C;
 	KernelType kernelType;
 	double Gama=-1;

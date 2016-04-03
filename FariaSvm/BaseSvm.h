@@ -15,8 +15,9 @@ protected:
 	DataSet* _ds;
 	double Precision;
 	double g;
-	double Step;
-	int MaxIterations=256;
+	double C;
+	double _initialStep;
+	unsigned MaxIterations;
 private:
 };
 

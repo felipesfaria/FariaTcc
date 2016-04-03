@@ -154,6 +154,7 @@
     <ClInclude Include="BaseSvm.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="DataSet.h" />
+    <ClInclude Include="Settings.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="ParallelSvm.cuh" />
     <ClInclude Include="Logger.h" />
@@ -166,6 +167,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseSet.cpp" />
+    <ClCompile Include="Settings.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="ValidationSet.cpp" />
     <ClCompile Include="BaseSvm.cpp" />

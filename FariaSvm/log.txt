@@ -1,62 +1,154 @@
-0:0:0:404	Program Started
-0:0:0:404	Seed: 0
-0:0:0:404	FileName: Data/iris.csv
-0:0:0:404	Samples: 100
-0:0:0:404	Features: 4
-0:0:0:404	Classes: 2
-0:0:0:405	C: 16
-0:0:0:405	nFolds: 3
-0:0:0:405	ReadFile starting...
-0:0:0:441	ReadFile finished in 0:0:0:36	
-0:0:0:441	Shuffle starting...
-0:0:0:442	Shuffle finished in 0:0:0:1	
-0:0:0:442	Precision: 1e-015
-0:0:0:442	Gama: 0.5
-0:0:0:443	Step: 1
-0:0:0:443	ParallelSvm starting...
-0:0:0:474	ParallelSvm finished in 0:0:0:31	
-0:0:0:475	Fold: 1
-0:0:0:475	Train starting...
-0:0:0:475	Blocks: 1
-0:0:0:475	ThreadsPerBlock: 512
-0:0:0:475	Threads: 512
-0:0:0:524	Iteration: 0	step: 1	lastDif:0	difAlpha:-0.0746269
-0:0:0:525	Iteration: 1	step: 1	lastDif:0	difAlpha:0
-0:0:0:526	nSupportVectors: 62
-0:0:0:526	Train finished in 0:0:0:51	
-0:0:0:526	Test starting...
-0:0:0:529	nNegativeWrong : 0
-0:0:0:529	nPositiveWrong : 0
-0:0:0:530	nNullWrong : 0
-0:0:0:530	AverageClassificationTime : 0
-0:0:0:530	Percentage correct: 33/33 = 100%
-0:0:0:530	Test finished in 0:0:0:4	
-0:0:0:530	Fold: 2
-0:0:0:530	Train starting...
-0:0:0:532	Iteration: 0	step: 1	lastDif:0	difAlpha:-0.0746269
-0:0:0:532	Iteration: 1	step: 1	lastDif:0	difAlpha:0
-0:0:0:532	nSupportVectors: 62
-0:0:0:532	Train finished in 0:0:0:2	
-0:0:0:532	Test starting...
-0:0:0:536	nNegativeWrong : 0
-0:0:0:536	nPositiveWrong : 0
-0:0:0:536	nNullWrong : 0
-0:0:0:536	AverageClassificationTime : 0
-0:0:0:536	Percentage correct: 33/33 = 100%
-0:0:0:536	Test finished in 0:0:0:4	
-0:0:0:536	Fold: 3
-0:0:0:537	Train starting...
-0:0:0:538	Iteration: 0	step: 1	lastDif:0	difAlpha:-0.0757576
-0:0:0:538	Iteration: 1	step: 1	lastDif:0	difAlpha:0
-0:0:0:539	nSupportVectors: 61
-0:0:0:539	Train finished in 0:0:0:2	
-0:0:0:539	Test starting...
-0:0:0:542	nNegativeWrong : 0
-0:0:0:542	nPositiveWrong : 0
-0:0:0:542	nNullWrong : 0
-0:0:0:542	AverageClassificationTime : 0
-0:0:0:542	Percentage correct: 34/34 = 100%
-0:0:0:542	Test finished in 0:0:0:3	
-0:0:0:542	AveragePercentage: 100
-0:0:0:543	Program Finished in 0:0:0:138	
+0:0:0:396	Program Started
+0:0:0:398	FileName: Data/web1.data
+0:0:0:398	Samples: 2477
+0:0:0:399	Features: 300
+0:0:0:399	Classes: 2
+0:0:0:399	ReadFile starting...
+0:0:1:451	ReadFile finished in 0:0:1:52	
+0:0:1:451	Shuffle starting...
+0:0:1:470	Shuffle finished in 0:0:0:19	
+0:0:1:470	Blocks: 0
+0:0:1:470	Threads: 0
+0:0:1:471	Settings.constraint = 64
+0:0:1:471	Settings.dataSet = w1
+0:0:1:471	Settings.folds = 10
+0:0:1:471	Settings.gamma = 7.8125
+0:0:1:471	Settings.maxIterations = 2
+0:0:1:471	Settings.precision = 1e-015
+0:0:1:471	Settings.seed = 0
+0:0:1:471	Settings.step = 1
+0:0:1:471	Settings.svm = s
+0:0:1:471	Settings.threadsPerBlock = 128
+0:0:1:471	Fold: 1
+0:0:1:519	Train starting...
+0:0:7:219	Iteration: 0	step: 1	lastDif:0	difAlpha:0.779372
+0:0:7:585	Iteration: 1	step: 0.5	lastDif:0	difAlpha:60.4413
+0:0:7:585	nSupportVectors: 2168
+0:0:7:585	Train finished in 0:0:6:66	
+0:0:7:586	Test starting...
+0:0:8:147	nNegativeWrong : 0
+0:0:8:147	nPositiveWrong : 0
+0:0:8:147	nNullWrong : 0
+0:0:8:147	AverageClassificationTime : 2
+0:0:8:147	Percentage correct: 237/247 = 95.9514%
+0:0:8:147	Test finished in 0:0:0:561	
+0:0:8:147	Fold: 2
+0:0:8:259	Train starting...
+0:0:13:923	Iteration: 0	step: 1	lastDif:0	difAlpha:0.837595
+0:0:14:297	Iteration: 1	step: 0.5	lastDif:0	difAlpha:60.3248
+0:0:14:297	nSupportVectors: 2165
+0:0:14:297	Train finished in 0:0:6:38	
+0:0:14:297	Test starting...
+0:0:14:869	nNegativeWrong : 0
+0:0:14:869	nPositiveWrong : 0
+0:0:14:869	nNullWrong : 0
+0:0:14:869	AverageClassificationTime : 2
+0:0:14:869	Percentage correct: 240/248 = 96.7742%
+0:0:14:869	Test finished in 0:0:0:572	
+0:0:14:869	Fold: 3
+0:0:14:979	Train starting...
+0:0:20:680	Iteration: 0	step: 1	lastDif:0	difAlpha:0.808883
+0:0:21:53	Iteration: 1	step: 0.5	lastDif:0	difAlpha:60.3822
+0:0:21:53	nSupportVectors: 2166
+0:0:21:53	Train finished in 0:0:6:74	
+0:0:21:53	Test starting...
+0:0:21:614	nNegativeWrong : 0
+0:0:21:614	nPositiveWrong : 0
+0:0:21:614	nNullWrong : 0
+0:0:21:614	AverageClassificationTime : 2
+0:0:21:614	Percentage correct: 239/248 = 96.371%
+0:0:21:614	Test finished in 0:0:0:561	
+0:0:21:614	Fold: 4
+0:0:21:663	Train starting...
+0:0:27:347	Iteration: 0	step: 1	lastDif:0	difAlpha:0.89417
+0:0:27:733	Iteration: 1	step: 0.5	lastDif:0	difAlpha:60.2117
+0:0:27:733	nSupportVectors: 2164
+0:0:27:733	Train finished in 0:0:6:70	
+0:0:27:733	Test starting...
+0:0:28:290	nNegativeWrong : 0
+0:0:28:290	nPositiveWrong : 0
+0:0:28:290	nNullWrong : 0
+0:0:28:290	AverageClassificationTime : 2
+0:0:28:290	Percentage correct: 241/247 = 97.5709%
+0:0:28:290	Test finished in 0:0:0:557	
+0:0:28:290	Fold: 5
+0:0:28:401	Train starting...
+0:0:34:83	Iteration: 0	step: 1	lastDif:0	difAlpha:0.89502
+0:0:34:456	Iteration: 1	step: 0.5	lastDif:0	difAlpha:60.21
+0:0:34:457	nSupportVectors: 2163
+0:0:34:457	Train finished in 0:0:6:56	
+0:0:34:457	Test starting...
+0:0:35:15	nNegativeWrong : 0
+0:0:35:15	nPositiveWrong : 0
+0:0:35:15	nNullWrong : 0
+0:0:35:15	AverageClassificationTime : 2
+0:0:35:15	Percentage correct: 242/248 = 97.5806%
+0:0:35:15	Test finished in 0:0:0:558	
+0:0:35:15	Fold: 6
+0:0:35:62	Train starting...
+0:0:40:833	Iteration: 0	step: 1	lastDif:0	difAlpha:0.837595
+0:0:41:223	Iteration: 1	step: 0.5	lastDif:0	difAlpha:60.3248
+0:0:41:223	nSupportVectors: 2165
+0:0:41:223	Train finished in 0:0:6:161	
+0:0:41:223	Test starting...
+0:0:41:819	nNegativeWrong : 0
+0:0:41:819	nPositiveWrong : 0
+0:0:41:819	nNullWrong : 0
+0:0:41:819	AverageClassificationTime : 2
+0:0:41:819	Percentage correct: 240/248 = 96.7742%
+0:0:41:819	Test finished in 0:0:0:596	
+0:0:41:819	Fold: 7
+0:0:41:867	Train starting...
+0:0:47:637	Iteration: 0	step: 1	lastDif:0	difAlpha:0.865471
+0:0:48:47	Iteration: 1	step: 0.5	lastDif:0	difAlpha:60.2691
+0:0:48:47	nSupportVectors: 2165
+0:0:48:47	Train finished in 0:0:6:180	
+0:0:48:47	Test starting...
+0:0:48:647	nNegativeWrong : 0
+0:0:48:647	nPositiveWrong : 0
+0:0:48:647	nNullWrong : 0
+0:0:48:647	AverageClassificationTime : 2
+0:0:48:647	Percentage correct: 240/247 = 97.166%
+0:0:48:647	Test finished in 0:0:0:600	
+0:0:48:647	Fold: 8
+0:0:48:696	Train starting...
+0:0:54:703	Iteration: 0	step: 1	lastDif:0	difAlpha:0.923733
+0:0:55:107	Iteration: 1	step: 0.5	lastDif:0	difAlpha:60.1525
+0:0:55:107	nSupportVectors: 2162
+0:0:55:107	Train finished in 0:0:6:411	
+0:0:55:107	Test starting...
+0:0:55:713	nNegativeWrong : 0
+0:0:55:713	nPositiveWrong : 0
+0:0:55:713	nNullWrong : 0
+0:0:55:713	AverageClassificationTime : 2
+0:0:55:713	Percentage correct: 243/248 = 97.9839%
+0:0:55:713	Test finished in 0:0:0:606	
+0:0:55:713	Fold: 9
+0:0:55:760	Train starting...
+0:1:1:668	Iteration: 0	step: 1	lastDif:0	difAlpha:0.923733
+0:1:2:47	Iteration: 1	step: 0.5	lastDif:0	difAlpha:60.1525
+0:1:2:47	nSupportVectors: 2162
+0:1:2:47	Train finished in 0:0:6:287	
+0:1:2:48	Test starting...
+0:1:2:612	nNegativeWrong : 0
+0:1:2:612	nPositiveWrong : 0
+0:1:2:612	nNullWrong : 0
+0:1:2:612	AverageClassificationTime : 2
+0:1:2:612	Percentage correct: 243/248 = 97.9839%
+0:1:2:612	Test finished in 0:0:0:564	
+0:1:2:612	Fold: 10
+0:1:2:663	Train starting...
+0:1:8:531	Iteration: 0	step: 1	lastDif:0	difAlpha:0.837595
+0:1:8:904	Iteration: 1	step: 0.5	lastDif:0	difAlpha:60.3248
+0:1:8:904	nSupportVectors: 2165
+0:1:8:904	Train finished in 0:0:6:241	
+0:1:8:904	Test starting...
+0:1:9:473	nNegativeWrong : 0
+0:1:9:473	nPositiveWrong : 0
+0:1:9:473	nNullWrong : 0
+0:1:9:473	AverageClassificationTime : 2
+0:1:9:473	Percentage correct: 240/248 = 96.7742%
+0:1:9:473	Test finished in 0:0:0:569	
+0:1:9:473	AveragePercentage: 97.0933
+0:1:9:473	Program Finished in 0:1:9:77	
 

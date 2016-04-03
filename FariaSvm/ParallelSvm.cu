@@ -5,6 +5,7 @@
 #include "Utils.h"
 #include <device_launch_parameters.h>
 #include <cuda_runtime_api.h>
+#include "Settings.h"
 
 #define CUDA_SAFE_CALL(call) { \
    cudaError_t err = call;     \
@@ -150,9 +151,7 @@ ParallelSvm::ParallelSvm(int argc, char** argv, DataSet *ds)
 	if (gpuByteSize > halfGigaByte || gpuByteSize < 0)
 		throw exception("gpuByteSize to big for gpu.");
 
-	string arg = Utils::GetComandVariable(argc, argv, "-tpb");
-	if (!Utils::TryParseInt(arg, _threadsPerBlock) || _threadsPerBlock % 32 != 0)
-		_threadsPerBlock = 512;
+	Settings::instance()->GetUnsigned("threadsPerBlock", _threadsPerBlock);
 
 	CUDA_SAFE_CALL(cudaSetDevice(0));
 
@@ -193,7 +192,6 @@ void ParallelSvm::UpdateBlocks(TrainingSet *ts)
 	}
 	_blocks = newBlockSize;
 	Logger::instance()->Stats("Blocks", _blocks);
-	Logger::instance()->Stats("ThreadsPerBlock", _threadsPerBlock);
 	Logger::instance()->Stats("Threads", _threadsPerBlock * _blocks);
 }
 
@@ -210,20 +208,17 @@ void ParallelSvm::Train(TrainingSet *ts)
 	caSum.Init(ts->height);
 
 	caStep.Init(ts->height);
-	initArray << <_blocks, _threadsPerBlock >> >(caStep.device, Step);
+	initArray << <_blocks, _threadsPerBlock >> >(caStep.device, _initialStep);
 
 	caLastDif.Init(ts->height);
 	initArray << <_blocks, _threadsPerBlock >> >(caLastDif.device, 0.0);
 
 	caAlpha.Init(ts->alpha, ts->height);
-	initArray << <_blocks, _threadsPerBlock >> >(caAlpha.device, Step);
+	initArray << <_blocks, _threadsPerBlock >> >(caAlpha.device, _initialStep);
 
-	double* oldAlpha = (double*)malloc(ts->height*sizeof(double));
 	int count = 0;
 	double lastDif = 0.0;
 	double difAlpha;
-	double step = Step;
-	double C = _ds->C;
 	int batchSize = 512;
 	int batchStart;
 	int batchEnd;
@@ -241,7 +236,6 @@ void ParallelSvm::Train(TrainingSet *ts)
 			CUDA_SAFE_CALL(cudaDeviceSynchronize());
 		}
 		trainingKernelFinish << <_blocks, _threadsPerBlock >> >(caAlpha.device, caSum.device, caTrainingY.device, ts->width, caStep.device, caLastDif.device, C);
-		//caAlpha.CopyToHost();
 		caLastDif.CopyToHost();
 		caStep.CopyToHost();
 
@@ -274,17 +268,12 @@ void ParallelSvm::Test(TrainingSet *ts, ValidationSet *vs)
 	for (auto i = 0; i < vs->height; ++i)
 	{
 		int classifiedY = Classify(ts,i);
-		if (classifiedY == vs->y[i]){
+		if (classifiedY == vs->y[i])
 			vs->nCorrect++;
-		}
 		else if (classifiedY<0)
-		{
 			vs->nNegativeWrong++;
-		}
 		else if (classifiedY>0)
-		{
 			vs->nPositiveWrong++;
-		}
 		else
 			vs->nNullWrong++;
 	}

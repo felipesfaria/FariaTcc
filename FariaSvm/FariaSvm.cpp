@@ -1,36 +1,35 @@
 #include "stdafx.h"
 #include <iterator>
-#include <fstream>
-#include <vector>
 #include <exception>
-#include <ctime>
 #include "Logger.h"
 #include "DataSet.h"
 #include "SequentialSvm.h"
 #include "ParallelSvm.cuh"
-#include "Utils.h"
 #include <iostream>
+#include "Settings.h"
 
 using namespace std;
 int main(int argc, char* argv[])
 {
 	try{
-		int seed;
-		string arg = Utils::GetComandVariable(argc, argv, "-sd");
-		if (!Utils::TryParseInt(arg, seed))
-			seed = time(nullptr);
-		Logger::instance()->Stats("Seed", seed);
+		auto m = Logger::instance()->StartMetric("main");
+		Settings::instance()->Init(argc, argv);
+		unsigned seed;
+		Settings::instance()->GetUnsigned("seed", seed);
 		srand(seed);
 
 		DataSet ds(argc, argv);
-		
-		arg = Utils::GetComandVariable(argc, argv, "-svm");
+
+		string svmType;
+		Settings::instance()->GetString("svm", svmType);
 		
 		BaseSvm *svm;
-		if(arg=="p")
+		if (svmType == "p")
 			svm = new ParallelSvm(argc, argv, &ds);
 		else
 			svm = new SequentialSvm(argc, argv, &ds);
+
+		Logger::instance()->LogSettings();
 
 		TrainingSet ts;
 		ValidationSet vs;
@@ -44,6 +43,7 @@ int main(int argc, char* argv[])
 		}
 		double averagePercentageCorrect = 100.0*totalCorrect / ds.nSamples;
 		Logger::instance()->Stats("AveragePercentage", averagePercentageCorrect);
+		m->Stop();
 		Logger::instance()->End();
 		delete(svm);
 		return 0;

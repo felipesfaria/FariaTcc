@@ -37,6 +37,19 @@ bool Utils::TryParseInt(std::string str, int& out)
 	}
 }
 
+bool Utils::TryParseInt(std::string str, unsigned& out)
+{
+	try
+	{
+		out = stoi(str);
+		return true;
+	}
+	catch (invalid_argument&)
+	{
+		return false;
+	}
+}
+
 vector<string>& Utils::split(const string& s, char delim, vector<string>& elems)
 {
 	stringstream ss(s);

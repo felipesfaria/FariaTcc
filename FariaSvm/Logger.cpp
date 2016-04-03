@@ -63,7 +63,7 @@ void Logger::FunctionEnd(string functionName)
 
 Metric* Logger::StartMetric(string name)
 {
-	if (Metrics.count(name)==0)
+	if (Metrics.count(name) == 0)
 		Metrics[name] = new Metric(name);
 	Metrics[name]->Start();
 	return Metrics[name];
@@ -110,16 +110,38 @@ void Logger::Line(string s)
 	logFile << s << endl;
 }
 
+void Logger::LogSettings()
+{
+	auto settingsMap = Settings::instance()->settingsMap;
+
+	for (auto it = settingsMap.begin(); it != settingsMap.end(); ++it){
+		auto setting = (*it).second;
+		auto str = setting.ToString();
+		if (!str.empty())
+			logFile << FormatClock() << "Settings."<<setting.name <<" = "<< str<< endl;
+	}
+}
+
 void Logger::End()
 {
 	int end = clock();
 	logFile << FormatClock() << "Program Finished in " << FormatClock(end - _programStart) << endl;
 	logFile << endl;
 
+	auto settingsMap = Settings::instance()->settingsMap;
+
 	fstream resultFile;
 	stringstream headerStream;
-	for (auto it = StatsMap.begin(); it != StatsMap.end();++it)
+	for (auto it = StatsMap.begin(); it != StatsMap.end(); ++it)
 		headerStream << it->first << "\t";
+
+	for (auto it = settingsMap.begin(); it != settingsMap.end(); ++it){
+		if (it->second.type != Setting::DOUBLE
+			&& it->second.type != Setting::UNSIGNED
+			&& it->second.type != Setting::STRING)
+			continue;
+		headerStream << it->first << "\t";
+	}
 
 	for (auto it = Metrics.begin(); it != Metrics.end(); ++it)
 		headerStream << it->first << "\t";
@@ -137,12 +159,20 @@ void Logger::End()
 	else
 		resultFile.open("results.txt", fstream::out | fstream::app);
 	resultFile << endl;
-	
+
 	for (auto it = StatsMap.begin(); it != StatsMap.end(); ++it)
 		resultFile << it->second << "\t";
 
+	for (auto it = settingsMap.begin(); it != settingsMap.end(); ++it)
+	{
+		auto setting = it->second;
+		string str = setting.ToString();
+		if (!str.empty())
+			resultFile << str << "\t";
+	}
+
 	for (auto it = Metrics.begin(); it != Metrics.end(); ++it)
-		resultFile << FormatClock(it->second->GetAverage()) << "\t";
+		resultFile << FormatClock(it->second->GetAverage(),false) << "\t";
 
 	resultFile.close();
 }
@@ -152,7 +182,7 @@ void Logger::Percentage(double correct, double total, double percentage, string 
 	logFile << FormatClock() << title << "Percentage correct: " << correct << "/" << total << " = " << percentage*100.0 << "%" << endl;
 }
 
-std::string Logger::FormatClock(unsigned milliseconds)
+std::string Logger::FormatClock(unsigned milliseconds, bool addTab)
 {
 	std::stringstream ss;
 	auto hours = milliseconds / (60 * 60 * CLOCKS_PER_SEC);
@@ -161,12 +191,14 @@ std::string Logger::FormatClock(unsigned milliseconds)
 	milliseconds = milliseconds % (60 * CLOCKS_PER_SEC);
 	auto seconds = milliseconds / (CLOCKS_PER_SEC);
 	milliseconds = milliseconds % (CLOCKS_PER_SEC);
-	ss << hours << ":" << minutes << ":" << seconds << ":" << milliseconds << "\t";
+	ss << hours << ":" << minutes << ":" << seconds << ":" << milliseconds;
+	if (addTab)
+		ss << "\t";
 	return ss.str();
 }
 
 std::string Logger::FormatClock()
 {
-	return FormatClock(clock());
+	return FormatClock(clock(),true);
 }
 

@@ -8,7 +8,8 @@ using namespace std;
 SequentialSvm::SequentialSvm(int argc, char** argv, DataSet *ds)
 	: BaseSvm(argc, argv, ds)
 {
-	Logger::instance()->Stats("SVM", "Sequential");
+	Logger::instance()->Stats("Blocks", 0);
+	Logger::instance()->Stats("Threads", 0);
 }
 
 SequentialSvm::~SequentialSvm()
@@ -41,8 +42,8 @@ void SequentialSvm::Train(TrainingSet *ts)
 	vector<double> oldAlpha;
 	int samples = _ds->nSamples;
 	for (int i = 0; i < ts->height; ++i){
-		alpha[i] = 0;
-		oldAlpha.push_back(0);
+		alpha[i] = _initialStep;
+		oldAlpha.push_back(_initialStep);
 	}
 	int count = 0;
 	double *lastDif = (double*)malloc(ts->height*sizeof(double));
@@ -51,9 +52,8 @@ void SequentialSvm::Train(TrainingSet *ts)
 	double difAlpha;
 	double *steps = (double*)malloc(ts->height*sizeof(double));
 	for (int i = 0; i < ts->height; i++)
-		steps[i] = Step;
-	double step = Step;
-	double C = _ds->C;
+		steps[i] = _initialStep;
+	double step;
 	do
 	{
 		for (int i = 0; i < ts->height; ++i)
@@ -80,7 +80,7 @@ void SequentialSvm::Train(TrainingSet *ts)
 		step = 0;
 		for (int i = 0; i < ts->height; ++i){
 			difAlpha += lastDif[i];
-			step += lastDif[i];
+			step += steps[i];
 			oldAlpha[i] = alpha[i];
 		}
 		difAlpha /= ts->height;
@@ -95,6 +95,8 @@ void SequentialSvm::Train(TrainingSet *ts)
 		if (alpha[i] > 0)
 			nSupportVectors++;
 	}
+	free(lastDif);
+	free(steps);
 	Logger::instance()->Stats("nSupportVectors", nSupportVectors);
 	Logger::instance()->FunctionEnd("Train");
 	m->Stop();
@@ -107,11 +109,19 @@ void SequentialSvm::Test(TrainingSet *ts, ValidationSet *vs)
 	auto start = clock();
 	for (auto i = 0; i < vs->height; ++i)
 	{
-		int classifiedY = Classify(ts,vs->GetSample(i));
-		if (classifiedY == vs->y[i]){
+		int classifiedY = Classify(ts, vs->GetSample(i));
+		if (classifiedY == vs->y[i])
 			vs->nCorrect++;
-		}
+		else if (classifiedY<0)
+			vs->nNegativeWrong++;
+		else if (classifiedY>0)
+			vs->nPositiveWrong++;
+		else
+			vs->nNullWrong++;
 	}
+	Logger::instance()->Stats("nNegativeWrong ", vs->nNegativeWrong);
+	Logger::instance()->Stats("nPositiveWrong ", vs->nPositiveWrong);
+	Logger::instance()->Stats("nNullWrong ", vs->nNullWrong);
 	Logger::instance()->Stats("AverageClassificationTime ", (clock() - start) / vs->height);
 	auto percentageCorrect = static_cast<double>(vs->nCorrect) / vs->height;
 	Logger::instance()->Percentage(vs->nCorrect, vs->height, percentageCorrect);

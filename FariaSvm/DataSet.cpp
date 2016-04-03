@@ -3,23 +3,21 @@
 #include "Utils.h"
 #include <sstream>
 #include <fstream>
+#include "Settings.h"
 using namespace std;
 
 DataSet::DataSet(int argc, char** argv)
 {
-	string arg = Utils::GetComandVariable(argc, argv, "-d");
+	string arg;
+	Settings::instance()->GetString("dataSet", arg);
 	InitData(arg);
 	
 	Logger::instance()->Stats("FileName", FileName);
 	Logger::instance()->Stats("Samples", nSamples);
 	Logger::instance()->Stats("Features", nFeatures);
 	Logger::instance()->Stats("Classes", nClasses);
-	Logger::instance()->Stats("C", C);
 
-	arg = Utils::GetComandVariable(argc, argv, "-f");
-	if (!Utils::TryParseInt(arg, nFolds))
-		nFolds = 3;
-	Logger::instance()->Stats("nFolds", nFolds);
+	Settings::instance()->GetUnsigned("folds", nFolds);
 
 	ReadFile();
 	Utils::Shuffle(X, Y);

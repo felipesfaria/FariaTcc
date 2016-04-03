@@ -32,7 +32,7 @@ public:
 private:
 	cudaError_t cudaStatus;
 	int _blocks;
-	int _threadsPerBlock;
+	unsigned _threadsPerBlock;
 
 	CudaArray caTrainingX;
 	CudaArray caTrainingY;

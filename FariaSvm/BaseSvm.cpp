@@ -1,27 +1,23 @@
 #include "stdafx.h"
 #include "BaseSvm.h"
+#include "Settings.h"
 
 
 BaseSvm::BaseSvm(int argc, char** argv, DataSet *ds)
 {
 	_ds = ds;
 
-	auto arg = Utils::GetComandVariable(argc, argv, "-p");
-	if (!Utils::TryParseDouble(arg, Precision))
-		Precision = 1e-15;
-	Logger::instance()->Stats("Precision", Precision);
-	
+	Settings::instance()->GetDouble("precision", Precision);
+
 	double gama;
-	arg = Utils::GetComandVariable(argc, argv, "-g");
-	if (!Utils::TryParseDouble(arg, gama))
-		gama = _ds->Gama;
-	Logger::instance()->Stats("Gama", gama);
+	Settings::instance()->GetDouble("gamma", gama, _ds->Gama);
 	g = 1 / (2 * gama*gama);
 
-	arg = Utils::GetComandVariable(argc, argv, "-st");
-	if (!Utils::TryParseDouble(arg, Step))
-		Step = 1;
-	Logger::instance()->Stats("Step", Step);
+	Settings::instance()->GetDouble("constraint", C, _ds->C);
+
+	Settings::instance()->GetDouble("step", _initialStep);
+
+	Settings::instance()->GetUnsigned("maxIterations", MaxIterations);
 }
 
 void BaseSvm::Train(TrainingSet *ts)
