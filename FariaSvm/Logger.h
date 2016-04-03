@@ -19,7 +19,7 @@ public:
 	void Error(exception exception);
 	void FunctionStart(string functionName);
 	void FunctionEnd(string functionName);
-	Metric* StartMetric(string name);
+	TimeMetric* StartMetric(string name);
 	void ClassifyProgress(int count, double step, double lastDif, double difAlpha);
 	void Stats(string statName, long stat);
 	void Stats(string statName, int stat);

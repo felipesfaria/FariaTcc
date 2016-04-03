@@ -61,12 +61,13 @@ void Logger::FunctionEnd(string functionName)
 	logFile << FormatClock() << functionName << " finished in " << FormatClock(elapsed) << endl;
 }
 
-Metric* Logger::StartMetric(string name)
+TimeMetric* Logger::StartMetric(string name)
 {
 	if (Metrics.count(name) == 0)
-		Metrics[name] = new Metric(name);
-	Metrics[name]->Start();
-	return Metrics[name];
+		Metrics[name] = new TimeMetric(name);
+	auto m = (TimeMetric*)Metrics[name];
+	m->Start();
+	return m;
 }
 
 void Logger::ClassifyProgress(int count, double step, double lastDif, double difAlpha)

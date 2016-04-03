@@ -35,7 +35,12 @@ Metric::~Metric()
 {
 }
 
-void Metric::Start()
+TimeMetric::TimeMetric(string name)
+	: Metric(name)
+{
+}
+
+void TimeMetric::Start()
 {
 	if (isRunning)
 		throw new exception("Tried to start Metric when metric was allready running.");
@@ -43,7 +48,7 @@ void Metric::Start()
 	start = clock();
 }
 
-void Metric::Stop()
+void TimeMetric::Stop()
 {
 	if (!isRunning)
 		throw new exception("Tried to start Metric when metric was allready stopped.");

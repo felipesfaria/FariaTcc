@@ -18,14 +18,22 @@ class Metric
 public:
 	Metric(string name);
 	~Metric();
-	void Start();
-	void Stop();
 	unsigned GetAverage() const;
 	string GetName() const;
+protected:
+	string name;
+	unsigned int acumulated = 0;
+	unsigned int count = 0;
+};
+
+class TimeMetric : 
+	public Metric
+{
+public:
+	TimeMetric(string name);
+	void Start();
+	void Stop();
 private:
 	bool isRunning = false;
-	string name;
-	unsigned int start=0;
-	unsigned int acumulated=0;
-	unsigned int count = 0;
+	unsigned int start = 0;
 };
