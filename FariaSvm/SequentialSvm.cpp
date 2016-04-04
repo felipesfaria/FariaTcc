@@ -5,8 +5,8 @@
 #include "Utils.h"
 using namespace std;
 
-SequentialSvm::SequentialSvm(int argc, char** argv, DataSet *ds)
-	: BaseSvm(argc, argv, ds)
+SequentialSvm::SequentialSvm(DataSet *ds)
+	: BaseSvm(ds)
 {
 	Logger::instance()->Stats("Blocks", 0);
 	Logger::instance()->Stats("Threads", 0);

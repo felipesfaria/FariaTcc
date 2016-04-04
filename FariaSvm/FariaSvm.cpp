@@ -18,22 +18,21 @@ int main(int argc, char* argv[])
 		Settings::instance()->GetUnsigned("seed", seed);
 		srand(seed);
 
-		DataSet ds(argc, argv);
+		DataSet ds;
 
 		string svmType;
 		Settings::instance()->GetString("svm", svmType);
 		
 		BaseSvm *svm;
 		if (svmType == "p")
-			svm = new ParallelSvm(argc, argv, &ds);
+			svm = new ParallelSvm(&ds);
 		else
-			svm = new SequentialSvm(argc, argv, &ds);
+			svm = new SequentialSvm(&ds);
 
 		Logger::instance()->LogSettings();
 
 		TrainingSet ts;
 		ValidationSet vs;
-		auto totalCorrect = 0;
 		for (auto i = 1; i <= ds.nFolds; i++){
 			Logger::instance()->Fold(i);
 			ds.InitFoldSets(&ts, &vs, i);

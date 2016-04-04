@@ -23,7 +23,7 @@ class ParallelSvm :
 	public BaseSvm
 {
 public:
-	ParallelSvm(int argc, char** argv, DataSet* ds);
+	ParallelSvm(DataSet* ds);
 	~ParallelSvm();
 	int Classify(TrainingSet *ts, int index);
 	void UpdateBlocks(TrainingSet* ts);

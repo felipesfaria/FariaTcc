@@ -3,7 +3,7 @@
 #include "Settings.h"
 
 
-BaseSvm::BaseSvm(int argc, char** argv, DataSet *ds)
+BaseSvm::BaseSvm(DataSet *ds)
 {
 	_ds = ds;
 

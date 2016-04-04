@@ -7,7 +7,7 @@ class BaseSvm
 {
 public:
 	BaseSvm();
-	BaseSvm(int argc, char** argv, DataSet* ds);
+	BaseSvm(DataSet* ds);
 	virtual void Train(TrainingSet *ts);
 	virtual void Test(TrainingSet *ts, ValidationSet *vs);
 	virtual ~BaseSvm();

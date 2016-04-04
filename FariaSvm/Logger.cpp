@@ -12,7 +12,7 @@ Logger::Logger()
 {
 	logFile.open("log.txt", fstream::out | fstream::trunc);
 	_programStart = clock();
-	logFile << FormatClock() << "Program Started" << endl;;
+	logFile << FormatClock()<<"\t"<< "Program Started" << endl;;
 }
 
 Logger* Logger::instance()
@@ -29,17 +29,17 @@ Logger::~Logger()
 
 void Logger::Seed(unsigned seed)
 {
-	logFile << FormatClock() << "seed: " << seed << endl;
+	logFile << FormatClock()<<"\t" << "seed: " << seed << endl;
 }
 
 void Logger::Fold(int i)
 {
-	logFile << FormatClock() << "Fold: " << i << endl;
+	logFile << FormatClock()<<"\t" << "Fold: " << i << endl;
 }
 
 void Logger::Error(exception exception)
 {
-	logFile << FormatClock() << "Fatal error ocurred: " << exception.what() << endl;
+	logFile << FormatClock()<<"\t" << "Fatal error ocurred: " << exception.what() << endl;
 }
 
 void Logger::FunctionStart(string functionName)
@@ -47,7 +47,7 @@ void Logger::FunctionStart(string functionName)
 	if (FunctionTimers.count(functionName))
 		throw exception(("FunctionTimer:" + functionName + " allready started").c_str());
 	FunctionTimers[functionName] = new Timer(functionName);
-	logFile << FormatClock() << functionName << " starting..." << endl;
+	logFile << FormatClock()<<"\t" << functionName << " starting..." << endl;
 }
 void Logger::FunctionEnd(string functionName)
 {
@@ -58,7 +58,7 @@ void Logger::FunctionEnd(string functionName)
 	FunctionTimers.erase(functionName);
 	elapsed = timer->GetElapsed();
 	delete(timer);
-	logFile << FormatClock() << functionName << " finished in " << FormatClock(elapsed) << endl;
+	logFile << FormatClock()<<"\t" << functionName << " finished in " << FormatClock(elapsed) << endl;
 }
 
 TimeMetric* Logger::StartMetric(string name)
@@ -88,7 +88,7 @@ void Logger::AddDoubleMetric(string name, double value)
 
 void Logger::ClassifyProgress(int count, double step, double lastDif, double difAlpha)
 {
-	logFile << FormatClock() << "Iteration: " << count << "\tstep: " << step << "\tlastDif:" << lastDif << "\tdifAlpha:" << difAlpha << endl;
+	logFile << FormatClock()<<"\t" << "Iteration: " << count << "\tstep: " << step << "\tlastDif:" << lastDif << "\tdifAlpha:" << difAlpha << endl;
 }
 
 void Logger::Stats(string statName, long stat)
@@ -119,7 +119,7 @@ void Logger::Stats(string statName, double stat)
 void Logger::Stats(string statName, string stat)
 {
 	StatsMap[statName] = stat;
-	logFile << FormatClock() << statName << ": " << stat << endl;
+	logFile << FormatClock()<<"\t" << statName << ": " << stat << endl;
 }
 
 void Logger::Line(string s)
@@ -135,14 +135,14 @@ void Logger::LogSettings()
 		auto setting = (*it).second;
 		auto str = setting.ToString();
 		if (!str.empty())
-			logFile << FormatClock() << "Settings."<<setting.name <<" = "<< str<< endl;
+			logFile << FormatClock()<<"\t" << "Settings."<<setting.name <<" = "<< str<< endl;
 	}
 }
 
 void Logger::End()
 {
 	int end = clock();
-	logFile << FormatClock() << "Program Finished in " << FormatClock(end - _programStart) << endl;
+	logFile << FormatClock()<<"\t" << "Program Finished in " << FormatClock(end - _programStart) << endl;
 	logFile << endl;
 
 	auto settingsMap = Settings::instance()->settingsMap;
@@ -192,7 +192,7 @@ void Logger::End()
 		Metric* metric = it->second;
 		if (auto tm = dynamic_cast<TimeMetric*>(metric))
 		{
-			resultFile << FormatClock(tm->GetAverage());
+			resultFile << FormatClock(tm->GetAverage())<<"\t";
 		}
 		else if (auto im = dynamic_cast<IntMetric*>(metric))
 		{
@@ -205,14 +205,10 @@ void Logger::End()
 	}
 
 	resultFile.close();
+	delete(instance());
 }
 
-void Logger::Percentage(double correct, double total, double percentage, string title)
-{
-	logFile << FormatClock() << title << "Percentage correct: " << correct << "/" << total << " = " << percentage*100.0 << "%" << endl;
-}
-
-std::string Logger::FormatClock(unsigned milliseconds, bool addTab)
+std::string Logger::FormatClock(unsigned milliseconds)
 {
 	std::stringstream ss;
 	auto hours = milliseconds / (60 * 60 * CLOCKS_PER_SEC);
@@ -222,13 +218,11 @@ std::string Logger::FormatClock(unsigned milliseconds, bool addTab)
 	auto seconds = milliseconds / (CLOCKS_PER_SEC);
 	milliseconds = milliseconds % (CLOCKS_PER_SEC);
 	ss << hours << ":" << minutes << ":" << seconds << ":" << milliseconds;
-	if (addTab)
-		ss << "\t";
 	return ss.str();
 }
 
 std::string Logger::FormatClock()
 {
-	return FormatClock(clock(),true);
+	return FormatClock(clock());
 }
 

@@ -14,7 +14,6 @@ public:
 	~Logger();
 	void Seed(unsigned int seed);
 	void Fold(int i);
-	void Percentage(double totalCorrect, double totalSamples, double averagePercentageCorrect, string title = "");
 	void End();
 	void Error(exception exception);
 	void FunctionStart(string functionName);
@@ -35,7 +34,7 @@ private:
 	map<string, Timer*> FunctionTimers;
 	map<string, Metric*> Metrics;
 	map<string, string> StatsMap;
-	string FormatClock(unsigned milliseconds, bool addTab = true);
+	string FormatClock(unsigned milliseconds);
 	string FormatClock();
 	unsigned int _programStart;
 	static Logger *s_instance;

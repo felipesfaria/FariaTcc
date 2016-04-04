@@ -22,7 +22,7 @@ public:
 	vector<double> Y;
 	std::string const& operator[](size_t index) const;
 	size_t size() const;
-	DataSet(int argc,char** argv);
+	DataSet();
 	~DataSet();
 	void InitData(string arg="");
 	void InitFoldSets(TrainingSet *ts, ValidationSet *vs, int fold);

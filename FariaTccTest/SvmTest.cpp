@@ -16,9 +16,9 @@ namespace FariaTccTest
 		{
 			int argc = 3;
 			char *argv[] = { "exePath", "-d", "i"};
-			DataSet ds(argc, argv);
+			DataSet ds;
 
-			BaseSvm *svm = new SequentialSvm(argc, argv, &ds);
+			BaseSvm *svm = new SequentialSvm(&ds);
 
 			auto nFolds = 3;
 			TrainingSet ts;
@@ -39,9 +39,9 @@ namespace FariaTccTest
 		{
 			int argc = 3;
 			char *argv[] = { "exePath", "-d", "i"};
-			DataSet ds(argc, argv);
+			DataSet ds;
 
-			BaseSvm *svm = new ParallelSvm(argc, argv, &ds);
+			BaseSvm *svm = new ParallelSvm(&ds);
 
 			auto nFolds = 3;
 			TrainingSet ts;
@@ -62,9 +62,9 @@ namespace FariaTccTest
 		{
 			int argc = 3;
 			char *argv[] = { "exePath", "-d", "a1" };
-			DataSet ds(argc, argv);
+			DataSet ds;
 
-			BaseSvm *svm = new ParallelSvm(argc, argv, &ds);
+			BaseSvm *svm = new ParallelSvm(&ds);
 
 			auto nFolds = 3;
 			TrainingSet ts;

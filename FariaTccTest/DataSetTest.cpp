@@ -20,7 +20,7 @@ namespace FariaTccTest
 			char *argv[] = { "exe path", "-d", "" };
 			for (int i = 0; i < 1; i++){
 				argv[2] = args[i];
-				DataSet ds(3, argv);
+				DataSet ds;
 			}
 			Assert::IsTrue(true);
 		}
@@ -33,7 +33,7 @@ namespace FariaTccTest
 			char *argv[] = { "exe path", "-d", "" };
 			for (int i = 0; i < 9; i++){
 				argv[2] = args[i];
-				DataSet ds(3, argv);
+				DataSet ds;
 			}
 			Assert::IsTrue(true);
 		}
@@ -46,7 +46,7 @@ namespace FariaTccTest
 			char *argv[] = { "exe path", "-d", "" };
 			for (int i = 0; i < 8; i++){
 				argv[2] = args[i];
-				DataSet ds(3, argv);
+				DataSet ds;
 			}
 			Assert::IsTrue(true);
 		}
@@ -54,7 +54,7 @@ namespace FariaTccTest
 		TEST_METHOD(DataSet_ReadFile)
 		{
 			char *argv[3] = { "exe path", "-d", "a1" };
-			DataSet ds(3, argv);
+			DataSet ds;
 			int actual = ds.X.size();
 			int notExpected = 0;
 			Assert::AreNotEqual(notExpected, actual);
@@ -110,7 +110,7 @@ namespace FariaTccTest
 		{
 			int argc = 3;
 			char *argv[] = { "exe path", "-d", "i" };
-			DataSet ds(argc, argv);
+			DataSet ds;
 			TrainingSet ts;
 			ValidationSet vs;
 			for (auto i = 1; i <= ds.nFolds; i++){

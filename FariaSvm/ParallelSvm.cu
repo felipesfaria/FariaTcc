@@ -140,8 +140,8 @@ double CudaArray::GetSum()
 	return sum;
 }
 
-ParallelSvm::ParallelSvm(int argc, char** argv, DataSet *ds)
-	: BaseSvm(argc, argv, ds)
+ParallelSvm::ParallelSvm(DataSet *ds)
+	: BaseSvm(ds)
 {
 	Logger::instance()->FunctionStart("ParallelSvm");
 

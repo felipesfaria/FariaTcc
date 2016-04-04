@@ -6,7 +6,7 @@
 #include "Settings.h"
 using namespace std;
 
-DataSet::DataSet(int argc, char** argv)
+DataSet::DataSet()
 {
 	string arg;
 	Settings::instance()->GetString("dataSet", arg);
