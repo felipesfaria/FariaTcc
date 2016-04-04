@@ -37,10 +37,8 @@ int SequentialSvm::Classify(TrainingSet *ts, double* sample)
 void SequentialSvm::Train(TrainingSet *ts)
 {
 	auto m = Logger::instance()->StartMetric("Train");
-	Logger::instance()->FunctionStart("Train");
 	double* alpha = ts->alpha;
 	vector<double> oldAlpha;
-	int samples = _ds->nSamples;
 	for (int i = 0; i < ts->height; ++i){
 		alpha[i] = _initialStep;
 		oldAlpha.push_back(_initialStep);
@@ -96,20 +94,17 @@ void SequentialSvm::Train(TrainingSet *ts)
 
 	free(lastDif);
 	free(steps);
-	Logger::instance()->FunctionEnd("Train");
 	m->Stop();
 }
 
 void SequentialSvm::Test(TrainingSet *ts, ValidationSet *vs)
 {
 	auto m = Logger::instance()->StartMetric("Test");
-	Logger::instance()->FunctionStart("Test");
 	for (auto i = 0; i < vs->height; ++i)
 	{
 		int classifiedY = Classify(ts, vs->GetSample(i));
 		vs->Validate(i, classifiedY);
 	}
-	Logger::instance()->FunctionEnd("Test");
 	m->Stop();
 }
 

@@ -131,9 +131,9 @@ void Settings::Init(int argc, char** argv)
 	precission.name = "precision";
 	precission.isSet = false;
 	precission.command = "-p";
-	precission.description = "Precision of double values. Default is 1e-15";
+	precission.description = "Precision of double values. Default is 1e-10";
 	precission.type = Setting::DOUBLE;
-	precission.dValue = 1e-15;
+	precission.dValue = 1e-10;
 	settingsMap[precission.name] = precission;
 
 	Setting help;
@@ -143,6 +143,15 @@ void Settings::Init(int argc, char** argv)
 	help.description = "Shows options available.";
 	help.type = Setting::HELP;
 	settingsMap[help.name] = help;
+
+	Setting log;
+	log.name = "log";
+	log.isSet = false;
+	log.command = "-l";
+	log.description = "Define log level, {a:all, r:results, e:only errors, n:none} Default is r";
+	log.type = Setting::STRING;
+	log.sValue = "r";
+	settingsMap[log.name] = log;
 
 	for (auto it = settingsMap.begin(); it != settingsMap.end(); ++it)
 	{
@@ -174,11 +183,11 @@ void Settings::GetUnsigned(string key, unsigned& value)
 	value = settingsMap[key].uValue;
 }
 
-void Settings::GetString(string key, string& value)
+string Settings::GetString(string key)
 {
-	value = settingsMap[key].sValue;
+	auto s = settingsMap[key].sValue;
+	return s;
 }
-
 
 void Settings::GetDouble(string key, double& value)
 {

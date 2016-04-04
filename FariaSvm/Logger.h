@@ -10,14 +10,14 @@ using namespace std;
 class Logger
 {
 public:
+	unsigned NONE = 0;
+	unsigned ERRORS = 1;
+	unsigned RESULTS = 2;
+	unsigned ALL = 3;
 	static Logger *instance();
 	~Logger();
-	void Seed(unsigned int seed);
-	void Fold(int i);
 	void End();
 	void Error(exception exception);
-	void FunctionStart(string functionName);
-	void FunctionEnd(string functionName);
 	TimeMetric* StartMetric(string name);
 	void AddIntMetric(string name, unsigned value);
 	void AddDoubleMetric(string name, double value);
@@ -30,6 +30,7 @@ public:
 	void Line(string s);
 	void LogSettings();
 private:
+	unsigned _type;
 	fstream logFile;
 	map<string, Timer*> FunctionTimers;
 	map<string, Metric*> Metrics;

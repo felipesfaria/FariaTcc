@@ -143,8 +143,6 @@ double CudaArray::GetSum()
 ParallelSvm::ParallelSvm(DataSet *ds)
 	: BaseSvm(ds)
 {
-	Logger::instance()->FunctionStart("ParallelSvm");
-
 	int halfGigaByte = 1 << 29;
 	long gpuByteSize = ds->nSamples*ds->nFeatures*sizeof(double);
 
@@ -154,8 +152,6 @@ ParallelSvm::ParallelSvm(DataSet *ds)
 	Settings::instance()->GetUnsigned("threadsPerBlock", _threadsPerBlock);
 
 	CUDA_SAFE_CALL(cudaSetDevice(0));
-
-	Logger::instance()->FunctionEnd("ParallelSvm");
 }
 
 ParallelSvm::~ParallelSvm()
@@ -198,7 +194,6 @@ void ParallelSvm::UpdateBlocks(TrainingSet *ts)
 void ParallelSvm::Train(TrainingSet *ts)
 {
 	auto m = Logger::instance()->StartMetric("Train");
-	Logger::instance()->FunctionStart("Train");
 	UpdateBlocks(ts);
 	caTrainingX.Init(ts->x, ts->height*ts->width);
 	caTrainingX.CopyToDevice();
@@ -250,13 +245,11 @@ void ParallelSvm::Train(TrainingSet *ts)
 
 	Logger::instance()->AddIntMetric("Iterations", count);
 	caAlpha.CopyToHost();
-	Logger::instance()->FunctionEnd("Train");
 	m->Stop();
 }
 
 void ParallelSvm::Test(TrainingSet *ts, ValidationSet *vs)
 {
-	Logger::instance()->FunctionStart("Test");
 	auto m = Logger::instance()->StartMetric("Test");
 	caValidationX.Init(vs->x, vs->height*vs->width);
 	caValidationX.CopyToDevice();
@@ -267,5 +260,4 @@ void ParallelSvm::Test(TrainingSet *ts, ValidationSet *vs)
 		vs->Validate(i, classifiedY);
 	}
 	m->Stop();
-	Logger::instance()->FunctionEnd("Test");
 }

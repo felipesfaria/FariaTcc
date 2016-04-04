@@ -15,7 +15,8 @@ namespace FariaTccTest
 		TEST_METHOD(SequentialSvm_i_100Prcnt)
 		{
 			int argc = 3;
-			char *argv[] = { "exePath", "-d", "i"};
+			char *argv[] = { "exePath", "-d", "i" };
+			Settings::instance()->Init(argc, argv);
 			DataSet ds;
 
 			BaseSvm *svm = new SequentialSvm(&ds);
@@ -39,6 +40,7 @@ namespace FariaTccTest
 		{
 			int argc = 3;
 			char *argv[] = { "exePath", "-d", "i"};
+			Settings::instance()->Init(argc, argv);
 			DataSet ds;
 
 			BaseSvm *svm = new ParallelSvm(&ds);
@@ -62,6 +64,7 @@ namespace FariaTccTest
 		{
 			int argc = 3;
 			char *argv[] = { "exePath", "-d", "a1" };
+			Settings::instance()->Init(argc, argv);
 			DataSet ds;
 
 			BaseSvm *svm = new ParallelSvm(&ds);

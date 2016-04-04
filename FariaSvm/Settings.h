@@ -18,16 +18,9 @@ public:
 	Type type;
 	string description;
 	bool isSet;
-	void SetValue(void* value);
-
 	unsigned uValue;
-	void GetUnsigned(unsigned &value);
-
 	string sValue;
-	void GetString(string &value);
-
 	double dValue;
-	void GetDouble(double &value);
 
 	string ToString();
 };
@@ -38,7 +31,7 @@ public:
 	static Settings *instance();
 	void Init(int argc, char** argv);
 	void GetUnsigned(string key, unsigned &value);
-	void GetString(string key, string &value);
+	string GetString(string key);
 	void GetDouble(string key, double &value);
 	void GetDouble(string key, double &value, double def);
 	~Settings();

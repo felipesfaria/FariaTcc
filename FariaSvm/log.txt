@@ -1,93 +1,1746 @@
-0:0:0:319	Program Started
-0:0:0:322	FileName: Data/adult1.data
-0:0:0:322	Samples: 1605
-0:0:0:322	Features: 123
-0:0:0:322	Classes: 2
-0:0:0:322	ReadFile starting...
-0:0:0:964	ReadFile finished in 0:0:0:642
-0:0:0:964	Shuffle starting...
-0:0:0:976	Shuffle finished in 0:0:0:12
-0:0:0:976	Blocks: 0
-0:0:0:976	Threads: 0
-0:0:0:976	Settings.constraint = 100
-0:0:0:976	Settings.dataSet = a1
-0:0:0:976	Settings.folds = 10
-0:0:0:976	Settings.gamma = 0.5
-0:0:0:976	Settings.maxIterations = 2
-0:0:0:976	Settings.precision = 1e-015
-0:0:0:976	Settings.seed = 0
-0:0:0:976	Settings.step = 1
-0:0:0:977	Settings.svm = s
-0:0:0:977	Settings.threadsPerBlock = 128
-0:0:0:977	Fold: 1
-0:0:0:994	Train starting...
-0:0:2:200	Iteration: 1	step: 1	lastDif:0	difAlpha:-0.0169685
-0:0:3:381	Iteration: 2	step: 0.579585	lastDif:0	difAlpha:0.0571383
-0:0:3:381	Train finished in 0:0:2:387
-0:0:3:382	Test starting...
-0:0:3:502	Test finished in 0:0:0:120
-0:0:3:502	Fold: 2
-0:0:3:520	Train starting...
-0:0:4:743	Iteration: 1	step: 1	lastDif:0	difAlpha:-0.0201027
-0:0:5:909	Iteration: 2	step: 0.579294	lastDif:0	difAlpha:0.0535807
-0:0:5:909	Train finished in 0:0:2:389
-0:0:5:909	Test starting...
-0:0:6:22	Test finished in 0:0:0:113
-0:0:6:22	Fold: 3
-0:0:6:41	Train starting...
-0:0:7:249	Iteration: 1	step: 1	lastDif:0	difAlpha:-0.0161309
-0:0:8:416	Iteration: 2	step: 0.57301	lastDif:0	difAlpha:0.0509545
-0:0:8:416	Train finished in 0:0:2:375
-0:0:8:417	Test starting...
-0:0:8:531	Test finished in 0:0:0:114
-0:0:8:531	Fold: 4
-0:0:8:548	Train starting...
-0:0:9:731	Iteration: 1	step: 1	lastDif:0	difAlpha:-0.0213468
-0:0:10:894	Iteration: 2	step: 0.573753	lastDif:0	difAlpha:0.0556508
-0:0:10:894	Train finished in 0:0:2:346
-0:0:10:894	Test starting...
-0:0:11:6	Test finished in 0:0:0:112
-0:0:11:6	Fold: 5
-0:0:11:25	Train starting...
-0:0:12:229	Iteration: 1	step: 1	lastDif:0	difAlpha:-0.0185827
-0:0:13:401	Iteration: 2	step: 0.576471	lastDif:0	difAlpha:0.0501571
-0:0:13:402	Train finished in 0:0:2:377
-0:0:13:402	Test starting...
-0:0:13:526	Test finished in 0:0:0:124
-0:0:13:526	Fold: 6
-0:0:13:547	Train starting...
-0:0:14:748	Iteration: 1	step: 1	lastDif:0	difAlpha:-0.0208777
-0:0:15:917	Iteration: 2	step: 0.567521	lastDif:0	difAlpha:0.0501506
-0:0:15:917	Train finished in 0:0:2:370
-0:0:15:917	Test starting...
-0:0:16:31	Test finished in 0:0:0:113
-0:0:16:31	Fold: 7
-0:0:16:49	Train starting...
-0:0:17:240	Iteration: 1	step: 1	lastDif:0	difAlpha:-0.0260033
-0:0:18:396	Iteration: 2	step: 0.574394	lastDif:0	difAlpha:0.0542163
-0:0:18:397	Train finished in 0:0:2:348
-0:0:18:397	Test starting...
-0:0:18:510	Test finished in 0:0:0:113
-0:0:18:510	Fold: 8
-0:0:18:528	Train starting...
-0:0:19:716	Iteration: 1	step: 1	lastDif:0	difAlpha:-0.0223259
-0:0:20:861	Iteration: 2	step: 0.570983	lastDif:0	difAlpha:0.053139
-0:0:20:861	Train finished in 0:0:2:333
-0:0:20:861	Test starting...
-0:0:20:976	Test finished in 0:0:0:115
-0:0:20:977	Fold: 9
-0:0:20:995	Train starting...
-0:0:22:183	Iteration: 1	step: 1	lastDif:0	difAlpha:-0.00954867
-0:0:23:370	Iteration: 2	step: 0.577855	lastDif:0	difAlpha:0.0468899
-0:0:23:371	Train finished in 0:0:2:376
-0:0:23:371	Test starting...
-0:0:23:484	Test finished in 0:0:0:113
-0:0:23:484	Fold: 10
-0:0:23:501	Train starting...
-0:0:24:677	Iteration: 1	step: 1	lastDif:0	difAlpha:-0.0258842
-0:0:25:826	Iteration: 2	step: 0.576524	lastDif:0	difAlpha:0.0559575
-0:0:25:826	Train finished in 0:0:2:325
-0:0:25:826	Test starting...
-0:0:25:948	Test finished in 0:0:0:122
-0:0:25:948	Program Finished in 0:0:25:629
+0:0:0:387	Program Started
+0:0:0:388	main
+0:0:0:388	FileName: Data/adult1.data
+0:0:0:388	Samples: 1605
+0:0:0:388	Features: 123
+0:0:0:388	Classes: 2
+0:0:1:77	Settings.constraint = 100
+0:0:1:77	Settings.dataSet = a1
+0:0:1:77	Settings.folds = 10
+0:0:1:77	Settings.gamma = 0.5
+0:0:1:78	Settings.log = a
+0:0:1:78	Settings.maxIterations = 2
+0:0:1:78	Settings.precision = 1e-010
+0:0:1:79	Settings.seed = 0
+0:0:1:79	Settings.step = 1
+0:0:1:79	Settings.svm = p
+0:0:1:79	Settings.threadsPerBlock = 128
+0:0:1:80	Starting Fold 1
+0:0:1:99	Train
+0:0:1:99	Blocks: 12
+0:0:1:99	Threads: 1536
+0:0:1:542	Iteration: 1	step: 1	lastDif:0	difAlpha:-0.00211788
+0:0:1:834	Iteration: 2	step: 0.993772	lastDif:0	difAlpha:-0.0779392
+0:0:1:834	Iterations: 2
+0:0:1:834	SupportVectors: 1342
+0:0:1:834	Test
+0:0:1:835	Classify
+0:0:1:836	Classify
+0:0:1:836	Classify
+0:0:1:836	Classify
+0:0:1:837	Classify
+0:0:1:837	Classify
+0:0:1:838	Classify
+0:0:1:838	Classify
+0:0:1:838	Classify
+0:0:1:839	Classify
+0:0:1:839	Classify
+0:0:1:839	Classify
+0:0:1:840	Classify
+0:0:1:840	Classify
+0:0:1:840	Classify
+0:0:1:841	Classify
+0:0:1:841	Classify
+0:0:1:841	Classify
+0:0:1:842	Classify
+0:0:1:842	Classify
+0:0:1:842	Classify
+0:0:1:843	Classify
+0:0:1:843	Classify
+0:0:1:844	Classify
+0:0:1:844	Classify
+0:0:1:844	Classify
+0:0:1:844	Classify
+0:0:1:845	Classify
+0:0:1:845	Classify
+0:0:1:845	Classify
+0:0:1:846	Classify
+0:0:1:846	Classify
+0:0:1:846	Classify
+0:0:1:847	Classify
+0:0:1:847	Classify
+0:0:1:847	Classify
+0:0:1:848	Classify
+0:0:1:848	Classify
+0:0:1:848	Classify
+0:0:1:849	Classify
+0:0:1:849	Classify
+0:0:1:849	Classify
+0:0:1:850	Classify
+0:0:1:850	Classify
+0:0:1:850	Classify
+0:0:1:851	Classify
+0:0:1:851	Classify
+0:0:1:851	Classify
+0:0:1:852	Classify
+0:0:1:852	Classify
+0:0:1:852	Classify
+0:0:1:853	Classify
+0:0:1:853	Classify
+0:0:1:853	Classify
+0:0:1:854	Classify
+0:0:1:854	Classify
+0:0:1:854	Classify
+0:0:1:855	Classify
+0:0:1:855	Classify
+0:0:1:855	Classify
+0:0:1:856	Classify
+0:0:1:856	Classify
+0:0:1:856	Classify
+0:0:1:857	Classify
+0:0:1:857	Classify
+0:0:1:857	Classify
+0:0:1:858	Classify
+0:0:1:858	Classify
+0:0:1:858	Classify
+0:0:1:859	Classify
+0:0:1:859	Classify
+0:0:1:860	Classify
+0:0:1:860	Classify
+0:0:1:860	Classify
+0:0:1:861	Classify
+0:0:1:861	Classify
+0:0:1:861	Classify
+0:0:1:861	Classify
+0:0:1:862	Classify
+0:0:1:862	Classify
+0:0:1:862	Classify
+0:0:1:863	Classify
+0:0:1:863	Classify
+0:0:1:863	Classify
+0:0:1:864	Classify
+0:0:1:864	Classify
+0:0:1:864	Classify
+0:0:1:865	Classify
+0:0:1:865	Classify
+0:0:1:865	Classify
+0:0:1:866	Classify
+0:0:1:866	Classify
+0:0:1:866	Classify
+0:0:1:867	Classify
+0:0:1:867	Classify
+0:0:1:867	Classify
+0:0:1:867	Classify
+0:0:1:868	Classify
+0:0:1:868	Classify
+0:0:1:868	Classify
+0:0:1:869	Classify
+0:0:1:869	Classify
+0:0:1:869	Classify
+0:0:1:870	Classify
+0:0:1:870	Classify
+0:0:1:870	Classify
+0:0:1:871	Classify
+0:0:1:871	Classify
+0:0:1:871	Classify
+0:0:1:872	Classify
+0:0:1:872	Classify
+0:0:1:872	Classify
+0:0:1:873	Classify
+0:0:1:873	Classify
+0:0:1:873	Classify
+0:0:1:873	Classify
+0:0:1:874	Classify
+0:0:1:874	Classify
+0:0:1:874	Classify
+0:0:1:875	Classify
+0:0:1:875	Classify
+0:0:1:876	Classify
+0:0:1:876	Classify
+0:0:1:876	Classify
+0:0:1:876	Classify
+0:0:1:877	Classify
+0:0:1:877	Classify
+0:0:1:877	Classify
+0:0:1:878	Classify
+0:0:1:878	Classify
+0:0:1:878	Classify
+0:0:1:879	Classify
+0:0:1:879	Classify
+0:0:1:879	Classify
+0:0:1:880	Classify
+0:0:1:880	Classify
+0:0:1:880	Classify
+0:0:1:881	Classify
+0:0:1:881	Classify
+0:0:1:882	Classify
+0:0:1:883	Classify
+0:0:1:883	Classify
+0:0:1:884	Classify
+0:0:1:884	Classify
+0:0:1:885	Classify
+0:0:1:885	Classify
+0:0:1:886	Classify
+0:0:1:886	Classify
+0:0:1:886	Classify
+0:0:1:887	Classify
+0:0:1:887	Classify
+0:0:1:887	Classify
+0:0:1:888	Classify
+0:0:1:888	Classify
+0:0:1:888	Classify
+0:0:1:889	Classify
+0:0:1:889	Classify
+0:0:1:889	Classify
+0:0:1:890	Classify
+0:0:1:890	Classify
+0:0:1:890	PercentCorrect: 81.250000
+0:0:1:891	Correct: 130
+0:0:1:891	NullWrong: 0
+0:0:1:891	PositiveWrong: 11
+0:0:1:891	NegativeWrong: 19
+0:0:1:891	Starting Fold 2
+0:0:1:908	Train
+0:0:2:198	Iteration: 1	step: 1	lastDif:0	difAlpha:-0.00398668
+0:0:2:487	Iteration: 2	step: 0.992729	lastDif:0	difAlpha:-0.0816598
+0:0:2:487	Iterations: 2
+0:0:2:488	SupportVectors: 1341
+0:0:2:488	Test
+0:0:2:488	Classify
+0:0:2:489	Classify
+0:0:2:489	Classify
+0:0:2:489	Classify
+0:0:2:489	Classify
+0:0:2:490	Classify
+0:0:2:490	Classify
+0:0:2:490	Classify
+0:0:2:491	Classify
+0:0:2:491	Classify
+0:0:2:491	Classify
+0:0:2:492	Classify
+0:0:2:492	Classify
+0:0:2:492	Classify
+0:0:2:493	Classify
+0:0:2:493	Classify
+0:0:2:493	Classify
+0:0:2:494	Classify
+0:0:2:494	Classify
+0:0:2:494	Classify
+0:0:2:494	Classify
+0:0:2:495	Classify
+0:0:2:495	Classify
+0:0:2:495	Classify
+0:0:2:496	Classify
+0:0:2:496	Classify
+0:0:2:496	Classify
+0:0:2:497	Classify
+0:0:2:497	Classify
+0:0:2:497	Classify
+0:0:2:498	Classify
+0:0:2:498	Classify
+0:0:2:498	Classify
+0:0:2:498	Classify
+0:0:2:499	Classify
+0:0:2:499	Classify
+0:0:2:499	Classify
+0:0:2:500	Classify
+0:0:2:500	Classify
+0:0:2:500	Classify
+0:0:2:501	Classify
+0:0:2:501	Classify
+0:0:2:501	Classify
+0:0:2:501	Classify
+0:0:2:502	Classify
+0:0:2:502	Classify
+0:0:2:502	Classify
+0:0:2:503	Classify
+0:0:2:503	Classify
+0:0:2:503	Classify
+0:0:2:504	Classify
+0:0:2:504	Classify
+0:0:2:504	Classify
+0:0:2:504	Classify
+0:0:2:505	Classify
+0:0:2:505	Classify
+0:0:2:505	Classify
+0:0:2:506	Classify
+0:0:2:506	Classify
+0:0:2:506	Classify
+0:0:2:507	Classify
+0:0:2:507	Classify
+0:0:2:507	Classify
+0:0:2:508	Classify
+0:0:2:508	Classify
+0:0:2:508	Classify
+0:0:2:509	Classify
+0:0:2:509	Classify
+0:0:2:509	Classify
+0:0:2:510	Classify
+0:0:2:510	Classify
+0:0:2:510	Classify
+0:0:2:510	Classify
+0:0:2:511	Classify
+0:0:2:511	Classify
+0:0:2:511	Classify
+0:0:2:512	Classify
+0:0:2:512	Classify
+0:0:2:512	Classify
+0:0:2:513	Classify
+0:0:2:513	Classify
+0:0:2:513	Classify
+0:0:2:514	Classify
+0:0:2:514	Classify
+0:0:2:514	Classify
+0:0:2:514	Classify
+0:0:2:515	Classify
+0:0:2:515	Classify
+0:0:2:515	Classify
+0:0:2:516	Classify
+0:0:2:516	Classify
+0:0:2:516	Classify
+0:0:2:517	Classify
+0:0:2:517	Classify
+0:0:2:517	Classify
+0:0:2:517	Classify
+0:0:2:518	Classify
+0:0:2:518	Classify
+0:0:2:518	Classify
+0:0:2:519	Classify
+0:0:2:519	Classify
+0:0:2:519	Classify
+0:0:2:520	Classify
+0:0:2:520	Classify
+0:0:2:520	Classify
+0:0:2:521	Classify
+0:0:2:521	Classify
+0:0:2:521	Classify
+0:0:2:521	Classify
+0:0:2:522	Classify
+0:0:2:522	Classify
+0:0:2:522	Classify
+0:0:2:523	Classify
+0:0:2:523	Classify
+0:0:2:523	Classify
+0:0:2:524	Classify
+0:0:2:524	Classify
+0:0:2:524	Classify
+0:0:2:524	Classify
+0:0:2:525	Classify
+0:0:2:525	Classify
+0:0:2:525	Classify
+0:0:2:526	Classify
+0:0:2:526	Classify
+0:0:2:526	Classify
+0:0:2:527	Classify
+0:0:2:527	Classify
+0:0:2:527	Classify
+0:0:2:528	Classify
+0:0:2:528	Classify
+0:0:2:528	Classify
+0:0:2:529	Classify
+0:0:2:529	Classify
+0:0:2:529	Classify
+0:0:2:529	Classify
+0:0:2:530	Classify
+0:0:2:530	Classify
+0:0:2:530	Classify
+0:0:2:531	Classify
+0:0:2:531	Classify
+0:0:2:531	Classify
+0:0:2:532	Classify
+0:0:2:532	Classify
+0:0:2:532	Classify
+0:0:2:532	Classify
+0:0:2:533	Classify
+0:0:2:533	Classify
+0:0:2:533	Classify
+0:0:2:534	Classify
+0:0:2:534	Classify
+0:0:2:534	Classify
+0:0:2:535	Classify
+0:0:2:535	Classify
+0:0:2:535	Classify
+0:0:2:536	Classify
+0:0:2:536	Classify
+0:0:2:536	Classify
+0:0:2:537	Classify
+0:0:2:537	Classify
+0:0:2:537	Classify
+0:0:2:538	Classify
+0:0:2:538	PercentCorrect: 81.366460
+0:0:2:538	Correct: 131
+0:0:2:538	NullWrong: 0
+0:0:2:538	PositiveWrong: 11
+0:0:2:538	NegativeWrong: 19
+0:0:2:538	Starting Fold 3
+0:0:2:557	Train
+0:0:2:847	Iteration: 1	step: 1	lastDif:0	difAlpha:-0.00329708
+0:0:3:135	Iteration: 2	step: 0.992042	lastDif:0	difAlpha:-0.08227
+0:0:3:136	Iterations: 2
+0:0:3:136	SupportVectors: 1344
+0:0:3:136	Test
+0:0:3:137	Classify
+0:0:3:137	Classify
+0:0:3:137	Classify
+0:0:3:138	Classify
+0:0:3:138	Classify
+0:0:3:138	Classify
+0:0:3:138	Classify
+0:0:3:139	Classify
+0:0:3:139	Classify
+0:0:3:139	Classify
+0:0:3:140	Classify
+0:0:3:140	Classify
+0:0:3:140	Classify
+0:0:3:141	Classify
+0:0:3:141	Classify
+0:0:3:141	Classify
+0:0:3:142	Classify
+0:0:3:142	Classify
+0:0:3:142	Classify
+0:0:3:143	Classify
+0:0:3:143	Classify
+0:0:3:143	Classify
+0:0:3:144	Classify
+0:0:3:144	Classify
+0:0:3:144	Classify
+0:0:3:144	Classify
+0:0:3:144	Classify
+0:0:3:145	Classify
+0:0:3:146	Classify
+0:0:3:146	Classify
+0:0:3:146	Classify
+0:0:3:146	Classify
+0:0:3:147	Classify
+0:0:3:147	Classify
+0:0:3:147	Classify
+0:0:3:148	Classify
+0:0:3:148	Classify
+0:0:3:148	Classify
+0:0:3:149	Classify
+0:0:3:149	Classify
+0:0:3:149	Classify
+0:0:3:150	Classify
+0:0:3:150	Classify
+0:0:3:150	Classify
+0:0:3:151	Classify
+0:0:3:151	Classify
+0:0:3:151	Classify
+0:0:3:151	Classify
+0:0:3:152	Classify
+0:0:3:152	Classify
+0:0:3:152	Classify
+0:0:3:153	Classify
+0:0:3:153	Classify
+0:0:3:153	Classify
+0:0:3:154	Classify
+0:0:3:154	Classify
+0:0:3:154	Classify
+0:0:3:155	Classify
+0:0:3:155	Classify
+0:0:3:155	Classify
+0:0:3:155	Classify
+0:0:3:156	Classify
+0:0:3:156	Classify
+0:0:3:156	Classify
+0:0:3:157	Classify
+0:0:3:157	Classify
+0:0:3:157	Classify
+0:0:3:158	Classify
+0:0:3:158	Classify
+0:0:3:158	Classify
+0:0:3:159	Classify
+0:0:3:159	Classify
+0:0:3:159	Classify
+0:0:3:160	Classify
+0:0:3:160	Classify
+0:0:3:160	Classify
+0:0:3:160	Classify
+0:0:3:161	Classify
+0:0:3:161	Classify
+0:0:3:161	Classify
+0:0:3:162	Classify
+0:0:3:162	Classify
+0:0:3:162	Classify
+0:0:3:163	Classify
+0:0:3:163	Classify
+0:0:3:163	Classify
+0:0:3:164	Classify
+0:0:3:164	Classify
+0:0:3:164	Classify
+0:0:3:165	Classify
+0:0:3:165	Classify
+0:0:3:165	Classify
+0:0:3:165	Classify
+0:0:3:166	Classify
+0:0:3:166	Classify
+0:0:3:166	Classify
+0:0:3:167	Classify
+0:0:3:167	Classify
+0:0:3:167	Classify
+0:0:3:168	Classify
+0:0:3:168	Classify
+0:0:3:168	Classify
+0:0:3:168	Classify
+0:0:3:169	Classify
+0:0:3:169	Classify
+0:0:3:169	Classify
+0:0:3:170	Classify
+0:0:3:170	Classify
+0:0:3:170	Classify
+0:0:3:171	Classify
+0:0:3:171	Classify
+0:0:3:171	Classify
+0:0:3:171	Classify
+0:0:3:172	Classify
+0:0:3:172	Classify
+0:0:3:172	Classify
+0:0:3:173	Classify
+0:0:3:173	Classify
+0:0:3:173	Classify
+0:0:3:174	Classify
+0:0:3:174	Classify
+0:0:3:174	Classify
+0:0:3:174	Classify
+0:0:3:174	Classify
+0:0:3:175	Classify
+0:0:3:175	Classify
+0:0:3:176	Classify
+0:0:3:176	Classify
+0:0:3:176	Classify
+0:0:3:177	Classify
+0:0:3:177	Classify
+0:0:3:177	Classify
+0:0:3:178	Classify
+0:0:3:178	Classify
+0:0:3:178	Classify
+0:0:3:179	Classify
+0:0:3:179	Classify
+0:0:3:179	Classify
+0:0:3:180	Classify
+0:0:3:180	Classify
+0:0:3:180	Classify
+0:0:3:181	Classify
+0:0:3:181	Classify
+0:0:3:181	Classify
+0:0:3:182	Classify
+0:0:3:182	Classify
+0:0:3:182	Classify
+0:0:3:182	Classify
+0:0:3:183	Classify
+0:0:3:183	Classify
+0:0:3:183	Classify
+0:0:3:184	Classify
+0:0:3:184	Classify
+0:0:3:184	Classify
+0:0:3:184	Classify
+0:0:3:184	Classify
+0:0:3:185	Classify
+0:0:3:185	Classify
+0:0:3:186	Classify
+0:0:3:186	Classify
+0:0:3:186	PercentCorrect: 83.125000
+0:0:3:187	Correct: 133
+0:0:3:187	NullWrong: 0
+0:0:3:187	PositiveWrong: 14
+0:0:3:187	NegativeWrong: 13
+0:0:3:187	Starting Fold 4
+0:0:3:204	Train
+0:0:3:494	Iteration: 1	step: 1	lastDif:0	difAlpha:-0.00343837
+0:0:3:782	Iteration: 2	step: 0.993767	lastDif:0	difAlpha:-0.0822225
+0:0:3:782	Iterations: 2
+0:0:3:783	SupportVectors: 1338
+0:0:3:783	Test
+0:0:3:783	Classify
+0:0:3:784	Classify
+0:0:3:784	Classify
+0:0:3:785	Classify
+0:0:3:785	Classify
+0:0:3:785	Classify
+0:0:3:785	Classify
+0:0:3:786	Classify
+0:0:3:786	Classify
+0:0:3:786	Classify
+0:0:3:787	Classify
+0:0:3:787	Classify
+0:0:3:787	Classify
+0:0:3:788	Classify
+0:0:3:788	Classify
+0:0:3:788	Classify
+0:0:3:789	Classify
+0:0:3:789	Classify
+0:0:3:789	Classify
+0:0:3:790	Classify
+0:0:3:790	Classify
+0:0:3:790	Classify
+0:0:3:791	Classify
+0:0:3:791	Classify
+0:0:3:791	Classify
+0:0:3:792	Classify
+0:0:3:792	Classify
+0:0:3:793	Classify
+0:0:3:793	Classify
+0:0:3:793	Classify
+0:0:3:794	Classify
+0:0:3:794	Classify
+0:0:3:794	Classify
+0:0:3:795	Classify
+0:0:3:795	Classify
+0:0:3:795	Classify
+0:0:3:795	Classify
+0:0:3:796	Classify
+0:0:3:796	Classify
+0:0:3:796	Classify
+0:0:3:797	Classify
+0:0:3:797	Classify
+0:0:3:797	Classify
+0:0:3:798	Classify
+0:0:3:798	Classify
+0:0:3:798	Classify
+0:0:3:799	Classify
+0:0:3:799	Classify
+0:0:3:799	Classify
+0:0:3:800	Classify
+0:0:3:800	Classify
+0:0:3:800	Classify
+0:0:3:801	Classify
+0:0:3:801	Classify
+0:0:3:801	Classify
+0:0:3:802	Classify
+0:0:3:802	Classify
+0:0:3:802	Classify
+0:0:3:803	Classify
+0:0:3:803	Classify
+0:0:3:803	Classify
+0:0:3:804	Classify
+0:0:3:804	Classify
+0:0:3:804	Classify
+0:0:3:805	Classify
+0:0:3:805	Classify
+0:0:3:805	Classify
+0:0:3:805	Classify
+0:0:3:806	Classify
+0:0:3:806	Classify
+0:0:3:806	Classify
+0:0:3:807	Classify
+0:0:3:807	Classify
+0:0:3:807	Classify
+0:0:3:808	Classify
+0:0:3:809	Classify
+0:0:3:809	Classify
+0:0:3:809	Classify
+0:0:3:809	Classify
+0:0:3:809	Classify
+0:0:3:810	Classify
+0:0:3:810	Classify
+0:0:3:810	Classify
+0:0:3:811	Classify
+0:0:3:811	Classify
+0:0:3:811	Classify
+0:0:3:812	Classify
+0:0:3:812	Classify
+0:0:3:812	Classify
+0:0:3:813	Classify
+0:0:3:813	Classify
+0:0:3:813	Classify
+0:0:3:814	Classify
+0:0:3:814	Classify
+0:0:3:814	Classify
+0:0:3:815	Classify
+0:0:3:815	Classify
+0:0:3:815	Classify
+0:0:3:815	Classify
+0:0:3:816	Classify
+0:0:3:816	Classify
+0:0:3:816	Classify
+0:0:3:817	Classify
+0:0:3:817	Classify
+0:0:3:817	Classify
+0:0:3:818	Classify
+0:0:3:818	Classify
+0:0:3:818	Classify
+0:0:3:819	Classify
+0:0:3:819	Classify
+0:0:3:820	Classify
+0:0:3:820	Classify
+0:0:3:820	Classify
+0:0:3:821	Classify
+0:0:3:821	Classify
+0:0:3:821	Classify
+0:0:3:822	Classify
+0:0:3:822	Classify
+0:0:3:822	Classify
+0:0:3:823	Classify
+0:0:3:823	Classify
+0:0:3:823	Classify
+0:0:3:824	Classify
+0:0:3:824	Classify
+0:0:3:824	Classify
+0:0:3:825	Classify
+0:0:3:825	Classify
+0:0:3:825	Classify
+0:0:3:826	Classify
+0:0:3:826	Classify
+0:0:3:826	Classify
+0:0:3:827	Classify
+0:0:3:827	Classify
+0:0:3:827	Classify
+0:0:3:828	Classify
+0:0:3:828	Classify
+0:0:3:828	Classify
+0:0:3:829	Classify
+0:0:3:829	Classify
+0:0:3:829	Classify
+0:0:3:830	Classify
+0:0:3:830	Classify
+0:0:3:830	Classify
+0:0:3:830	Classify
+0:0:3:831	Classify
+0:0:3:831	Classify
+0:0:3:831	Classify
+0:0:3:832	Classify
+0:0:3:832	Classify
+0:0:3:832	Classify
+0:0:3:833	Classify
+0:0:3:833	Classify
+0:0:3:833	Classify
+0:0:3:834	Classify
+0:0:3:834	Classify
+0:0:3:834	Classify
+0:0:3:835	Classify
+0:0:3:835	Classify
+0:0:3:835	Classify
+0:0:3:836	Classify
+0:0:3:836	Classify
+0:0:3:836	PercentCorrect: 80.124224
+0:0:3:836	Correct: 129
+0:0:3:836	NullWrong: 0
+0:0:3:836	PositiveWrong: 10
+0:0:3:837	NegativeWrong: 22
+0:0:3:837	Starting Fold 5
+0:0:3:854	Train
+0:0:4:144	Iteration: 1	step: 1	lastDif:0	difAlpha:-0.00399871
+0:0:4:433	Iteration: 2	step: 0.992388	lastDif:0	difAlpha:-0.0815391
+0:0:4:433	Iterations: 2
+0:0:4:433	SupportVectors: 1343
+0:0:4:433	Test
+0:0:4:434	Classify
+0:0:4:434	Classify
+0:0:4:435	Classify
+0:0:4:435	Classify
+0:0:4:435	Classify
+0:0:4:436	Classify
+0:0:4:436	Classify
+0:0:4:436	Classify
+0:0:4:437	Classify
+0:0:4:437	Classify
+0:0:4:437	Classify
+0:0:4:438	Classify
+0:0:4:438	Classify
+0:0:4:438	Classify
+0:0:4:439	Classify
+0:0:4:439	Classify
+0:0:4:439	Classify
+0:0:4:439	Classify
+0:0:4:440	Classify
+0:0:4:440	Classify
+0:0:4:440	Classify
+0:0:4:441	Classify
+0:0:4:441	Classify
+0:0:4:442	Classify
+0:0:4:442	Classify
+0:0:4:442	Classify
+0:0:4:443	Classify
+0:0:4:443	Classify
+0:0:4:443	Classify
+0:0:4:444	Classify
+0:0:4:444	Classify
+0:0:4:444	Classify
+0:0:4:445	Classify
+0:0:4:445	Classify
+0:0:4:445	Classify
+0:0:4:446	Classify
+0:0:4:446	Classify
+0:0:4:446	Classify
+0:0:4:447	Classify
+0:0:4:447	Classify
+0:0:4:447	Classify
+0:0:4:448	Classify
+0:0:4:448	Classify
+0:0:4:448	Classify
+0:0:4:449	Classify
+0:0:4:449	Classify
+0:0:4:449	Classify
+0:0:4:450	Classify
+0:0:4:450	Classify
+0:0:4:450	Classify
+0:0:4:451	Classify
+0:0:4:451	Classify
+0:0:4:451	Classify
+0:0:4:452	Classify
+0:0:4:452	Classify
+0:0:4:452	Classify
+0:0:4:453	Classify
+0:0:4:453	Classify
+0:0:4:453	Classify
+0:0:4:454	Classify
+0:0:4:454	Classify
+0:0:4:454	Classify
+0:0:4:455	Classify
+0:0:4:455	Classify
+0:0:4:455	Classify
+0:0:4:455	Classify
+0:0:4:456	Classify
+0:0:4:456	Classify
+0:0:4:456	Classify
+0:0:4:457	Classify
+0:0:4:457	Classify
+0:0:4:457	Classify
+0:0:4:458	Classify
+0:0:4:458	Classify
+0:0:4:458	Classify
+0:0:4:459	Classify
+0:0:4:459	Classify
+0:0:4:459	Classify
+0:0:4:460	Classify
+0:0:4:460	Classify
+0:0:4:460	Classify
+0:0:4:461	Classify
+0:0:4:461	Classify
+0:0:4:461	Classify
+0:0:4:462	Classify
+0:0:4:462	Classify
+0:0:4:462	Classify
+0:0:4:462	Classify
+0:0:4:463	Classify
+0:0:4:463	Classify
+0:0:4:463	Classify
+0:0:4:464	Classify
+0:0:4:464	Classify
+0:0:4:464	Classify
+0:0:4:465	Classify
+0:0:4:465	Classify
+0:0:4:465	Classify
+0:0:4:466	Classify
+0:0:4:466	Classify
+0:0:4:466	Classify
+0:0:4:466	Classify
+0:0:4:467	Classify
+0:0:4:467	Classify
+0:0:4:467	Classify
+0:0:4:468	Classify
+0:0:4:468	Classify
+0:0:4:468	Classify
+0:0:4:469	Classify
+0:0:4:469	Classify
+0:0:4:469	Classify
+0:0:4:470	Classify
+0:0:4:470	Classify
+0:0:4:470	Classify
+0:0:4:470	Classify
+0:0:4:471	Classify
+0:0:4:471	Classify
+0:0:4:471	Classify
+0:0:4:472	Classify
+0:0:4:472	Classify
+0:0:4:473	Classify
+0:0:4:473	Classify
+0:0:4:473	Classify
+0:0:4:474	Classify
+0:0:4:474	Classify
+0:0:4:474	Classify
+0:0:4:475	Classify
+0:0:4:475	Classify
+0:0:4:475	Classify
+0:0:4:476	Classify
+0:0:4:476	Classify
+0:0:4:476	Classify
+0:0:4:477	Classify
+0:0:4:477	Classify
+0:0:4:477	Classify
+0:0:4:477	Classify
+0:0:4:478	Classify
+0:0:4:478	Classify
+0:0:4:478	Classify
+0:0:4:479	Classify
+0:0:4:479	Classify
+0:0:4:479	Classify
+0:0:4:480	Classify
+0:0:4:480	Classify
+0:0:4:480	Classify
+0:0:4:481	Classify
+0:0:4:481	Classify
+0:0:4:481	Classify
+0:0:4:481	Classify
+0:0:4:482	Classify
+0:0:4:482	Classify
+0:0:4:482	Classify
+0:0:4:483	Classify
+0:0:4:483	Classify
+0:0:4:483	Classify
+0:0:4:484	Classify
+0:0:4:484	Classify
+0:0:4:484	Classify
+0:0:4:484	Classify
+0:0:4:485	Classify
+0:0:4:485	Classify
+0:0:4:485	PercentCorrect: 81.875000
+0:0:4:485	Correct: 131
+0:0:4:486	NullWrong: 0
+0:0:4:486	PositiveWrong: 8
+0:0:4:486	NegativeWrong: 21
+0:0:4:486	Starting Fold 6
+0:0:4:503	Train
+0:0:4:793	Iteration: 1	step: 1	lastDif:0	difAlpha:-0.00330784
+0:0:5:81	Iteration: 2	step: 0.993421	lastDif:0	difAlpha:-0.0823827
+0:0:5:81	Iterations: 2
+0:0:5:82	SupportVectors: 1339
+0:0:5:82	Test
+0:0:5:82	Classify
+0:0:5:83	Classify
+0:0:5:83	Classify
+0:0:5:84	Classify
+0:0:5:84	Classify
+0:0:5:84	Classify
+0:0:5:85	Classify
+0:0:5:85	Classify
+0:0:5:85	Classify
+0:0:5:85	Classify
+0:0:5:86	Classify
+0:0:5:86	Classify
+0:0:5:86	Classify
+0:0:5:87	Classify
+0:0:5:87	Classify
+0:0:5:87	Classify
+0:0:5:88	Classify
+0:0:5:88	Classify
+0:0:5:88	Classify
+0:0:5:89	Classify
+0:0:5:89	Classify
+0:0:5:89	Classify
+0:0:5:90	Classify
+0:0:5:90	Classify
+0:0:5:90	Classify
+0:0:5:91	Classify
+0:0:5:91	Classify
+0:0:5:91	Classify
+0:0:5:92	Classify
+0:0:5:92	Classify
+0:0:5:92	Classify
+0:0:5:93	Classify
+0:0:5:93	Classify
+0:0:5:93	Classify
+0:0:5:94	Classify
+0:0:5:94	Classify
+0:0:5:94	Classify
+0:0:5:95	Classify
+0:0:5:95	Classify
+0:0:5:95	Classify
+0:0:5:96	Classify
+0:0:5:96	Classify
+0:0:5:96	Classify
+0:0:5:96	Classify
+0:0:5:97	Classify
+0:0:5:97	Classify
+0:0:5:97	Classify
+0:0:5:98	Classify
+0:0:5:98	Classify
+0:0:5:98	Classify
+0:0:5:99	Classify
+0:0:5:99	Classify
+0:0:5:99	Classify
+0:0:5:100	Classify
+0:0:5:100	Classify
+0:0:5:100	Classify
+0:0:5:100	Classify
+0:0:5:101	Classify
+0:0:5:101	Classify
+0:0:5:101	Classify
+0:0:5:102	Classify
+0:0:5:102	Classify
+0:0:5:102	Classify
+0:0:5:103	Classify
+0:0:5:103	Classify
+0:0:5:103	Classify
+0:0:5:104	Classify
+0:0:5:104	Classify
+0:0:5:104	Classify
+0:0:5:105	Classify
+0:0:5:105	Classify
+0:0:5:105	Classify
+0:0:5:106	Classify
+0:0:5:106	Classify
+0:0:5:106	Classify
+0:0:5:106	Classify
+0:0:5:107	Classify
+0:0:5:107	Classify
+0:0:5:107	Classify
+0:0:5:108	Classify
+0:0:5:108	Classify
+0:0:5:108	Classify
+0:0:5:109	Classify
+0:0:5:109	Classify
+0:0:5:109	Classify
+0:0:5:110	Classify
+0:0:5:110	Classify
+0:0:5:110	Classify
+0:0:5:111	Classify
+0:0:5:111	Classify
+0:0:5:111	Classify
+0:0:5:112	Classify
+0:0:5:112	Classify
+0:0:5:112	Classify
+0:0:5:113	Classify
+0:0:5:113	Classify
+0:0:5:113	Classify
+0:0:5:113	Classify
+0:0:5:114	Classify
+0:0:5:114	Classify
+0:0:5:114	Classify
+0:0:5:115	Classify
+0:0:5:115	Classify
+0:0:5:115	Classify
+0:0:5:116	Classify
+0:0:5:116	Classify
+0:0:5:116	Classify
+0:0:5:117	Classify
+0:0:5:117	Classify
+0:0:5:117	Classify
+0:0:5:118	Classify
+0:0:5:118	Classify
+0:0:5:118	Classify
+0:0:5:118	Classify
+0:0:5:119	Classify
+0:0:5:119	Classify
+0:0:5:119	Classify
+0:0:5:120	Classify
+0:0:5:120	Classify
+0:0:5:120	Classify
+0:0:5:121	Classify
+0:0:5:121	Classify
+0:0:5:121	Classify
+0:0:5:121	Classify
+0:0:5:122	Classify
+0:0:5:122	Classify
+0:0:5:122	Classify
+0:0:5:123	Classify
+0:0:5:123	Classify
+0:0:5:123	Classify
+0:0:5:124	Classify
+0:0:5:124	Classify
+0:0:5:124	Classify
+0:0:5:125	Classify
+0:0:5:125	Classify
+0:0:5:125	Classify
+0:0:5:126	Classify
+0:0:5:126	Classify
+0:0:5:126	Classify
+0:0:5:127	Classify
+0:0:5:127	Classify
+0:0:5:127	Classify
+0:0:5:127	Classify
+0:0:5:128	Classify
+0:0:5:128	Classify
+0:0:5:128	Classify
+0:0:5:129	Classify
+0:0:5:129	Classify
+0:0:5:129	Classify
+0:0:5:130	Classify
+0:0:5:130	Classify
+0:0:5:130	Classify
+0:0:5:131	Classify
+0:0:5:131	Classify
+0:0:5:132	Classify
+0:0:5:132	Classify
+0:0:5:132	Classify
+0:0:5:133	Classify
+0:0:5:133	Classify
+0:0:5:133	Classify
+0:0:5:133	Classify
+0:0:5:134	PercentCorrect: 83.229814
+0:0:5:134	Correct: 134
+0:0:5:134	NullWrong: 0
+0:0:5:134	PositiveWrong: 7
+0:0:5:134	NegativeWrong: 20
+0:0:5:134	Starting Fold 7
+0:0:5:151	Train
+0:0:5:441	Iteration: 1	step: 1	lastDif:0	difAlpha:-0.00328391
+0:0:5:730	Iteration: 2	step: 0.99308	lastDif:0	difAlpha:-0.0822516
+0:0:5:730	Iterations: 2
+0:0:5:731	SupportVectors: 1341
+0:0:5:731	Test
+0:0:5:731	Classify
+0:0:5:732	Classify
+0:0:5:732	Classify
+0:0:5:732	Classify
+0:0:5:733	Classify
+0:0:5:733	Classify
+0:0:5:733	Classify
+0:0:5:733	Classify
+0:0:5:734	Classify
+0:0:5:734	Classify
+0:0:5:734	Classify
+0:0:5:735	Classify
+0:0:5:735	Classify
+0:0:5:735	Classify
+0:0:5:736	Classify
+0:0:5:736	Classify
+0:0:5:736	Classify
+0:0:5:737	Classify
+0:0:5:737	Classify
+0:0:5:737	Classify
+0:0:5:738	Classify
+0:0:5:738	Classify
+0:0:5:738	Classify
+0:0:5:739	Classify
+0:0:5:739	Classify
+0:0:5:739	Classify
+0:0:5:740	Classify
+0:0:5:740	Classify
+0:0:5:740	Classify
+0:0:5:741	Classify
+0:0:5:741	Classify
+0:0:5:741	Classify
+0:0:5:742	Classify
+0:0:5:742	Classify
+0:0:5:742	Classify
+0:0:5:743	Classify
+0:0:5:743	Classify
+0:0:5:743	Classify
+0:0:5:744	Classify
+0:0:5:744	Classify
+0:0:5:744	Classify
+0:0:5:745	Classify
+0:0:5:745	Classify
+0:0:5:745	Classify
+0:0:5:746	Classify
+0:0:5:746	Classify
+0:0:5:746	Classify
+0:0:5:746	Classify
+0:0:5:747	Classify
+0:0:5:747	Classify
+0:0:5:747	Classify
+0:0:5:748	Classify
+0:0:5:748	Classify
+0:0:5:748	Classify
+0:0:5:749	Classify
+0:0:5:749	Classify
+0:0:5:749	Classify
+0:0:5:750	Classify
+0:0:5:750	Classify
+0:0:5:750	Classify
+0:0:5:751	Classify
+0:0:5:751	Classify
+0:0:5:751	Classify
+0:0:5:752	Classify
+0:0:5:752	Classify
+0:0:5:752	Classify
+0:0:5:752	Classify
+0:0:5:753	Classify
+0:0:5:753	Classify
+0:0:5:753	Classify
+0:0:5:754	Classify
+0:0:5:754	Classify
+0:0:5:754	Classify
+0:0:5:755	Classify
+0:0:5:755	Classify
+0:0:5:755	Classify
+0:0:5:756	Classify
+0:0:5:756	Classify
+0:0:5:756	Classify
+0:0:5:756	Classify
+0:0:5:757	Classify
+0:0:5:757	Classify
+0:0:5:757	Classify
+0:0:5:758	Classify
+0:0:5:758	Classify
+0:0:5:758	Classify
+0:0:5:759	Classify
+0:0:5:759	Classify
+0:0:5:759	Classify
+0:0:5:760	Classify
+0:0:5:760	Classify
+0:0:5:760	Classify
+0:0:5:761	Classify
+0:0:5:761	Classify
+0:0:5:761	Classify
+0:0:5:762	Classify
+0:0:5:762	Classify
+0:0:5:762	Classify
+0:0:5:762	Classify
+0:0:5:763	Classify
+0:0:5:763	Classify
+0:0:5:763	Classify
+0:0:5:764	Classify
+0:0:5:764	Classify
+0:0:5:764	Classify
+0:0:5:765	Classify
+0:0:5:765	Classify
+0:0:5:765	Classify
+0:0:5:765	Classify
+0:0:5:766	Classify
+0:0:5:766	Classify
+0:0:5:766	Classify
+0:0:5:767	Classify
+0:0:5:767	Classify
+0:0:5:767	Classify
+0:0:5:768	Classify
+0:0:5:768	Classify
+0:0:5:768	Classify
+0:0:5:769	Classify
+0:0:5:769	Classify
+0:0:5:769	Classify
+0:0:5:769	Classify
+0:0:5:770	Classify
+0:0:5:770	Classify
+0:0:5:770	Classify
+0:0:5:771	Classify
+0:0:5:771	Classify
+0:0:5:771	Classify
+0:0:5:772	Classify
+0:0:5:772	Classify
+0:0:5:772	Classify
+0:0:5:773	Classify
+0:0:5:773	Classify
+0:0:5:773	Classify
+0:0:5:773	Classify
+0:0:5:774	Classify
+0:0:5:774	Classify
+0:0:5:774	Classify
+0:0:5:775	Classify
+0:0:5:775	Classify
+0:0:5:775	Classify
+0:0:5:776	Classify
+0:0:5:776	Classify
+0:0:5:776	Classify
+0:0:5:777	Classify
+0:0:5:777	Classify
+0:0:5:777	Classify
+0:0:5:777	Classify
+0:0:5:778	Classify
+0:0:5:778	Classify
+0:0:5:778	Classify
+0:0:5:779	Classify
+0:0:5:779	Classify
+0:0:5:779	Classify
+0:0:5:780	Classify
+0:0:5:780	Classify
+0:0:5:780	Classify
+0:0:5:781	Classify
+0:0:5:781	Classify
+0:0:5:781	Classify
+0:0:5:781	PercentCorrect: 76.250000
+0:0:5:782	Correct: 122
+0:0:5:782	NullWrong: 0
+0:0:5:782	PositiveWrong: 18
+0:0:5:782	NegativeWrong: 20
+0:0:5:782	Starting Fold 8
+0:0:5:799	Train
+0:0:6:90	Iteration: 1	step: 1	lastDif:0	difAlpha:-0.00401621
+0:0:6:378	Iteration: 2	step: 0.993075	lastDif:0	difAlpha:-0.0816065
+0:0:6:378	Iterations: 2
+0:0:6:379	SupportVectors: 1340
+0:0:6:379	Test
+0:0:6:379	Classify
+0:0:6:380	Classify
+0:0:6:380	Classify
+0:0:6:380	Classify
+0:0:6:381	Classify
+0:0:6:381	Classify
+0:0:6:381	Classify
+0:0:6:382	Classify
+0:0:6:382	Classify
+0:0:6:382	Classify
+0:0:6:383	Classify
+0:0:6:383	Classify
+0:0:6:383	Classify
+0:0:6:384	Classify
+0:0:6:384	Classify
+0:0:6:384	Classify
+0:0:6:384	Classify
+0:0:6:385	Classify
+0:0:6:385	Classify
+0:0:6:385	Classify
+0:0:6:386	Classify
+0:0:6:386	Classify
+0:0:6:386	Classify
+0:0:6:387	Classify
+0:0:6:387	Classify
+0:0:6:387	Classify
+0:0:6:387	Classify
+0:0:6:388	Classify
+0:0:6:388	Classify
+0:0:6:388	Classify
+0:0:6:389	Classify
+0:0:6:389	Classify
+0:0:6:389	Classify
+0:0:6:390	Classify
+0:0:6:390	Classify
+0:0:6:390	Classify
+0:0:6:391	Classify
+0:0:6:391	Classify
+0:0:6:391	Classify
+0:0:6:391	Classify
+0:0:6:392	Classify
+0:0:6:392	Classify
+0:0:6:392	Classify
+0:0:6:393	Classify
+0:0:6:393	Classify
+0:0:6:393	Classify
+0:0:6:394	Classify
+0:0:6:394	Classify
+0:0:6:394	Classify
+0:0:6:395	Classify
+0:0:6:395	Classify
+0:0:6:395	Classify
+0:0:6:396	Classify
+0:0:6:396	Classify
+0:0:6:396	Classify
+0:0:6:396	Classify
+0:0:6:397	Classify
+0:0:6:397	Classify
+0:0:6:397	Classify
+0:0:6:398	Classify
+0:0:6:398	Classify
+0:0:6:398	Classify
+0:0:6:399	Classify
+0:0:6:399	Classify
+0:0:6:399	Classify
+0:0:6:399	Classify
+0:0:6:400	Classify
+0:0:6:400	Classify
+0:0:6:400	Classify
+0:0:6:401	Classify
+0:0:6:401	Classify
+0:0:6:401	Classify
+0:0:6:402	Classify
+0:0:6:402	Classify
+0:0:6:402	Classify
+0:0:6:403	Classify
+0:0:6:403	Classify
+0:0:6:403	Classify
+0:0:6:403	Classify
+0:0:6:404	Classify
+0:0:6:404	Classify
+0:0:6:404	Classify
+0:0:6:405	Classify
+0:0:6:405	Classify
+0:0:6:405	Classify
+0:0:6:406	Classify
+0:0:6:406	Classify
+0:0:6:406	Classify
+0:0:6:406	Classify
+0:0:6:407	Classify
+0:0:6:407	Classify
+0:0:6:407	Classify
+0:0:6:408	Classify
+0:0:6:408	Classify
+0:0:6:408	Classify
+0:0:6:409	Classify
+0:0:6:409	Classify
+0:0:6:409	Classify
+0:0:6:410	Classify
+0:0:6:410	Classify
+0:0:6:410	Classify
+0:0:6:411	Classify
+0:0:6:411	Classify
+0:0:6:411	Classify
+0:0:6:412	Classify
+0:0:6:412	Classify
+0:0:6:412	Classify
+0:0:6:412	Classify
+0:0:6:413	Classify
+0:0:6:413	Classify
+0:0:6:413	Classify
+0:0:6:414	Classify
+0:0:6:414	Classify
+0:0:6:414	Classify
+0:0:6:415	Classify
+0:0:6:415	Classify
+0:0:6:415	Classify
+0:0:6:416	Classify
+0:0:6:416	Classify
+0:0:6:416	Classify
+0:0:6:416	Classify
+0:0:6:417	Classify
+0:0:6:417	Classify
+0:0:6:417	Classify
+0:0:6:418	Classify
+0:0:6:418	Classify
+0:0:6:418	Classify
+0:0:6:419	Classify
+0:0:6:419	Classify
+0:0:6:419	Classify
+0:0:6:419	Classify
+0:0:6:420	Classify
+0:0:6:420	Classify
+0:0:6:420	Classify
+0:0:6:421	Classify
+0:0:6:421	Classify
+0:0:6:421	Classify
+0:0:6:422	Classify
+0:0:6:422	Classify
+0:0:6:422	Classify
+0:0:6:423	Classify
+0:0:6:423	Classify
+0:0:6:423	Classify
+0:0:6:423	Classify
+0:0:6:424	Classify
+0:0:6:424	Classify
+0:0:6:424	Classify
+0:0:6:425	Classify
+0:0:6:425	Classify
+0:0:6:425	Classify
+0:0:6:426	Classify
+0:0:6:426	Classify
+0:0:6:426	Classify
+0:0:6:427	Classify
+0:0:6:427	Classify
+0:0:6:427	Classify
+0:0:6:428	Classify
+0:0:6:428	Classify
+0:0:6:428	Classify
+0:0:6:428	Classify
+0:0:6:429	Classify
+0:0:6:429	PercentCorrect: 73.291925
+0:0:6:429	Correct: 118
+0:0:6:429	NullWrong: 0
+0:0:6:429	PositiveWrong: 15
+0:0:6:429	NegativeWrong: 28
+0:0:6:429	Starting Fold 9
+0:0:6:448	Train
+0:0:6:739	Iteration: 1	step: 1	lastDif:0	difAlpha:-0.00324131
+0:0:7:27	Iteration: 2	step: 0.99308	lastDif:0	difAlpha:-0.0823201
+0:0:7:28	Iterations: 2
+0:0:7:28	SupportVectors: 1341
+0:0:7:28	Test
+0:0:7:29	Classify
+0:0:7:29	Classify
+0:0:7:29	Classify
+0:0:7:30	Classify
+0:0:7:30	Classify
+0:0:7:30	Classify
+0:0:7:31	Classify
+0:0:7:31	Classify
+0:0:7:31	Classify
+0:0:7:32	Classify
+0:0:7:32	Classify
+0:0:7:32	Classify
+0:0:7:33	Classify
+0:0:7:33	Classify
+0:0:7:33	Classify
+0:0:7:34	Classify
+0:0:7:34	Classify
+0:0:7:34	Classify
+0:0:7:35	Classify
+0:0:7:35	Classify
+0:0:7:35	Classify
+0:0:7:36	Classify
+0:0:7:36	Classify
+0:0:7:36	Classify
+0:0:7:36	Classify
+0:0:7:37	Classify
+0:0:7:37	Classify
+0:0:7:37	Classify
+0:0:7:38	Classify
+0:0:7:38	Classify
+0:0:7:38	Classify
+0:0:7:39	Classify
+0:0:7:39	Classify
+0:0:7:39	Classify
+0:0:7:39	Classify
+0:0:7:40	Classify
+0:0:7:40	Classify
+0:0:7:40	Classify
+0:0:7:41	Classify
+0:0:7:41	Classify
+0:0:7:41	Classify
+0:0:7:42	Classify
+0:0:7:42	Classify
+0:0:7:42	Classify
+0:0:7:43	Classify
+0:0:7:43	Classify
+0:0:7:43	Classify
+0:0:7:44	Classify
+0:0:7:44	Classify
+0:0:7:44	Classify
+0:0:7:45	Classify
+0:0:7:45	Classify
+0:0:7:45	Classify
+0:0:7:45	Classify
+0:0:7:46	Classify
+0:0:7:46	Classify
+0:0:7:46	Classify
+0:0:7:47	Classify
+0:0:7:47	Classify
+0:0:7:47	Classify
+0:0:7:48	Classify
+0:0:7:48	Classify
+0:0:7:48	Classify
+0:0:7:48	Classify
+0:0:7:49	Classify
+0:0:7:49	Classify
+0:0:7:49	Classify
+0:0:7:50	Classify
+0:0:7:50	Classify
+0:0:7:50	Classify
+0:0:7:51	Classify
+0:0:7:51	Classify
+0:0:7:51	Classify
+0:0:7:52	Classify
+0:0:7:52	Classify
+0:0:7:52	Classify
+0:0:7:52	Classify
+0:0:7:53	Classify
+0:0:7:53	Classify
+0:0:7:53	Classify
+0:0:7:54	Classify
+0:0:7:54	Classify
+0:0:7:54	Classify
+0:0:7:55	Classify
+0:0:7:55	Classify
+0:0:7:55	Classify
+0:0:7:55	Classify
+0:0:7:56	Classify
+0:0:7:56	Classify
+0:0:7:56	Classify
+0:0:7:57	Classify
+0:0:7:57	Classify
+0:0:7:57	Classify
+0:0:7:58	Classify
+0:0:7:58	Classify
+0:0:7:58	Classify
+0:0:7:59	Classify
+0:0:7:59	Classify
+0:0:7:59	Classify
+0:0:7:60	Classify
+0:0:7:60	Classify
+0:0:7:60	Classify
+0:0:7:61	Classify
+0:0:7:61	Classify
+0:0:7:61	Classify
+0:0:7:61	Classify
+0:0:7:62	Classify
+0:0:7:62	Classify
+0:0:7:62	Classify
+0:0:7:63	Classify
+0:0:7:63	Classify
+0:0:7:63	Classify
+0:0:7:64	Classify
+0:0:7:64	Classify
+0:0:7:64	Classify
+0:0:7:65	Classify
+0:0:7:65	Classify
+0:0:7:65	Classify
+0:0:7:65	Classify
+0:0:7:66	Classify
+0:0:7:66	Classify
+0:0:7:66	Classify
+0:0:7:67	Classify
+0:0:7:67	Classify
+0:0:7:67	Classify
+0:0:7:68	Classify
+0:0:7:68	Classify
+0:0:7:68	Classify
+0:0:7:68	Classify
+0:0:7:69	Classify
+0:0:7:69	Classify
+0:0:7:69	Classify
+0:0:7:70	Classify
+0:0:7:70	Classify
+0:0:7:70	Classify
+0:0:7:71	Classify
+0:0:7:71	Classify
+0:0:7:71	Classify
+0:0:7:72	Classify
+0:0:7:72	Classify
+0:0:7:72	Classify
+0:0:7:72	Classify
+0:0:7:73	Classify
+0:0:7:73	Classify
+0:0:7:73	Classify
+0:0:7:74	Classify
+0:0:7:74	Classify
+0:0:7:74	Classify
+0:0:7:75	Classify
+0:0:7:75	Classify
+0:0:7:75	Classify
+0:0:7:76	Classify
+0:0:7:76	Classify
+0:0:7:76	Classify
+0:0:7:76	Classify
+0:0:7:77	Classify
+0:0:7:77	Classify
+0:0:7:77	Classify
+0:0:7:78	Classify
+0:0:7:78	Classify
+0:0:7:78	PercentCorrect: 81.875000
+0:0:7:78	Correct: 131
+0:0:7:79	NullWrong: 0
+0:0:7:79	PositiveWrong: 12
+0:0:7:79	NegativeWrong: 17
+0:0:7:79	Starting Fold 10
+0:0:7:97	Train
+0:0:7:387	Iteration: 1	step: 1	lastDif:0	difAlpha:-0.00398624
+0:0:7:675	Iteration: 2	step: 0.993075	lastDif:0	difAlpha:-0.0816854
+0:0:7:676	Iterations: 2
+0:0:7:676	SupportVectors: 1340
+0:0:7:676	Test
+0:0:7:677	Classify
+0:0:7:677	Classify
+0:0:7:677	Classify
+0:0:7:678	Classify
+0:0:7:678	Classify
+0:0:7:678	Classify
+0:0:7:679	Classify
+0:0:7:679	Classify
+0:0:7:679	Classify
+0:0:7:680	Classify
+0:0:7:680	Classify
+0:0:7:680	Classify
+0:0:7:681	Classify
+0:0:7:681	Classify
+0:0:7:681	Classify
+0:0:7:681	Classify
+0:0:7:682	Classify
+0:0:7:682	Classify
+0:0:7:682	Classify
+0:0:7:683	Classify
+0:0:7:683	Classify
+0:0:7:683	Classify
+0:0:7:684	Classify
+0:0:7:684	Classify
+0:0:7:684	Classify
+0:0:7:685	Classify
+0:0:7:685	Classify
+0:0:7:685	Classify
+0:0:7:686	Classify
+0:0:7:686	Classify
+0:0:7:686	Classify
+0:0:7:687	Classify
+0:0:7:687	Classify
+0:0:7:687	Classify
+0:0:7:688	Classify
+0:0:7:688	Classify
+0:0:7:688	Classify
+0:0:7:689	Classify
+0:0:7:689	Classify
+0:0:7:689	Classify
+0:0:7:689	Classify
+0:0:7:690	Classify
+0:0:7:690	Classify
+0:0:7:690	Classify
+0:0:7:691	Classify
+0:0:7:691	Classify
+0:0:7:692	Classify
+0:0:7:692	Classify
+0:0:7:692	Classify
+0:0:7:693	Classify
+0:0:7:693	Classify
+0:0:7:693	Classify
+0:0:7:694	Classify
+0:0:7:694	Classify
+0:0:7:694	Classify
+0:0:7:695	Classify
+0:0:7:695	Classify
+0:0:7:695	Classify
+0:0:7:695	Classify
+0:0:7:696	Classify
+0:0:7:696	Classify
+0:0:7:696	Classify
+0:0:7:697	Classify
+0:0:7:697	Classify
+0:0:7:697	Classify
+0:0:7:698	Classify
+0:0:7:698	Classify
+0:0:7:698	Classify
+0:0:7:699	Classify
+0:0:7:699	Classify
+0:0:7:699	Classify
+0:0:7:700	Classify
+0:0:7:700	Classify
+0:0:7:700	Classify
+0:0:7:701	Classify
+0:0:7:701	Classify
+0:0:7:701	Classify
+0:0:7:702	Classify
+0:0:7:702	Classify
+0:0:7:702	Classify
+0:0:7:703	Classify
+0:0:7:703	Classify
+0:0:7:703	Classify
+0:0:7:703	Classify
+0:0:7:704	Classify
+0:0:7:704	Classify
+0:0:7:704	Classify
+0:0:7:705	Classify
+0:0:7:705	Classify
+0:0:7:705	Classify
+0:0:7:706	Classify
+0:0:7:706	Classify
+0:0:7:706	Classify
+0:0:7:707	Classify
+0:0:7:707	Classify
+0:0:7:707	Classify
+0:0:7:708	Classify
+0:0:7:708	Classify
+0:0:7:708	Classify
+0:0:7:709	Classify
+0:0:7:709	Classify
+0:0:7:710	Classify
+0:0:7:710	Classify
+0:0:7:710	Classify
+0:0:7:711	Classify
+0:0:7:711	Classify
+0:0:7:711	Classify
+0:0:7:712	Classify
+0:0:7:712	Classify
+0:0:7:712	Classify
+0:0:7:713	Classify
+0:0:7:713	Classify
+0:0:7:713	Classify
+0:0:7:714	Classify
+0:0:7:714	Classify
+0:0:7:714	Classify
+0:0:7:715	Classify
+0:0:7:715	Classify
+0:0:7:715	Classify
+0:0:7:716	Classify
+0:0:7:716	Classify
+0:0:7:716	Classify
+0:0:7:717	Classify
+0:0:7:717	Classify
+0:0:7:717	Classify
+0:0:7:718	Classify
+0:0:7:718	Classify
+0:0:7:718	Classify
+0:0:7:719	Classify
+0:0:7:719	Classify
+0:0:7:719	Classify
+0:0:7:720	Classify
+0:0:7:720	Classify
+0:0:7:720	Classify
+0:0:7:720	Classify
+0:0:7:721	Classify
+0:0:7:721	Classify
+0:0:7:721	Classify
+0:0:7:722	Classify
+0:0:7:722	Classify
+0:0:7:722	Classify
+0:0:7:723	Classify
+0:0:7:723	Classify
+0:0:7:723	Classify
+0:0:7:723	Classify
+0:0:7:724	Classify
+0:0:7:724	Classify
+0:0:7:724	Classify
+0:0:7:725	Classify
+0:0:7:725	Classify
+0:0:7:725	Classify
+0:0:7:726	Classify
+0:0:7:726	Classify
+0:0:7:726	Classify
+0:0:7:727	Classify
+0:0:7:727	Classify
+0:0:7:727	Classify
+0:0:7:728	Classify
+0:0:7:728	Classify
+0:0:7:728	Classify
+0:0:7:728	Classify
+0:0:7:729	PercentCorrect: 78.881988
+0:0:7:729	Correct: 127
+0:0:7:729	NullWrong: 0
+0:0:7:729	PositiveWrong: 18
+0:0:7:729	NegativeWrong: 16
+0:0:7:732	Program Finished in 0:0:7:345
 

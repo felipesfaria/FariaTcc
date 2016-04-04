@@ -12,16 +12,14 @@ using namespace std;
 int main(int argc, char* argv[])
 {
 	try{
-		auto m = Logger::instance()->StartMetric("main");
 		Settings::instance()->Init(argc, argv);
+		auto m = Logger::instance()->StartMetric("main");
 		unsigned seed;
 		Settings::instance()->GetUnsigned("seed", seed);
 		srand(seed);
 
 		DataSet ds;
-
-		string svmType;
-		Settings::instance()->GetString("svm", svmType);
+		auto svmType = Settings::instance()->GetString("svm");
 		
 		BaseSvm *svm;
 		if (svmType == "p")
@@ -34,7 +32,7 @@ int main(int argc, char* argv[])
 		TrainingSet ts;
 		ValidationSet vs;
 		for (auto i = 1; i <= ds.nFolds; i++){
-			Logger::instance()->Fold(i);
+			Logger::instance()->Line("Starting Fold "+to_string(i));
 			ds.InitFoldSets(&ts, &vs, i);
 			svm->Train(&ts);
 			Logger::instance()->AddIntMetric("SupportVectors", ts.CountSupportVectors());
@@ -52,7 +50,13 @@ int main(int argc, char* argv[])
 	}
 	catch (exception& e)
 	{
-		Logger::instance()->Error(e);
+		try{
+			Logger::instance()->Error(e);
+		} catch (exception& e2)
+		{
+			cout << "Base error: " << e.what() << endl;
+			cout << "Logger error: " << e2.what() << endl;
+		}
 		return 1;
 	}
 }

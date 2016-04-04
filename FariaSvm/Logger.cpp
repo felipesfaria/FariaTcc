@@ -10,9 +10,22 @@ Logger *Logger::s_instance = nullptr;
 
 Logger::Logger()
 {
-	logFile.open("log.txt", fstream::out | fstream::trunc);
 	_programStart = clock();
-	logFile << FormatClock()<<"\t"<< "Program Started" << endl;;
+	auto t = Settings::instance()->GetString("log");
+	if (t == "a")
+		_type = ALL;
+	else if (t == "e")
+		_type = ERRORS;
+	else if (t == "n")
+		_type = NONE;
+	else
+		_type = RESULTS;
+
+	logFile.open("log.txt", fstream::out | fstream::trunc);
+
+
+	if (_type < ALL) return;
+	logFile << FormatClock() << "\t" << "Program Started" << endl;
 }
 
 Logger* Logger::instance()
@@ -27,38 +40,12 @@ Logger::~Logger()
 	logFile.close();
 }
 
-void Logger::Seed(unsigned seed)
-{
-	logFile << FormatClock()<<"\t" << "seed: " << seed << endl;
-}
-
-void Logger::Fold(int i)
-{
-	logFile << FormatClock()<<"\t" << "Fold: " << i << endl;
-}
-
 void Logger::Error(exception exception)
 {
-	logFile << FormatClock()<<"\t" << "Fatal error ocurred: " << exception.what() << endl;
-}
+	cout << FormatClock() << "\t" << "Fatal error ocurred: " << exception.what() << endl;
 
-void Logger::FunctionStart(string functionName)
-{
-	if (FunctionTimers.count(functionName))
-		throw exception(("FunctionTimer:" + functionName + " allready started").c_str());
-	FunctionTimers[functionName] = new Timer(functionName);
-	logFile << FormatClock()<<"\t" << functionName << " starting..." << endl;
-}
-void Logger::FunctionEnd(string functionName)
-{
-	unsigned elapsed;
-	if (!FunctionTimers.count(functionName))
-		throw exception(("FunctionTimer:" + functionName + " hasn't started").c_str());
-	auto timer = FunctionTimers[functionName];
-	FunctionTimers.erase(functionName);
-	elapsed = timer->GetElapsed();
-	delete(timer);
-	logFile << FormatClock()<<"\t" << functionName << " finished in " << FormatClock(elapsed) << endl;
+	if (_type < ERRORS) return;
+	logFile << FormatClock() << "\t" << "Fatal error ocurred: " << exception.what() << endl;
 }
 
 TimeMetric* Logger::StartMetric(string name)
@@ -67,6 +54,8 @@ TimeMetric* Logger::StartMetric(string name)
 		Metrics[name] = new TimeMetric(name);
 	auto m = (TimeMetric*)Metrics[name];
 	m->Start();
+	if (_type <= ALL)
+		Line(name);
 	return m;
 }
 
@@ -76,6 +65,8 @@ void Logger::AddIntMetric(string name, unsigned value)
 		Metrics[name] = new IntMetric(name);
 	auto m = (IntMetric*)Metrics[name];
 	m->Add(value);
+	if (_type <= ALL)
+		Line(name+": "+to_string(value));
 }
 
 void Logger::AddDoubleMetric(string name, double value)
@@ -84,11 +75,14 @@ void Logger::AddDoubleMetric(string name, double value)
 		Metrics[name] = new DoubleMetric(name);
 	auto m = (DoubleMetric*)Metrics[name];
 	m->Add(value);
+	if (_type <= ALL)
+		Line(name + ": " + to_string(value));
 }
 
 void Logger::ClassifyProgress(int count, double step, double lastDif, double difAlpha)
 {
-	logFile << FormatClock()<<"\t" << "Iteration: " << count << "\tstep: " << step << "\tlastDif:" << lastDif << "\tdifAlpha:" << difAlpha << endl;
+	if (_type < ALL) return;
+	logFile << FormatClock() << "\t" << "Iteration: " << count << "\tstep: " << step << "\tlastDif:" << lastDif << "\tdifAlpha:" << difAlpha << endl;
 }
 
 void Logger::Stats(string statName, long stat)
@@ -119,31 +113,34 @@ void Logger::Stats(string statName, double stat)
 void Logger::Stats(string statName, string stat)
 {
 	StatsMap[statName] = stat;
-	logFile << FormatClock()<<"\t" << statName << ": " << stat << endl;
+
+	if (_type < ALL) return;
+	logFile << FormatClock() << "\t" << statName << ": " << stat << endl;
 }
 
 void Logger::Line(string s)
 {
-	logFile << s << endl;
+	if (_type < ALL) return;
+
+	logFile << FormatClock() << "\t" << s << endl;
 }
 
 void Logger::LogSettings()
 {
+	if (_type < ALL) return;
 	auto settingsMap = Settings::instance()->settingsMap;
 
 	for (auto it = settingsMap.begin(); it != settingsMap.end(); ++it){
 		auto setting = (*it).second;
 		auto str = setting.ToString();
 		if (!str.empty())
-			logFile << FormatClock()<<"\t" << "Settings."<<setting.name <<" = "<< str<< endl;
+			logFile << FormatClock() << "\t" << "Settings." << setting.name << " = " << str << endl;
 	}
 }
 
 void Logger::End()
 {
-	int end = clock();
-	logFile << FormatClock()<<"\t" << "Program Finished in " << FormatClock(end - _programStart) << endl;
-	logFile << endl;
+	if (_type < RESULTS) return;
 
 	auto settingsMap = Settings::instance()->settingsMap;
 
@@ -192,7 +189,7 @@ void Logger::End()
 		Metric* metric = it->second;
 		if (auto tm = dynamic_cast<TimeMetric*>(metric))
 		{
-			resultFile << FormatClock(tm->GetAverage())<<"\t";
+			resultFile << FormatClock(tm->GetAverage()) << "\t";
 		}
 		else if (auto im = dynamic_cast<IntMetric*>(metric))
 		{
@@ -205,7 +202,11 @@ void Logger::End()
 	}
 
 	resultFile.close();
-	delete(instance());
+
+	if (_type < ALL) return;
+
+	logFile << FormatClock() << "\t" << "Program Finished in " << FormatClock(clock() - _programStart) << endl;
+	logFile << endl;
 }
 
 std::string Logger::FormatClock(unsigned milliseconds)

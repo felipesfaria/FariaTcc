@@ -8,9 +8,8 @@ using namespace std;
 
 DataSet::DataSet()
 {
-	string arg;
-	Settings::instance()->GetString("dataSet", arg);
-	InitData(arg);
+	auto dataSet = Settings::instance()->GetString("dataSet");
+	InitData(dataSet);
 	
 	Logger::instance()->Stats("FileName", FileName);
 	Logger::instance()->Stats("Samples", nSamples);
@@ -172,7 +171,6 @@ bool DataSet::readNextRow(istream& str)
 
 void DataSet::ReadFile()
 {
-	Logger::instance()->FunctionStart("ReadFile");
 	ifstream       file;
 	file.open(FileName, ifstream::in);
 
@@ -182,8 +180,6 @@ void DataSet::ReadFile()
 	for (int i = 0; i < nSamples; i++)
 		readNextRow(file);
 	file.close();
-	Logger::instance()->FunctionEnd("ReadFile");
-
 }
 void DataSet::readIndexedData(istream& str)
 {
