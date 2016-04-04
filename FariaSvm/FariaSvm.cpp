@@ -38,11 +38,14 @@ int main(int argc, char* argv[])
 			Logger::instance()->Fold(i);
 			ds.InitFoldSets(&ts, &vs, i);
 			svm->Train(&ts);
-			svm->Test(&ts,&vs);
-			totalCorrect += vs.nCorrect;
+			Logger::instance()->AddIntMetric("SupportVectors", ts.CountSupportVectors());
+			svm->Test(&ts, &vs);
+			Logger::instance()->AddDoubleMetric("PercentCorrect", vs.GetPercentage());
+			Logger::instance()->AddIntMetric("Correct", vs.nCorrect);
+			Logger::instance()->AddIntMetric("NullWrong", vs.nNullWrong);
+			Logger::instance()->AddIntMetric("PositiveWrong", vs.nPositiveWrong);
+			Logger::instance()->AddIntMetric("NegativeWrong", vs.nNegativeWrong);
 		}
-		double averagePercentageCorrect = 100.0*totalCorrect / ds.nSamples;
-		Logger::instance()->Stats("AveragePercentage", averagePercentageCorrect);
 		m->Stop();
 		Logger::instance()->End();
 		delete(svm);

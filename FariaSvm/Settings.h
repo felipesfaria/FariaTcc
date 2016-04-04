@@ -14,7 +14,7 @@ public:
 		HELP
 	};
 	string name;
-	string key;
+	string command;
 	Type type;
 	string description;
 	bool isSet;

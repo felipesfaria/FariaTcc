@@ -11,6 +11,23 @@ void ValidationSet::Init(int height, int width)
 	BaseInit(height, width);
 }
 
+double ValidationSet::GetPercentage()
+{
+	return nCorrect * 100.0 / height;
+}
+
+void ValidationSet::Validate(int i, double classifiedY)
+{
+	if (classifiedY == y[i])
+		nCorrect++;
+	else if (classifiedY<0)
+		nNegativeWrong++;
+	else if (classifiedY>0)
+		nPositiveWrong++;
+	else
+		nNullWrong++;
+}
+
 ValidationSet::ValidationSet()
 {
 }

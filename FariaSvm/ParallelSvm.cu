@@ -242,17 +242,14 @@ void ParallelSvm::Train(TrainingSet *ts)
 		difAlpha = caLastDif.GetSum() / ts->height;
 		avgStep = caStep.GetSum() / ts->height;
 
+		count++;
+
 		Logger::instance()->ClassifyProgress(count, avgStep, lastDif, difAlpha);
 
-		count++;
-	} while ((abs(difAlpha) > Precision && count < MaxIterations) || count <=1);
+	} while ((abs(difAlpha) > Precision && count < MaxIterations) || count <= 1);
+
+	Logger::instance()->AddIntMetric("Iterations", count);
 	caAlpha.CopyToHost();
-	int nSupportVectors = 0;
-	for (int i = 0; i < ts->height; ++i){
-		if (ts->alpha[i] != 0)
-			nSupportVectors++;
-	}
-	Logger::instance()->Stats("nSupportVectors", nSupportVectors);
 	Logger::instance()->FunctionEnd("Train");
 	m->Stop();
 }
@@ -260,7 +257,6 @@ void ParallelSvm::Train(TrainingSet *ts)
 void ParallelSvm::Test(TrainingSet *ts, ValidationSet *vs)
 {
 	Logger::instance()->FunctionStart("Test");
-	auto start = clock();
 	auto m = Logger::instance()->StartMetric("Test");
 	caValidationX.Init(vs->x, vs->height*vs->width);
 	caValidationX.CopyToDevice();
@@ -268,21 +264,8 @@ void ParallelSvm::Test(TrainingSet *ts, ValidationSet *vs)
 	for (auto i = 0; i < vs->height; ++i)
 	{
 		int classifiedY = Classify(ts,i);
-		if (classifiedY == vs->y[i])
-			vs->nCorrect++;
-		else if (classifiedY<0)
-			vs->nNegativeWrong++;
-		else if (classifiedY>0)
-			vs->nPositiveWrong++;
-		else
-			vs->nNullWrong++;
+		vs->Validate(i, classifiedY);
 	}
 	m->Stop();
-	Logger::instance()->Stats("nNegativeWrong ", vs->nNegativeWrong);
-	Logger::instance()->Stats("nPositiveWrong ", vs->nPositiveWrong);
-	Logger::instance()->Stats("nNullWrong ", vs->nNullWrong);
-	Logger::instance()->Stats("AverageClassificationTime ", (clock() - start) / vs->height);
-	auto percentageCorrect = static_cast<double>(vs->nCorrect) / vs->height;
-	Logger::instance()->Percentage(vs->nCorrect, vs->height, percentageCorrect);
 	Logger::instance()->FunctionEnd("Test");
 }

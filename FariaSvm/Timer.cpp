@@ -22,7 +22,7 @@ string Timer::GetName() const
 	return name;
 }
 
-unsigned Metric::GetAverage() const
+unsigned TimeMetric::GetAverage() const
 {
 	return acumulated / count;
 }
@@ -54,5 +54,38 @@ void TimeMetric::Stop()
 		throw new exception("Tried to start Metric when metric was allready stopped.");
 	isRunning = false;
 	acumulated += clock() - start;
+	count++;
+}
+
+IntMetric::IntMetric(string name)
+	:Metric(name)
+{
+}
+
+double IntMetric::GetAverage() const
+{
+	return (double)acumulated / count;
+}
+
+void IntMetric::Add(unsigned value)
+{
+	acumulated += value;
+	count++;
+}
+
+
+DoubleMetric::DoubleMetric(string name)
+	:Metric(name)
+{
+}
+
+double DoubleMetric::GetAverage() const
+{
+	return dAcumulated / count;
+}
+
+void DoubleMetric::Add(double value)
+{
+	dAcumulated += value;
 	count++;
 }

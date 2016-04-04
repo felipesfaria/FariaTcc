@@ -86,18 +86,16 @@ void SequentialSvm::Train(TrainingSet *ts)
 		difAlpha /= ts->height;
 		step /= ts->height;
 
+		count++;
+
 		Logger::instance()->ClassifyProgress(count, step, 0, difAlpha);
 
-		count++;
 	} while ((abs(difAlpha) > Precision && count < MaxIterations) || count <= 1);
-	int nSupportVectors = 0;
-	for (int i = 0; i < ts->height; ++i){
-		if (alpha[i] > 0)
-			nSupportVectors++;
-	}
+
+	Logger::instance()->AddIntMetric("Iterations", count);
+
 	free(lastDif);
 	free(steps);
-	Logger::instance()->Stats("nSupportVectors", nSupportVectors);
 	Logger::instance()->FunctionEnd("Train");
 	m->Stop();
 }
@@ -106,25 +104,11 @@ void SequentialSvm::Test(TrainingSet *ts, ValidationSet *vs)
 {
 	auto m = Logger::instance()->StartMetric("Test");
 	Logger::instance()->FunctionStart("Test");
-	auto start = clock();
 	for (auto i = 0; i < vs->height; ++i)
 	{
 		int classifiedY = Classify(ts, vs->GetSample(i));
-		if (classifiedY == vs->y[i])
-			vs->nCorrect++;
-		else if (classifiedY<0)
-			vs->nNegativeWrong++;
-		else if (classifiedY>0)
-			vs->nPositiveWrong++;
-		else
-			vs->nNullWrong++;
+		vs->Validate(i, classifiedY);
 	}
-	Logger::instance()->Stats("nNegativeWrong ", vs->nNegativeWrong);
-	Logger::instance()->Stats("nPositiveWrong ", vs->nPositiveWrong);
-	Logger::instance()->Stats("nNullWrong ", vs->nNullWrong);
-	Logger::instance()->Stats("AverageClassificationTime ", (clock() - start) / vs->height);
-	auto percentageCorrect = static_cast<double>(vs->nCorrect) / vs->height;
-	Logger::instance()->Percentage(vs->nCorrect, vs->height, percentageCorrect);
 	Logger::instance()->FunctionEnd("Test");
 	m->Stop();
 }

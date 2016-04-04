@@ -8,6 +8,7 @@ public:
 	double b;
 
 	void Init(int height, int width);
+	unsigned CountSupportVectors();
 	~TrainingSet();
 };
 

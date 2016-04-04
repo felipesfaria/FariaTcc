@@ -20,6 +20,8 @@ public:
 	void FunctionStart(string functionName);
 	void FunctionEnd(string functionName);
 	TimeMetric* StartMetric(string name);
+	void AddIntMetric(string name, unsigned value);
+	void AddDoubleMetric(string name, double value);
 	void ClassifyProgress(int count, double step, double lastDif, double difAlpha);
 	void Stats(string statName, long stat);
 	void Stats(string statName, int stat);

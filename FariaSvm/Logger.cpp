@@ -70,6 +70,22 @@ TimeMetric* Logger::StartMetric(string name)
 	return m;
 }
 
+void Logger::AddIntMetric(string name, unsigned value)
+{
+	if (Metrics.count(name) == 0)
+		Metrics[name] = new IntMetric(name);
+	auto m = (IntMetric*)Metrics[name];
+	m->Add(value);
+}
+
+void Logger::AddDoubleMetric(string name, double value)
+{
+	if (Metrics.count(name) == 0)
+		Metrics[name] = new DoubleMetric(name);
+	auto m = (DoubleMetric*)Metrics[name];
+	m->Add(value);
+}
+
 void Logger::ClassifyProgress(int count, double step, double lastDif, double difAlpha)
 {
 	logFile << FormatClock() << "Iteration: " << count << "\tstep: " << step << "\tlastDif:" << lastDif << "\tdifAlpha:" << difAlpha << endl;
@@ -172,8 +188,21 @@ void Logger::End()
 			resultFile << str << "\t";
 	}
 
-	for (auto it = Metrics.begin(); it != Metrics.end(); ++it)
-		resultFile << FormatClock(it->second->GetAverage(),false) << "\t";
+	for (auto it = Metrics.begin(); it != Metrics.end(); ++it){
+		Metric* metric = it->second;
+		if (auto tm = dynamic_cast<TimeMetric*>(metric))
+		{
+			resultFile << FormatClock(tm->GetAverage());
+		}
+		else if (auto im = dynamic_cast<IntMetric*>(metric))
+		{
+			resultFile << im->GetAverage() << "\t";
+		}
+		else if (auto dm = dynamic_cast<DoubleMetric*>(metric))
+		{
+			resultFile << dm->GetAverage() << "\t";
+		}
+	}
 
 	resultFile.close();
 }

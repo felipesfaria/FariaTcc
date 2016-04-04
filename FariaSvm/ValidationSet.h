@@ -9,6 +9,8 @@ public:
 	int nNegativeWrong = 0;
 	int nNullWrong = 0;
 	void Init(int height, int width);
+	double GetPercentage();
+	void Validate(int i, double classifiedY);
 	ValidationSet();
 	~ValidationSet();
 };
