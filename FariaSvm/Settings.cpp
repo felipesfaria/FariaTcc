@@ -11,7 +11,7 @@ void Settings::ShowHelp()
 {
 	for (auto it = settingsMap.begin(); it != settingsMap.end(); ++it)
 	{
-		cout << it->second.description << endl;
+		cout << it->second.command<<" : "<<it->second.description <<"Default is: "<< it->second.ToString()<< endl;
 	}
 	exit(0);
 }
@@ -157,7 +157,9 @@ void Settings::Init(int argc, char** argv)
 	{
 		Setting *st = &(*it).second;
 		auto arg = Utils::GetComandVariable(argc, argv, st->command);
-		if (arg.empty())
+		if (st->type == Setting::HELP)
+			ShowHelp();
+		else if (arg.empty())
 		{
 			continue;
 		}
@@ -171,8 +173,6 @@ void Settings::Init(int argc, char** argv)
 		else if (st->type == Setting::DOUBLE && Utils::TryParseDouble(arg, st->dValue))
 		{
 		}
-		else if (st->type == Setting::HELP)
-			ShowHelp();
 		else continue;
 		st->isSet = true;
 	}
