@@ -4,7 +4,15 @@
 
 
 %silvana: começar por aqui 
-Nesse projeto descrevo o desenvolvimento de um classificador binário utilizando um algoritmo de máquina de vetores de suporte conhecido como Kernel-Adatron Algorithm em versões sequencial e paralela. A versão paralela é executada em GPU de forma aproveitar seu modelo SIMD (Single Instruction Multiple Data). Analiso no final a diferença em performance de tempo e precisão entre as diferentes versões e alterando os parâmetros do algoritmo.
+%silvana: incluir definição sucinta de SVM... 
+%Suport Vector Machine é um método de aprendizado de máquina supervisionado. Seu modelo é binario de forma que após o treinamento é possivel classificar um exemplo entre duas classes.
+%silvana: incluir motivação para implementacao paralela de SVM..
+%O SVM projeta o conjunto de dados em um hiperplano e em seguida separa esse plano deixando a maior margem possível entre as classes a serem definidas, de forma que minimize os erros na classificação. Essa projeção e separação do plano é muito custosa computacionalmente e como é aplicado sobre um conjunto grande de dados isso faz do SVM um ótimo candidato para ser paralelizado.
+%silvana: performance -->> desempenho
+Nesse projeto descrevo o desenvolvimento de um classificador binário utilizando um algoritmo de máquina de vetores de suporte conhecido como Kernel-Adatron Algorithm em versões sequencial e paralela. A versão paralela é executada em GPU de forma aproveitar seu modelo SIMD (Single Instruction Multiple Data). 
+%silvana: incluir descrição sucinta das caracteristicas principais do algoritmo escolhido e seus parametros
+Analiso no final a diferença em performance de tempo e precisão entre as diferentes versões e alterando os parâmetros do algoritmo.
+
 
 %Suport Vector Machine é um método de aprendizado de máquina supervisionado. Seu modelo é binario de forma que após o treinamento é possivel classificar um exemplo entre duas classes. O SVM projeta o conjunto de dados através de uma função kernel em um hiperplano e em seguida precisa separar esse plano deixando a maior margem possível entre as classes a serem definidas, de forma que minimize os erros na classificação. Essa projeção e separação do plano é muito custosa computacionalmente e como é aplicado sobre um conjunto grande de dados isso faz do SVM um ótimo candidato para ser paralelizado.
 %GPUs tradicionalmente são usados para computação gráfica e foram otimizados para processar imagens e espaços com um conjunto enorme de pontos. Essa capacidade de processar uma grande quantidade de dados em paralelos tem utilidade em muitos outros campos além dá computação gráfica. Para que os desenvolvedores pudessem se aproveitar desse processamento para outros fins, os produtores de GPUs tem disponibilizados bibliotecas para executar operações direto na GPU. Como o CUDA distribuído pela NVIDIA para ser usado em suas placas gráficas, que eu pretendo usar nesse projeto.

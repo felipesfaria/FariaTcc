@@ -1,29 +1,25 @@
-\chapter{Programação Paralela}\label{chp:LABEL_CHP_3}
-\section{Computação Heterogenea}
-Computação heterogêna é o conceito de utilizar arquiteturas diferentes, como GPUs e FPGAs, para otimizar o processamento das aplicações que executam em um nó computacional, por isso essas arquiteturas são chamadas de aceleradores.
+\chapter{Programação Paralela com GPU}\label{chp:LABEL_CHP_3}
 
-É importante ressaltar que nem todo algoritmo será melhor se executado por um acelerador, então o desenvolvedor deve saber decidir quando optar por uma CPU tradicional ou pela computação heterogênea.
+%\section{GPU, Graphics Processing Unit}
 
-A seguir, mostramos uma imagem da empresa AMD mostrando a evolução do desempenho dos processadores.
+%\subsection{Programação Paralela}
+Até o início dos anos 2000 o aumento na capacidade de processamento dos computadores costumava acontecer pelo aumento de frequência de processamento das CPUs. Esse aumento foi interrompido pois não era mais possível aumentar o processamento mantendo a dissipação de calor. A forma que a industria encontrou de manter o crescimento de processamento dos computadores sem poder aumentar a frequência foi através da programação paralela, os CPUs passaram a ter mais de um núcleo capaz de rodar diferentes instruções simultaneamente, assim a quantidade total de processamento continuou a crescer.
 
-Figura 1.1. Evolução do desempenho dos processadores
-A empresa AMD considera que temos 3 eras de evolução. A primeira era é caracterizada pelo processamento em um núcleo único. Os processadores de núcleo único evoluíram até se tornarem muito complexos, mas são limitados por questões de dissipação de energia.
+O conceito de programação paralela consiste em distribuir o processamento de um programa
+%silvana: ...com a finalidade de reduzir o tempo total de processamento
+. Isso pode ser feito de algumas formas. Os programas podem executar em diferentes núcleos de um mesmo computador dividindo o processamento em diferentes threads ou processos, pode ser dividido em diferentes máquinas através de um cluster ou computação em nuvem e pode ser dividido entre uma CPU e 
+%silvana: ...aceleradores, como por exemplo uma GPU...
+uma GPU que é o foco desse trabalho.
 
-A seguir, vem a era dos múltiplos núcleos (Multi-Core), na qual os processadores passam a ter mais de um núcleo de processamento. Segundo a AMD, esse processo de adição de mais núcleos de processamento está chegando no limite em que novos avanços não irão melhorar a performance, devido a problemas na dissipação de energia e falta de aplicações que sejam otimizadas para os múltiplos núcleos dos processadores modernos.
+%\subsection{Computação Heterogênea}
+%Computação heterogênea é o conceito de utilizar arquiteturas diferentes para otimizar o processamento das aplicações que executam em um nó computacional. Alguns exemplos são as GPUs (Graphics Processing Unit, unidade de processamento gráfica) e FPGAs (Field-Programmable Gate Array, Arranjo de Portas Programável em Campo). Essas arquiteturas são chamadas de aceleradores pois tem o objetivo de otimizar um tipo especifico de processamento.
 
-A era da computação heterogênea está começando agora e ainda há um espaço enorme para melhorias nesse tipo de processador. Entretanto, o que ainda é um obstáculo são os problemas de comunicação entre os subsistemas e os modelos de programação que ainda estão vinculados ao paradigma anterior.
+O uso de arquiteturas diferentes em um programa não é trivial e geralmente exige um conhecimento aprofundado das capacidades de cada unidade de processamento. Por esse motivo isso não é feito de forma automática, o uso das arquiteturas é feito em chamadas explicitas. Não basta encaixar uma GPU ou FPGA na sua placa mãe e esperar que seu programa tire proveito desse hardware, nem é possível simplesmente dizer para um programa feito para executar em CPU executar em uma GPU. Mesmo que fosse possível, não é verdade que todo algoritmo rode melhor em um acelerador já que eles são otimizados para casos de uso específico.
 
-Exemplos de API voltada ao modelo de programação heterogênea são o OpenCL e o CUDA, mas suas linguagens de baixo nível podem chegar a repelir novos desenvolvedores (sendo o OpenCL ainda mais complexo).
+\section{GPUs}
+GPUs, também conhecidas como placas de vídeo, originalmente eram conhecidas como aceleradores gráficos. Seu objetivo era o de processar imagens rapidamente. Algumas das aplicações necessárias são alterar a cor de todos os pixels de uma imagem, rotação e translação de polígonos altamente complexos com centenas de pontos e aplicação de texturas e calculo de luminosidade nesses Polígonos. Fica claro ver que em muitas das aplicações necessárias para uma placa de vídeo acelerar o processamento de imagens é necessário que a mesma operação seja feita em diversos pontos. Para esse intuito as GPUs adotam um modelo altamente paralelo com centenas de unidades logicas. Inicialmente o foco principal dessas placas era na industria de jogos e esse mercado bilionário impulsionou uma rápida evolução na capacidade das GPUs.
 
-\section{CUDA: Compute Unified Device Architecture}\label{sec:LABEL_CHP_3_SEC_A}
-Bacon ipsum dolor amet corned beef hamburger shoulder, t-bone tenderloin venison tongue jerky tri-tip landjaeger salami. Chicken jowl strip steak, flank sausage andouille jerky leberkas tri-tip salami cow pork loin. Ground round rump shankle kielbasa tenderloin frankfurter alcatra pork belly swine kevin cupim hamburger biltong. Porchetta pastrami shank rump. Ham hock filet mignon ribeye capicola.
+Não demorou muito tempo para que os desenvolvedores em geral vissem que essas aplicações não são limitadas a industria de jogos. Inicialmente era muito trabalhoso aplicar a capacidade das placas de vídeo para aplicações gerais pois era necessário conhecer APIs especificas de processamento de imagem e saber traduzir os problemas de um domínio para o outro. Essa dificuldade acabou em 2006 quando a NVIDIA, líder de mercado na industria das GPUs, lançou o CUDA (Compute Unified Device Architecture), uma plataforma de computação paralela que permite que desenvolvedores usem placas de vídeo para aplicações gerais.
 
-Pancetta frankfurter capicola alcatra, chuck ribeye boudin sausage turducken brisket hamburger tenderloin. Prosciutto shankle chuck tail, beef pork flank. Tongue ribeye sausage, ball tip bacon pork belly ham hock beef. Picanha hamburger jowl tenderloin shoulder, pork loin porchetta pork chop. Meatball rump fatback doner, pork t-bone ham hock pork belly drumstick pork chop leberkas venison kevin. Ham kevin jowl swine salami, alcatra bresaola. Corned beef tail tri-tip ham alcatra prosciutto pork.
-
-Meatloaf shankle turducken short loin swine bacon biltong shank t-bone pork belly beef ribs. Tongue shoulder brisket, filet mignon meatloaf cupim turkey. Beef capicola corned beef bresaola sausage pork belly bacon swine. Tail swine bresaola venison capicola brisket turkey strip steak ham hock tenderloin andouille pork loin tongue.
-
-Pig pork belly flank beef ribs pork chop picanha drumstick short ribs shoulder shankle rump jerky beef capicola sausage. Porchetta spare ribs meatball bresaola ball tip beef filet mignon andouille bacon. Cupim pancetta drumstick, shank ham short loin ribeye brisket meatball. Filet mignon fatback shank, landjaeger pork belly ribeye pancetta kevin meatball jowl leberkas picanha ham. Shankle venison capicola pig. Landjaeger beef ribs rump sausage capicola hamburger, pork loin tail chuck prosciutto beef shank.
-
-Pastrami bresaola landjaeger turkey short loin hamburger jowl meatloaf tenderloin shank. Prosciutto pig meatloaf salami ham hock pancetta shank landjaeger. Hamburger chuck bacon porchetta, tri-tip venison salami landjaeger pork capicola ball tip. Landjaeger spare ribs prosciutto kielbasa chuck tongue. Prosciutto rump tenderloin cupim beef ribs. Chuck pork alcatra picanha ball tip, prosciutto beef ribs ground round.
-
-Does your lorem ipsum text long for something a little meatier? Give our generator a try… it’s tasty!
+\section{CUDA}
+Atualmente na versão 7.5 CUDA é uma arquitetura proprietária da NVIDIA feita para desenvolvedores poderem explorar o potencial das suas GPUs para aplicações gerais. 

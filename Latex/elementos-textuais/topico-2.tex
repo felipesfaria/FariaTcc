@@ -1,9 +1,14 @@
 \chapter{Maquina de Vetores Suporte}\label{chp:LABEL_CHP_2}
 
 %\section{Definição}\label{sec:LABEL_CHP_2_SEC_A}
-Support Vector Machines é uma classe de aprendizado de maquina que surgiu nos anos 90. Hoje em dia são usadas em diversas áreas como reconhecimento de escrita, bioinformática e mineração de dados.	Essencialmente eles são métodos de aprendizado supervisionado que podem ser usados para classificação ou regressão e podem ser binários ou multi-classe. Por simplicidade vou abordar aqui os os classificadores binários. São os algoritmos que a partir de um conjunto de dados de treinamento aprende a classificar um novo exemplo como sendo de uma de duas classes.
+%silvana: icluir traducao parao portugues...
+%silvana: sempre que usar termo em ingles, escrevê-lo em italico ({\em ...})
+Support Vector Machines (SVM) é uma classe de aprendizado de maquina que surgiu nos anos 90. Hoje em dia são usadas em diversas áreas como reconhecimento de escrita, bioinformática e mineração de dados.	Essencialmente eles são métodos de aprendizado supervisionado que podem ser usados para classificação ou regressão e podem ser binários ou multi-classe. 
+%silvana: caracterizar classificacao e regressao, binario e multi-classe
+Por simplicidade vou abordar aqui os os classificadores binários. São os algoritmos que a partir de um conjunto de dados de treinamento aprende a classificar um novo exemplo como sendo de uma de duas classes.
 
 \section{Função de Decisão de Superfície Linear}
+%silvana: sempre que usar termo em ingles, escrevê-lo em italico ({\em ...})
 SVMs são uma evolução de Linear Decision Surface Functions que são classificadores binários. Dado um conjunto de dados $(\bar{x}_i,y_i)$ onde $\bar{x}_i \in \mathbb{R}^n$ é o conjunto de dados e $y_i \in \{ -1,+1 \}$ é a classe que você deseja classificar. Uma Linear Decision Surface Function obtém uma superfície linear (reta, plano ou hiperplano) que separa esse conjunto de dados, se ele for linearmente separável.
 
 Uma vez encontrado o plano separador a classificação fica fácil. Se definirmos nosso plano como $\bar{d}\cdot \bar{x} = \bar{d}\cdot \bar{c}$ onde $\bar{d}$ é o vetor ortogonal ao plano, $\bar{c}$ é o vetor de deslocamento de $\bar{d}$ e $\bar{x}$ são os pontos pertencentes a reta. Podemos classificar um ponto $\bar{\alpha}$ como pertencendo a uma classe usando a formula \ref{eq:LABEL_EQ_1}.
@@ -20,6 +25,7 @@ f(\bar{\alpha})=sgn((\bar{\alpha}-\bar{c})\cdot\bar{d})
   \label{fig:LABEL_FIG_1}
 \end{figure}
 
+%silvana: definir perceptron...
 Para encontrar essa superfície usamos o perceptron.  Considerado o precursor das redes neurais é também o próximo passo na evolução da maquina de suporte de vetores. Inicialmente o perceptron da valores aleatórios a $\bar{c}$ e $\bar{d}$ e avalia o quão bem ele classifica o conjunto de dados corrigindo seus valores de acordo com o erro, se aproximando do plano desejado incrementalmente.Eventualmente se os dados forem linearmente separáveis o perceptron vai chegar em uma superfície de separação mas essa superfície pode não separar tão bem o conjunto real que você quer classificar.
 
 Usando a figura \ref{fig:LABEL_FIG_2} como exemplo vamos supor que o perceptron chegou na linha cinza como superfície de separação. A superfície preta seria mais adequada já que a chance de ter um ponto real do outro lado da superfície cinza é maior.
@@ -115,7 +121,7 @@ Nossas restrições podem ser escritas como:
 \end{split}
 \end{equation}
 
-Assim um classificador por margem máxima fica definido como: Dado um conjunto de dados linearmente separaveis $D=(\bar{x}_i,y_i) \subseteq \mathbb{R}^n\times\{+1,1\}$, podemos encontrar a superficie máxima de separação, $\bar{w}^*\cdot\bar{x}=b^*$, otimizando o problema $min\phi(\bar{w},b)=\underset{\bar{w},b}{min}\frac{1}{2}\bar{w}\cdot\bar{w}$ sujeito as restrições de $\bar{w}^*\cdot(y_i\bar{x}_i) \ge 1+y_i b \quad \forall (\bar{x}_i,y_i)\in D$.\par
+Assim um classificador por margem máxima fica definido como: Dado um conjunto de dados linearmente separáveis $D=(\bar{x}_i,y_i) \subseteq \mathbb{R}^n\times\{+1,1\}$, podemos encontrar a superfície máxima de separação, $\bar{w}^*\cdot\bar{x}=b^*$, otimizando o problema $min\phi(\bar{w},b)=\underset{\bar{w},b}{min}\frac{1}{2}\bar{w}\cdot\bar{w}$ sujeito as restrições de $\bar{w}^*\cdot(y_i\bar{x}_i) \ge 1+y_i b \quad \forall (\bar{x}_i,y_i)\in D$.\par
 
 Uma maquina de suporte de vetor é o problema dual do classificador de margem máxima. Podemos entender um problema dual como uma versão análoga do problema onde invés de encontrar o vetor de define a superfície de separação $w$, queremos encontrar o conjunto de valores de $a$ do qual podemos inferir $w$. Para resolver esse problema dual utilizamos a técnica dual Lagrangiana.
 
@@ -157,6 +163,7 @@ L(\bar{\alpha},\bar{w},b) &=\phi(\bar{w},b) -  \sum_{i=1}^{l}\alpha_i g_i (\bar{
 Aplicando as KKTs chegamos no nosso classificador de margem máxima dual:
 \begin{equation}
     \underset{\bar{\alpha}}{max} \phi' (\bar{\alpha}) = \underset{\bar{\alpha}}{max} \Bigg( \sum_{i=1}^{l}\alpha_i - \frac{1}{2}\sum_{i=1}^{l}\sum_{j=1}^{l}\alpha_i \alpha_j y_i y_j \bar{x}_i\cdot \bar{x}_j \Bigg)
+    \label{eq:EQ_Treinador_1}
 \end{equation}
 dado que:
 \begin{equation}
@@ -166,15 +173,23 @@ Uma vez encontrado nosso $\bar{\alpha}^*$ ótimo podemos classificar um novo pon
 \begin{equation}
     f(\bar{x}) = sgn\Bigg(
         \sum_{i=1}^{l} \alpha_i^*y_i\bar{x}_i\cdot\bar{x}
-        -\sum_{i=1}^{l} \alpha_i^*y_i\bar{x}_i\cdot\bar{x}_{sv+}
-        +1
+        -b^*
     \Bigg)
+    \label{eq:EQ_Classificador_1}
 \end{equation}
 
-Onde $\alpha_i^*=0$ implica que $\bar{x}_i$ não influencia no resultado, $\alpha_j^*> 0$ implica que $\bar{x}_j$ é um vetor de suporte, e $\bar{x}_{sv+}$ é um vetor de suporte positivo qualquer.
+\begin{equation}
+    b^* = \sum_{i=1}^{l} \alpha_i^*y_i\bar{x}_i\cdot\bar{x}_{sv+}
+        -1
+    \Bigg)
+    \label{eq:EQ_B_1}
+\end{equation}
+
+Onde $b^*$ representa a distancia da origem do plano, $\alpha_i^*=0$ implica que $\bar{x}_i$ não influencia no resultado, $\alpha_j^*> 0$ implica que $\bar{x}_j$ é um vetor de suporte e $\bar{x}_{sv+}$ é um vetor de suporte positivo qualquer.
+
 
 \section{O Truque do Kernel}
-Com isso conseguimos uma maquina de vetores de suporte linear. Acontece que poucos conjuntos de dados na pratica são linearmente separáveis. Para aplicar nossa maquina em um conjunto de dados que não seja linearmente separáveis precisamos projeta-los de forma que fiquem linearmente separáveis:
+Com isso conseguimos uma maquina de vetores de suporte linear. Acontece que poucos conjuntos de dados na pratica são linearmente separáveis. Para aplicar nossa maquina em um conjunto de dados que não seja linearmente separáveis precisamos projeta-los de forma que fiquem linearmente separáveis, como na figura \ref{fig:LABEL_FIG_5}
 
 \begin{figure}
   \centering
@@ -182,3 +197,78 @@ Com isso conseguimos uma maquina de vetores de suporte linear. Acontece que pouc
   \caption{Em (a) não é possível separar os conjuntos de forma linear, mas transformando os dados em $\mathbb{R}^2\rightarrow \mathbb{R}^3$ em (b) conseguimos separa-los linearmente}
   \label{fig:LABEL_FIG_5}
 \end{figure}
+
+Para Isso precisamos escolher funções de projeção $ \phi:\mathbb{R}^n\rightarrow\mathbb{R}^m$. Assim passamos todos nossos exemplos para um espaço de dimensão maior na esperança que nesse espaço eles possam ser linearmente separáveis. 
+
+Podemos ver nas equações de treinamento \ref{eq:EQ_Treinador_1} e classificação \ref{eq:EQ_Classificador_1} que sempre é avaliado o produto de dois conjuntos de dados $\bar{x}_i\cdot\bar{x}_j$, então podemos substituir $\phi(\bar{x}_i) \cdot \phi ( \bar{x}_j )$ por $k(\bar{x}_i,\bar{x}_j)$ de forma que que seja mais simples que o produto de $\phi(\bar{x})$.
+
+Na figura \ref{fig:LABEL_FIG_5} $\phi(\bar{x})=(x_1^2,x_2^2,\sqrt{2}x_1x_2)$ e podemos simplificar seu produto:
+
+\begin{equation}
+\begin{split}
+\phi(\bar{x})\cdot \phi(\bar{y}) &= (x_1^2,x_2^2,\sqrt{2}x_1x_2) \cdot (y_1^2,y_2^2,\sqrt{2}y_1y_2) \\
+&=x_1^2y_1^2+x_2^2y_2^2+2x_1x_2y_1y_2 \\
+&=(x1y1+x2y2)(x1y1+x2y2) \\
+&=(\bar{x}\cdot\bar{y})(\bar{x}\cdot\bar{y}) \\
+&=(\bar{x}\cdot\bar{y})^2
+\end{split}
+\end{equation}
+
+Chamamos essa simplificação de Truque de Kernel. Existe um estudo grande sobre Kernels validos e uma seria de restrições que uma função tem que cumprir para ser considerada um Kernel válido. Não me aprofundarei nesse assunto aqui. Muitos desses kernels possuem uma variável livre que deve ser adaptada ao conjunto de dados estudado podendo influenciar na sua precisão. Alguns kernels populares e suas variáveis livres são:
+\begin{table}
+    \centering
+    \begin{tabular}{c|c|c}
+        Kernel & Função & Parametros Livres \\ \hline
+        Kernel Linear & $k(\bar{x},\bar{y})=\bar{x}\cdot\bar{y}$ & nenhum \\
+        Kernel Homogeneo Polinomial & $k(\bar{x},\bar{y})=(\bar{x}\cdot\bar{y})^2$ & $d\ge2$ \\
+        Kernel Não-Homogeneo Polinomial & $k(\bar{x},\bar{y})=(\bar{x}\cdot\bar{y}+c)^2$ & $d\ge2, c > 0$ \\
+        Kernel Gaussiano & $k(\bar{x},\bar{y})=e^{-\big(\frac{|\bar{x}-\bar{y}|^2}{2\sigma^2}\big)}$ & $\sigma>0$ \\ \hline
+    \end{tabular}
+    \caption{Kernels Populares e suas váriaveis livres}
+    \label{tab:Kernels}
+\end{table}
+
+Para transformar nossa maquina de vetor de suporte linear em um não linear apenas substituímos $\phi(\bar{x}_i) \cdot \phi ( \bar{x}_j )$ por $k(\bar{x}_i,\bar{x}_j)$ em \ref{eq:EQ_Treinador_1}, \ref{eq:EQ_Classificador_1} e \ref{eq:EQ_B_1}.
+
+Treinador:
+\begin{equation}
+    \bar{\alpha}^* = \underset{\bar{\alpha}}{argmax} \Bigg( \sum_{i=1}^{l}\alpha_i - \frac{1}{2}\sum_{i=1}^{l}\sum_{j=1}^{l}\alpha_i \alpha_j y_i y_j k(\bar{x}_i,\bar{x}_j) \Bigg)
+    \label{eq:EQ_Treinador_2}
+\end{equation}
+
+Classificador:
+\begin{equation}
+    f(\bar{x}) = sgn\Bigg(
+        \sum_{i=1}^{l} \alpha_i^*y_i k(\bar{x}_i,\bar{x})
+        -b^*
+    \Bigg)
+    \label{eq:EQ_Classificador_2}
+\end{equation}
+\begin{equation}
+    b^* = \sum_{i=1}^{l} \alpha_i^*y_i k(\bar{x}_i,\bar{x}_{sv+})
+        -1
+    \Bigg)
+    \label{eq:EQ_B_2}
+\end{equation}
+
+\section{Margem Flexível}
+Conjuntos reais de dados possuem ruídos, e pontos anormais podem distorcer e piorar muito a performance de uma uma maquina de vetor de suporte. As maquinas vistas até agora são considerados com margem rígida, mas também existem máquinas de vetor de suporte que ignoram certos pontos dentro de um ruído considerados com margem flexível.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=1\textwidth]{imagens/svm_6.png}
+  \caption{No exemplo da direita ignoramos $\bar{x}_j$ que pode ser considerado ruído}
+  \label{fig:LABEL_FIG_6}
+\end{figure}
+
+Para isso escolhemos uma constante $C$ que atribuímos como um peso para os erros. No problema primal definimos $C$ como $\underset{\bar{w},\bar{\epsilon},b}{min}\phi(\bar{w},\bar{\epsilon},b) = \frac{1}{2}\bar{w}^*\cdot\bar{w}^* + C\sum_{i=1}^l \epsilon_i^*=m^*$ de forma que quanto maior $C$ maior o peso dos erros, mais próximo a margem flexível fica da margem rígida. Um $C$ menor permite mais erros fazendo com que a margem cresça e se distancie da margem rígida. No problema dual esse limite aparece como: $0\le \alpha_i \le C$
+
+Com isso definimos uma maquina de vetor de suporte bem robusto capaz de classificar conjuntos de dados não lineares e suscetíveis a ruídos. Existem varios algoritmos diferentes para por em prática essa teoria, no capítulo \ref{chp:LABEL_CHP_4} abordo alguns deles.
+
+%silvana: a descrição desse capitulo corresponde ao algoritmo SMO, Sequential Minimal Optimization, implementado por Catanzaro??
+
+%silvana: descrever o  algoritmo  de Kernel-Adatron
+
+%silvana: trazer descricao dos algoritmos do capitulo de desenvolvimento
+
+

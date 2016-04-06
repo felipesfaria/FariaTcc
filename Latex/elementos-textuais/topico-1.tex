@@ -1,38 +1,63 @@
 \chapter{Introdução}\label{chp:LABEL_CHP_1}
 
-\section{Motivação}\label{sec:LABEL_CHP_1_SEC_A}
-Uma MVS, ou máquina de vetores de suporte é um método de aprendizado de máquina. Seu modelo básico descreve um classificador binário, podendo ser modificado para regressão ou multi-classificação. A maquina de vetores de suporte representa os dados como pontos em espaço N dimensional, onde N é o numero de parâmetros do conjunto de teste. A MVS cria um hiperplano que divide esse espaço de forma que seja possível identificar à qual classe o exemplo pertence. Esse hiperplano é definido atribuindo pesos a pontos desse espaço que são gerados a partir do conjunto de treinamento. Esses pontos são chamados de vetores de suporte. Nesse trabalho eu desenvolvo um algoritmo simples de MVS que encontra o hiperplano com força bruta, levando em consideração todos os pontos do conjunto de treinamento e convergindo em direção ao hiperplano que melhor divide o espaço entre as duas classes. Esse algoritmo é muito custoso pois é preciso comparar todos os pares de exemplos do conjunto de treinamento a cada iteração. Como temos um conjunto grande de dados e um algoritmo custoso e repetitivo temos um caso forte para a paralelização.
+%\section{Motivação}\label{sec:LABEL_CHP_1_SEC_A}
+%silvana: colocar na primeira vez o termo em ingles com a sigla e a traducao que sera adotada com a respectiva sigla
+Uma MVS, ou máquina de vetores de suporte é um método de aprendizado de máquina. Seu modelo básico descreve um classificador binário, podendo ser modificado para regressão ou multi-classificação. 
+%silvana: o que significa poder ser modificado para regressao ou multi-classificacao??
+A maquina de vetores de suporte representa os dados como pontos em espaço $n$ dimensional, onde $n$ é o numero de parâmetros do conjunto de teste. A MVS cria um hiperplano que divide esse espaço de forma que seja possível identificar à qual classe o exemplo pertence. Esse hiperplano é definido atribuindo pesos a pontos desse espaço que são gerados a partir do conjunto de treinamento. Esses pontos são chamados de vetores de suporte. Nesse trabalho eu desenvolvo
+%silvana: "implemento" ao invés de "desenvolvo" (?)
+um algoritmo simples de MVS que encontra o hiperplano com força bruta, levando em consideração todos os pontos do conjunto de treinamento e convergindo em direção ao hiperplano que melhor divide o espaço entre as duas classes. Esse algoritmo é muito custoso pois é preciso comparar todos os pares de exemplos do conjunto de treinamento a cada iteração. Como temos um conjunto grande de dados e um algoritmo custoso e repetitivo temos um caso forte para a paralelização.
 \par
-Para paralelização escolhi a GPU. GPUs tradicionalmente são usados para computação gráfica e foram otimizados para processar imagens e espaços com um conjunto enorme de pontos. Essa capacidade de processar uma grande quantidade de dados em paralelos tem utilidade em muitos outros campos além dá computação gráfica. Para que os desenvolvedores pudessem se aproveitar desse processamento para outros fins, os produtores de GPUs tem disponibilizados bibliotecas para executar operações de uso geral na GPU. Como o CUDA distribuído pela NVIDIA para ser usado em suas placas gráficas, que eu pretendo usar nesse projeto.
+Para paralelização escolhi a GPU. GPUs tradicionalmente são usados para computação gráfica e foram otimizados para processar imagens e espaços com um conjunto enorme de pontos. Essa capacidade de processar uma grande quantidade de dados em paralelos tem utilidade em muitos outros campos além dá computação gráfica. 
+%silvana: deixar esses detalhes para a secao sobre GPUs e CUDA
+Para que os desenvolvedores pudessem se aproveitar desse processamento para outros fins, os produtores de GPUs tem disponibilizados bibliotecas para executar operações de uso geral na GPU. Como o CUDA distribuído pela NVIDIA para ser usado em suas placas gráficas, que eu pretendo usar nesse projeto.
 \par
+%silvana: pode retirar o trecho "o artigo mais referenciado..." e começar a segunda oração já citando o trabalho. Ao inves de CUDA usar GPU. Incluir referencia para LIBSVM!
+%silvana: o que significa 9-35x e 81-138x??
 A implementação de um MVS usando CUDA não é novidade na computação o artigo mais referenciado que eu encontrei sobre o assunto foi o de Catanzaro, Sundaram e Keutzer em 2008 \cite{art:REF_ART_1} onde mostram que uma Maquina de Vetores de Suporte utilizando a arquitetura paralela do CUDA poderia ser muito mais rápido. O ganho deles foi de 9-35x no treinamento e 81-138x na classificação sobre o LIBSVM, uma das bibliotecas mais populares e mais completas de MVS. Catanzaro usou o algoritmo SMO, Sequential Minimal Optimization, em sua versão paralela, que divide o problema de otimização em problemas menores.
 \par
-%float e double precisa traduzir?
+%Felipe: float e double precisa traduzir? silvana: não
+%silvana: o inicio da frase enta sem conexao...
 Austin Carpenter em 2009 \cite{art:REF_ART_2}  a versão de Catanzaro não fazia regressão e teve uma precisão um pouco abaixo do LIBSVM em um dos conjuntos de dados pois usava float invés de double. As GPUS possuem mais unidades logicas de float do que double, o que motivou a escolha de Catanzaro por velocidade sobre precisão. O programa de Carpenter implementa regressão e usa uma mistura de float e double, recuperando a precisão perdida sem perda de velocidade.\par
-%Felipe: Sempre que quero fazer referencia a um artigo ou autor eu preciso citar todos os autores?
+%Felipe: Sempre que quero fazer referencia a um artigo ou autor eu preciso citar todos os autores? 
+%silvana: quando forem mais de tres autores pode usar o nome do primeiro autor seguido da expressao "et al."
 Athanasopoulos, Dimou, Mezaris, Kompatsiaris (2011)\cite{art:REF_ART_3} expandiram a LIBSVM de forma que todas as opções da biblioteca continuam disponíveis e com a mesma precisão mas com uma velocidade aumentada graças a paralelizações feitas usando CUDA.\par
+
+
 \section{Objetivo do Trabalho}\label{sec:LABEL_CHP_1_SEC_B}
-O objetivo do trabalho é desenvolver uma maquina de vetores de suporte sequencial usando o KAA, Kernel-Adatron Algorithm descrito por Colin Campbell e Nello Cristianini \cite{art:REF_ART_4}, esse algoritmo é mais simples que o SMO implementado pelos artigos referenciados anteriormente e é normalmente recomendado como uma introdução à implementação da maquina de vetores de suporte já que sua implementação é simples e continua próxima da teoria geral. Além de sua simplicidade escolhi o KAA pois sua metodologia de força bruta repetitiva teria alto potencial para mostrar uma melhora em uma versão paralela.
+O objetivo do trabalho é desenvolver uma maquina de vetores de suporte sequencial usando o KAA, Kernel-Adatron Algorithm descrito por Colin Campbell e Nello Cristianini \cite{art:REF_ART_4}. Esse algoritmo é mais simples que o SMO implementado pelos artigos referenciados anteriormente e é normalmente recomendado como uma introdução à implementação da maquina de vetores de suporte já que sua implementação é simples e continua próxima da teoria geral. 
+%silvana: o que quer dizer "continua proximo da teoria geral"?
+Além de sua simplicidade escolhi o KAA pois sua metodologia de força bruta repetitiva teria alto potencial para mostrar uma melhora em uma versão paralela.
 \par
 %Felipe: como fica 10-fold CrossValidation em Portugues?
 Para analisar a performance pretendo desenvolver uma versão sequencial e uma versão paralela usando CUDA. Para testar essas implementações uso os mesmos conjuntos de dados usados por Catanzaro e Carpenter em seus artigos, esses conjuntos de dados podem ser encontrados no site do LIBSVM. Minha intenção é comparar a velocidade e a precisão usando validação cruzada de 10 folhas.
-\section{Organização do Texto}\label{sec:LABEL_CHP_1_SEC_C}
+%silvana: o que é "validação cruzada de 10 folhas"??
 
-\subsection{Introdução}\label{sec:LABEL_CHP_1_SEC_D}
-No primeiro capitulo apresento o trabalho, falo da motivação e alguns artigos que li para entender melhor do problema, falo do meu objetivo de desenvolver um algoritmo de aprendizado de máquina paralelo e avaliar sua performance e descrevo o resto do trabalho.
+
+\section{Organização do Texto}\label{sec:LABEL_CHP_1_SEC_C}
+%silvana: retirar as subsecoes e a parte sobre a Introducao que já foi apresentada
+O restante deste texto está organizado da seguinte forma: 
+
+%\subsection{Introdução}\label{sec:LABEL_CHP_1_SEC_D}
+%No primeiro capitulo apresento o trabalho, falo da motivação e alguns artigos que li para entender melhor do problema, falo do meu objetivo de desenvolver um algoritmo de aprendizado de máquina paralelo e avaliar sua performance e descrevo o resto do trabalho.
 \par
 
-\subsection{MVS - Maquina de Vetor de Suporte}\label{sec:LABAEL_CHP1_SEC_E}
-No segundo capitulo descrevo a evolução da teoria por trás da maquina de vetores de suporte, começando com a classificação de exemplos com dois parâmetros linearmente separáveis até as perguntas mais complexas: porque é preciso escolher a maior margem possível? como é possível classificar conjuntos que não são linearmente separáveis? como lidar com exemplos imperfeitos e ruídos?
+%\subsection{MVS - Maquina de Vetor de Suporte}\label{sec:LABAEL_CHP1_SEC_E}
+No capitulo~\ref{chp:LABEL_CHP_2} descrevo a evolução da teoria por trás da maquina de vetores de suporte, começando com a classificação de exemplos com dois parâmetros linearmente separáveis até as perguntas mais complexas: porque é preciso escolher a maior margem possível? como é possível classificar conjuntos que não são linearmente separáveis? como lidar com exemplos imperfeitos e ruídos?
 
-\subsection{Computação Heterogênea, Paralela, em Cuda}
-CUDA é apenas uma arquitetura da NVIDIA mas que representa uma ideia bem mais ampla que é a computação heterogênea. Começo o capítulo explicando o que é a computação heterogênea, porque é importante e porque tem feito mais sucesso na ultima década. Em seguida descrevo melhor a programação paralela em GPU como funciona o modelo de SIMD e como o processamento é distribuído na placa de vídeo.
+%\subsection{Computação Heterogênea, Paralela, em Cuda}
+No capítulo...
+%CUDA é apenas uma arquitetura da NVIDIA mas que representa uma ideia bem mais ampla que é a computação heterogênea. Começo o capítulo explicando o que é a computação heterogênea, porque é importante e porque tem feito mais sucesso na ultima década. Em seguida 
+descrevo melhor a programação paralela em GPU como funciona o modelo de SIMD e como o processamento é distribuído na placa de vídeo.
 
-\subsection{Desenvolvimento}\label{sec:LABEL_CHP_1_SEC_F}
+%\subsection{Desenvolvimento}\label{sec:LABEL_CHP_1_SEC_F}
+No capítulo...
 Começo descrevendo algumas implementações de MVS. Em seguida explico porque escolhi o KAA e mostro o seu algoritmo. Apresento parte do código sequencial e descrevo algumas dificuldades de implementação. Explico como é feito a analise de precisão através de validação cruzada. Em seguida explico como se usa CUDA para depois explicar como usei e de que forma o MVS está executando em paralelo. Por ultimo descrevo como compilar e executar o programa.
 
-\subsection{Análise}\label{sec:LABEL_CHP_1_SEC_G}
+%\subsection{Análise}\label{sec:LABEL_CHP_1_SEC_G}
+No capítulo...
 Descrevo os conjuntos de dados utilizados, o hardware utilizado e quais as métricas usei para análise. Em seguida apresento os resultados dos testes.
 
-\subsection{Conclusão}\label{sec:LABEL_CHP_1_SEC_H}
+%\subsection{Conclusão}\label{sec:LABEL_CHP_1_SEC_H}
+Por fim, no capítulo...
 Escrevo o que posso concluir dos testes e que modificações conseguiram melhorar o desempenho do programa. Para encerrar traço algumas funcionalidades que poderiam ser incluídas/experimentadas futuramente.
