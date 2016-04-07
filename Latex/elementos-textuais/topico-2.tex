@@ -3,15 +3,16 @@
 %\section{Definição}\label{sec:LABEL_CHP_2_SEC_A}
 %silvana: icluir traducao parao portugues...
 %silvana: sempre que usar termo em ingles, escrevê-lo em italico ({\em ...})
-Support Vector Machines (SVM) é uma classe de aprendizado de maquina que surgiu nos anos 90. Hoje em dia são usadas em diversas áreas como reconhecimento de escrita, bioinformática e mineração de dados.	Essencialmente eles são métodos de aprendizado supervisionado que podem ser usados para classificação ou regressão e podem ser binários ou multi-classe. 
+Maquina de Vetores de Suporte é uma classe de aprendizado de maquina que surgiu nos anos 90. Hoje em dia são usadas em diversas áreas como reconhecimento de escrita, bioinformática e mineração de dados.	Essencialmente eles são métodos de aprendizado supervisionado que podem ser usados para classificação binária, onde a partir de um conjunto de dados de treinamento a maquina aprende a classificar um novo exemplo como sendo de uma de duas classes, ou multi-classe, podendo classificar entre diversas classes, para isso o problema é subdividido em problemas binários menores. Também é possível usar uma MVS para regressão quando você quer estimar uma valor ou probabilidade invés de uma classe. 
 %silvana: caracterizar classificacao e regressao, binario e multi-classe
-Por simplicidade vou abordar aqui os os classificadores binários. São os algoritmos que a partir de um conjunto de dados de treinamento aprende a classificar um novo exemplo como sendo de uma de duas classes.
+%Felipe: melhor?
+Por simplicidade vou abordar aqui os os classificadores binários, já que é preciso entender bem como ele funciona antes de entender os outros métodos. Sigo o fluxo de explicação abordado no livro \cite{art:LIVRO_SVM} que explica a teoria por tras da Maquina de Vetores de Suporte de forma bem didática.
 
-\section{Função de Decisão de Superfície Linear}
+\section{Superfícies de Decisão Lineares}
 %silvana: sempre que usar termo em ingles, escrevê-lo em italico ({\em ...})
-SVMs são uma evolução de Linear Decision Surface Functions que são classificadores binários. Dado um conjunto de dados $(\bar{x}_i,y_i)$ onde $\bar{x}_i \in \mathbb{R}^n$ é o conjunto de dados e $y_i \in \{ -1,+1 \}$ é a classe que você deseja classificar. Uma Linear Decision Surface Function obtém uma superfície linear (reta, plano ou hiperplano) que separa esse conjunto de dados, se ele for linearmente separável.
+Uma forma simples de se criar um classificador é através de uma superficie de decião linear. Dado um conjunto de dados $(\bar{x}_i,y_i)$ onde $\bar{x}_i \in \mathbb{R}^n$ são os parâmetros de cada exemplo e $y_i \in \{ -1,+1 \}$ é a classe que você deseja classificar definida como $+1$ ou $-1$. Se o conjunto for linearmente separável é possível criar uma superfície de decisão linear (reta, plano ou hiperplano) que separa esse conjunto de dados.
 
-Uma vez encontrado o plano separador a classificação fica fácil. Se definirmos nosso plano como $\bar{d}\cdot \bar{x} = \bar{d}\cdot \bar{c}$ onde $\bar{d}$ é o vetor ortogonal ao plano, $\bar{c}$ é o vetor de deslocamento de $\bar{d}$ e $\bar{x}$ são os pontos pertencentes a reta. Podemos classificar um ponto $\bar{\alpha}$ como pertencendo a uma classe usando a formula \ref{eq:LABEL_EQ_1}.
+Uma vez encontrado o plano separador a classificação fica fácil. Se definirmos esse plano como $\bar{d}\cdot \bar{x} = \bar{d}\cdot \bar{c}$ onde $\bar{d}$ é o vetor ortogonal ao plano, $\bar{c}$ é o vetor de deslocamento de $\bar{d}$ e $\bar{x}$ são os pontos pertencentes a reta. Podemos classificar um ponto $\bar{\alpha}$ como pertencendo a uma classe usando uma função discriminante \ref{eq:LABEL_EQ_1} onde a classe é definida pelo sinal do resultado.
 
 \begin{equation}
 f(\bar{\alpha})=sgn((\bar{\alpha}-\bar{c})\cdot\bar{d})
@@ -26,14 +27,14 @@ f(\bar{\alpha})=sgn((\bar{\alpha}-\bar{c})\cdot\bar{d})
 \end{figure}
 
 %silvana: definir perceptron...
-Para encontrar essa superfície usamos o perceptron.  Considerado o precursor das redes neurais é também o próximo passo na evolução da maquina de suporte de vetores. Inicialmente o perceptron da valores aleatórios a $\bar{c}$ e $\bar{d}$ e avalia o quão bem ele classifica o conjunto de dados corrigindo seus valores de acordo com o erro, se aproximando do plano desejado incrementalmente.Eventualmente se os dados forem linearmente separáveis o perceptron vai chegar em uma superfície de separação mas essa superfície pode não separar tão bem o conjunto real que você quer classificar.
+Como estamos assumindo que nossos dados são linearmente separáveis já sabemos qual a função discriminante, falta encontrar os parâmetros $\bar{c}$ e $\bar{d}$ que classificam corretamente esse conjunto de dados. Existem algumas formas de encontrar os parâmetros que definem essa superfície de decisão linear, um método próximo da maquina de vetores de suporte é o perceptron. O perceptron da valores aleatórios a $\bar{c}$ e $\bar{d}$ e classifica o conjunto de dados usando a função discriminante. A cada iteração o perceptron corrige os valores de $\bar{c}$ e $\bar{d}$ para os dados que estiverem classificados de forma errada. Dessa forma se o conjunto de dados for realmente linearmente separável o perceptron vai convergir para a superfície de decisão linear.
 
-Usando a figura \ref{fig:LABEL_FIG_2} como exemplo vamos supor que o perceptron chegou na linha cinza como superfície de separação. A superfície preta seria mais adequada já que a chance de ter um ponto real do outro lado da superfície cinza é maior.
-%trocar linha cinza por pontilhada
+Essa superfície separa perfeitamente os exemplos usados no treinamento, mas pode ter muitos erros para classificar dados reais. Isso ocorre porque o perceptron dessa forma não tem nenhum critério para saber se a superfície é boa ou ruim. Usando a figura \ref{fig:LABEL_FIG_2} como exemplo vamos supor que os pontos +* e -* não estavam no conjunto de treinamento e o perceptron chegou na linha pontilhada como superfície de separação. A linha preta seria mais adequada já que divide o espaço de forma mais justa reduzindo a chance de ter um ponto classificado errado.
+
 \begin{figure}
   \centering
   \includegraphics[width=0.4\textwidth]{imagens/svm_2.png}
-  \caption{A linha escura representa a melhor separação e as linhas claras representam linhas com maior chance de erro}
+  \caption{A linha pre representa a melhor separação e as linhas claras representam linhas com maior chance de erro}
   \label{fig:LABEL_FIG_2}
 \end{figure}
 
@@ -110,7 +111,7 @@ m^* &= max \frac{2k}{|\bar{w}|} \\
 \end{equation}
 
 Nossas restrições podem ser escritas como:
-%essa notação ta certa o tal que? precisa de uma chave aí?
+%Felipe: essa notação ta certa o tal que? precisa de uma chave aí?
 \begin{equation}
 \begin{split}
 \bar{w}^*\cdot\bar{x}_i \ge b^*+k \quad \forall (\bar{x}_i,y_i)\in D \quad | \quad y_i=+1 \\
@@ -263,12 +264,36 @@ Conjuntos reais de dados possuem ruídos, e pontos anormais podem distorcer e pi
 
 Para isso escolhemos uma constante $C$ que atribuímos como um peso para os erros. No problema primal definimos $C$ como $\underset{\bar{w},\bar{\epsilon},b}{min}\phi(\bar{w},\bar{\epsilon},b) = \frac{1}{2}\bar{w}^*\cdot\bar{w}^* + C\sum_{i=1}^l \epsilon_i^*=m^*$ de forma que quanto maior $C$ maior o peso dos erros, mais próximo a margem flexível fica da margem rígida. Um $C$ menor permite mais erros fazendo com que a margem cresça e se distancie da margem rígida. No problema dual esse limite aparece como: $0\le \alpha_i \le C$
 
-Com isso definimos uma maquina de vetor de suporte bem robusto capaz de classificar conjuntos de dados não lineares e suscetíveis a ruídos. Existem varios algoritmos diferentes para por em prática essa teoria, no capítulo \ref{chp:LABEL_CHP_4} abordo alguns deles.
+\section{Implementação}
+Com isso definimos uma maquina de vetor de suporte bem robusto capaz de classificar conjuntos de dados não lineares e suscetíveis a ruídos. A complexidade de implementação de uma MVS consiste na dificuldade de se achar o valor máximo de $\bar{\alpha}$ existem alguns algoritmos diferentes para se chegar nesse resultado, alguns deles descritos em \cite{art:LIVRO_SVM} são:
+%Felipe No livro está Gradient Ascent, não sei se essa tradução está boa
+\subsection{Incremento de Gradiente}
+O gradiente de um vetor é um vetor que aponta para a direção onde a função cresce naquele ponto. Dessa forma podemos calcular o gradiente de $\alpha$ em um ponto aleatório e e incrementar os valores de $\alpha$ incrementalmente. Quando o gradiente for $0$ chegamos no máximo local e encontramos o valor ótimo de $\alpha$. Apesar de não considerarmos $b$ nessa implementação seu valor pode ser encontrado a partir do valor de $\alpha$.
+\subsection{Algoritmo Kernel-Adatron}
+O problema do incremento de gradiente é que ele ignora as restrições de otimização definidas por KKT e não converge e não considera o valor de $b$ que pode mudar o ponto máximo. O algoritmo Kernel-Adatron resolve esses dois problemas. Podemos fixar o valor de $b$ como zero, dessa forma ao garantirmos que o valor $\alpha$ é maior que zero garantimos também que as condições de KKT são válidas.
+\begin{algorithm}
+\label{alg:KAA}
+\caption{Algoritmo Kernel-Adatron}
+\begin{algorithmic}
+\STATE $D = \{(\bar{x_i},y_1)...(\bar{x_i},y_1)\} \subset \mathbb{R}^{n}\times \{+1,-1\}$
+\STATE $\eta>0$
+\STATE $C>0$
+\STATE $b=0$
+\STATE $\bar{\alpha} \leftarrow \bar{0}$
+\REPEAT
+\STATE $\bar{\alpha_{old}} \leftarrow \bar{\alpha}$
+\FOR{$i=1$ to $l$}
+\STATE $\alpha_i \leftarrow min\big\{C,max\big\{0,\alpha_i + \eta-\eta y_i \sum_{j=1}^l y_j \alpha_j k(\bar{x}_j,\bar{x}_i))\big\}\big\}$
+\ENDFOR
+\UNTIL{$\bar{\alpha}-\bar{\alpha_{old}}\approx \bar{0}$}
+\RETURN $(\bar{\alpha},b)$
+\end{algorithmic}
+\end{algorithm}
 
-%silvana: a descrição desse capitulo corresponde ao algoritmo SMO, Sequential Minimal Optimization, implementado por Catanzaro??
+\subsection{Quadratic Program Solver}
+Como a forma de se encontrar os valores de $\bar{\alpha}$ é um problema de otimização existem métodos genericos de otimização que ajudam nessa tarefa um deles é o \emph{Quadratic Program Solver}, um algoritmo que encontra os valores de um parâmetro que minimizam uma função dado um conjunto de restrições. Varias bibliotecas implementam esse algoritmo de forma que seria possivel resolver a SVM sem ter que implementar o algoritmo de otimização.
+\subsection{SMO: Sequential Minimal Optimization}
+Em vez de tentar encontrar todos os valores de $\alpha$ de uma vez o \emph{Sequential Minimal Optimization} escolhe dois pontos de treinamento, otimiza eles e vê se as restrições de KKT são válidas para o resto do conjunto de treinamento, caso contrário escolhe outros dois pontos e continua o algoritmo. Os pontos escolhidos são sempre de forma que um ponto respeite as restrições e o maior violador das restrições. Dessa forma é possível provar que o algoritmo vai convergir. Isso permite uma serie de otimizações mais complexas em cima das formulas vistas de forma que o calculo final fique mais simples e econômico.
 
-%silvana: descrever o  algoritmo  de Kernel-Adatron
-
-%silvana: trazer descricao dos algoritmos do capitulo de desenvolvimento
-
-
+\subsection{Escolhido: KAA}
+O algoritmo que acabei escolhendo foi o KAA, sua implementação é só um pouco mais complexa que o de incremento de gradiente e ainda tem um fluxo fácil de compreender. Não escolhi o \emph{Quadratic Program Solver} pois mudaria o foco do projeto para um algoritmo mais genérico de otimização. Apesar de o SMO ser o algoritmo mais usado nos artigos em que me baseei achei que seria interessante implementar primeiro o KAA já que seria mais fácil de entender como o algoritmo está convergindo o que as variáveis representam no resultado final. Além disso por o KAA ser um algoritmo mais custoso espero um ganho mais significativo da versão sequencial para a paralela de forma que seria um objeto de estudo mais interessante.

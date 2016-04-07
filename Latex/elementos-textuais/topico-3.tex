@@ -13,6 +13,7 @@ uma GPU que é o foco desse trabalho.
 
 %\subsection{Computação Heterogênea}
 %Computação heterogênea é o conceito de utilizar arquiteturas diferentes para otimizar o processamento das aplicações que executam em um nó computacional. Alguns exemplos são as GPUs (Graphics Processing Unit, unidade de processamento gráfica) e FPGAs (Field-Programmable Gate Array, Arranjo de Portas Programável em Campo). Essas arquiteturas são chamadas de aceleradores pois tem o objetivo de otimizar um tipo especifico de processamento.
+%colocar em algum lugar depois: Para que os desenvolvedores pudessem se aproveitar desse processamento para outros fins, os produtores de GPUs tem disponibilizados bibliotecas para executar operações de uso geral na GPU. Como o CUDA distribuído pela NVIDIA para ser usado em suas placas gráficas, que eu pretendo usar nesse projeto.
 
 O uso de arquiteturas diferentes em um programa não é trivial e geralmente exige um conhecimento aprofundado das capacidades de cada unidade de processamento. Por esse motivo isso não é feito de forma automática, o uso das arquiteturas é feito em chamadas explicitas. Não basta encaixar uma GPU ou FPGA na sua placa mãe e esperar que seu programa tire proveito desse hardware, nem é possível simplesmente dizer para um programa feito para executar em CPU executar em uma GPU. Mesmo que fosse possível, não é verdade que todo algoritmo rode melhor em um acelerador já que eles são otimizados para casos de uso específico.
 
