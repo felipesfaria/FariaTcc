@@ -14,14 +14,14 @@ namespace FariaTccTest
 	public:
 		TEST_METHOD(SequentialSvm_i_100Prcnt)
 		{
-			int argc = 3;
-			char *argv[] = { "exePath", "-d", "i" };
+			int argc = 5;
+			auto nFolds = 3;
+			char *argv[] = { "exePath", "-d", "i", "-f", "3" };
 			Settings::instance()->Init(argc, argv);
 			DataSet ds;
 
 			BaseSvm *svm = new SequentialSvm(&ds);
 
-			auto nFolds = 3;
 			TrainingSet ts;
 			ValidationSet vs;
 			int totalCorrect = 0;
@@ -38,14 +38,14 @@ namespace FariaTccTest
 
 		TEST_METHOD(ParallelSvm_i_100Prcnt)
 		{
-			int argc = 3;
-			char *argv[] = { "exePath", "-d", "i"};
+			int argc = 5;
+			auto nFolds = 3;
+			char *argv[] = { "exePath", "-d", "i","-f","3"};
 			Settings::instance()->Init(argc, argv);
 			DataSet ds;
 
 			BaseSvm *svm = new ParallelSvm(&ds);
 
-			auto nFolds = 3;
 			TrainingSet ts;
 			ValidationSet vs;
 			int totalCorrect = 0;
@@ -60,16 +60,39 @@ namespace FariaTccTest
 			Assert::AreEqual(expected, actual);
 		}
 
+		TEST_METHOD(Compare_Parallel_and_Sequential_Alpha)
+		{
+			int argc = 9;
+			char *argv[] = { "exePath", "-d", "i","-st","0.01","-mi","1","-sd","0"};
+			Settings::instance()->Init(argc, argv);
+			DataSet ds;
+
+			BaseSvm *pSvm = new ParallelSvm(&ds);
+			BaseSvm *sSvm = new SequentialSvm(&ds);
+
+			TrainingSet pTs;
+			TrainingSet sTs;
+			ValidationSet vs;
+			ds.InitFoldSets(&pTs, &vs, 1);
+			pSvm->Train(&pTs);
+
+			ds.InitFoldSets(&sTs, &vs, 1);
+			sSvm->Train(&sTs);
+			for (int i = 0; i < pTs.height; ++i)
+				Assert::IsTrue(abs(pTs.alpha[i]-sTs.alpha[i])<0.01);
+		}
+
 		TEST_METHOD(ParallelSvm_a1_GE_70_Prcnt)
 		{
-			int argc = 3;
-			char *argv[] = { "exePath", "-d", "a1" };
+			int argc = 7;
+			char *argv[] = { "exePath", "-d", "a1","-f","2","-l","n"};
 			Settings::instance()->Init(argc, argv);
 			DataSet ds;
 
 			BaseSvm *svm = new ParallelSvm(&ds);
 
-			auto nFolds = 3;
+			unsigned nFolds;
+			Settings::instance()->GetUnsigned("folds", nFolds);
 			TrainingSet ts;
 			ValidationSet vs;
 			int totalCorrect = 0;

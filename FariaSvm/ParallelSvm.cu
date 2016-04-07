@@ -230,7 +230,7 @@ void ParallelSvm::Train(TrainingSet *ts)
 			trainingKernelLoop << <_blocks, _threadsPerBlock >> >(caSum.device, caAlpha.device, caTrainingX.device, caTrainingY.device, g, ts->width, ts->height, batchStart, batchEnd);
 			CUDA_SAFE_CALL(cudaDeviceSynchronize());
 		}
-		trainingKernelFinish << <_blocks, _threadsPerBlock >> >(caAlpha.device, caSum.device, caTrainingY.device, ts->width, caStep.device, caLastDif.device, C);
+		trainingKernelFinish << <_blocks, _threadsPerBlock >> >(caAlpha.device, caSum.device, caTrainingY.device, ts->height, caStep.device, caLastDif.device, C);
 		caLastDif.CopyToHost();
 		caStep.CopyToHost();
 
