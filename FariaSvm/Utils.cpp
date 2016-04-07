@@ -67,7 +67,7 @@ std::vector<std::string> Utils::split(const std::string& s, char delim)
 	return elems;
 }
 
-string Utils::GetComandVariable(int argc, char** argv, string comand)
+bool Utils::GetComandVariable(int argc, char** argv, string comand, string &arg)
 {
 	string argument = "";
 	if (argc > 2){
@@ -75,11 +75,12 @@ string Utils::GetComandVariable(int argc, char** argv, string comand)
 		{
 			if (argv[i] == comand)
 			{
-				argument = argv[i + 1];
+				arg = argv[i + 1];
+				return true;
 			}
 		}
 	}
-	return argument;
+	return false;
 }
 
 void Utils::Shuffle(vector<vector<double>> &x, vector<double> &y)

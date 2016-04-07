@@ -13,7 +13,7 @@ public:
 	bool static TryParseInt(std::string str, unsigned &out);
 	vector<string> static &split(const string &s, char delim, vector<string> &elems);
 	std::vector<std::string> static split(const std::string &s, char delim);
-	string static GetComandVariable(int argc, char** argv, string comand);
+	bool static GetComandVariable(int argc, char** argv, string comand, string &arg);
 	void static Shuffle(vector<vector<double>>& x, vector<double>& y);
 	void static Reverse(vector<vector<double>>& x, vector<double>& y);
 };

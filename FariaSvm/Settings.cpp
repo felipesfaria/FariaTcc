@@ -122,7 +122,7 @@ void Settings::Init(int argc, char** argv)
 	step.name = "step";
 	step.isSet = false;
 	step.command = "-st";
-	step.description = "Size of first step is algorithm. Default is 1";
+	step.description = "Size of first step in the algorithm. Default is 1";
 	step.type = Setting::DOUBLE;
 	step.dValue = 1;
 	settingsMap[step.name] = step;
@@ -156,13 +156,11 @@ void Settings::Init(int argc, char** argv)
 	for (auto it = settingsMap.begin(); it != settingsMap.end(); ++it)
 	{
 		Setting *st = &(*it).second;
-		auto arg = Utils::GetComandVariable(argc, argv, st->command);
+		string arg;
+		if (!Utils::GetComandVariable(argc, argv, st->command, arg))
+			continue;
 		if (st->type == Setting::HELP)
 			ShowHelp();
-		else if (arg.empty())
-		{
-			continue;
-		}
 		else if (st->type == Setting::UNSIGNED && Utils::TryParseInt(arg, st->uValue))
 		{
 		}

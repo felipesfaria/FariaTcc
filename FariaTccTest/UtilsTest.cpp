@@ -21,12 +21,31 @@ namespace FariaTccTest
 			}
 		}
 
-		TEST_METHOD(Utils_GetComandVariable_FindVariable)
+		TEST_METHOD(Utils_GetComandVariable_FindArgument)
 		{
 			char *argv[3] = { "exe path", "-a", "b" };
 			string expected = "b";
-			auto actual = Utils::GetComandVariable(3, argv, "-a");
+			string actual;
+			Utils::GetComandVariable(3, argv, "-a", actual);
 			Assert::AreEqual(actual, expected);
+		}
+
+		TEST_METHOD(Utils_GetComandVariable_CommandExists)
+		{
+			char *argv[3] = { "exe path", "-a", "b" };
+			string expected = "b";
+			string arg;
+			auto actual = Utils::GetComandVariable(3, argv, "-a", arg);
+			Assert::IsTrue(actual);
+		}
+
+		TEST_METHOD(Utils_GetComandVariable_CommandDoesntExists)
+		{
+			char *argv[3] = { "exe path", "-a", "b" };
+			string expected = "b";
+			string arg;
+			auto actual = Utils::GetComandVariable(3, argv, "-x", arg);
+			Assert::IsFalse(actual);
 		}
 
 	};
