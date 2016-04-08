@@ -18,30 +18,3 @@ Extensão do visual studio facilita a organização vizualização e desenvolvim
 
 \section{Desenvolvendo um SVM} \label{sec:LABEL_CHP_4_SEC_F}
 No primeiro passo do desenvolvimento foi necessário desenvolver uma versão sequencial de um svm, isso ocorreu em alguns passos.
-\subsection{Escolha do Algoritmo} \label{sec:LABEL_CHP_4_SEC_G}
-Existem diversas tipos de suport vector machine. O modelo mais básico se limita a classificação binária mas, existem métodos para regressão e multi-classificação. Resolvi optar pelo classificador binário inicialmente por sua simplicidade, uma vez pronto seria possivel adaptar o programa aos outros modelos.
-O próximo passo seria escolher a implementação. Nos meus estudos encontrei 4 algoritmos de treinamento, a classificação se mantem igual independente do treinamento.
-\subsubsection{Força Bruta} \label{sec:LABEL_CHP_4_SEC_H}
-Bacon ipsum dolor amet corned beef hamburger shoulder, t-bone tenderloin venison tongue jerky tri-tip landjaeger salami. Chicken jowl strip steak, flank sausage andouille jerky leberkas tri-tip salami cow pork loin. Ground round rump shankle kielbasa tenderloin frankfurter alcatra pork belly swine kevin cupim hamburger biltong. Porchetta pastrami shank rump. Ham hock filet mignon ribeye capicola.
-\subsubsection{Kernel Adatron Algorithm} \label{sec:LABEL_CHP_4_SEC_I}
-Parecido com o força bruta, mas é modificado de forma que se leve em consideração os limitantes de otimização.
-\subsubsection{Qaudratic Program Solver} \label{sec:LABEL_CHP_4_SEC_J}
-Usa-se um algoritmo de otimização conhecido como Quadratic Program Solver para chegar no valor ótimo de $\alpha$.
-\subsubsection{SMO: Sequential Minimal Optimization} \label{sec:LABEL_CHP_4_SEC_K}
-Em vez de tentar encontrar todos os valores de $\alpha$ de uma vez encontramos os maiores agressores às condições limitantes e atualiza eles.
-
-\subsection{Escolhido: KAA} \label{sec:LABEL_CHP_4_SEC_L}
-O algoritmo que acabei escolhendo foi o KAA, sua implementação é só um pouco mais complexa que o de força bruta e ainda tem um fluxo facil de compreender. Não escolhi o Quadratic Program solver pois mudaria o foco do projeto para um algoritmo mais generico de otimização. Apesar de o SMO ser o algortimo mais usado nos artigos em que me baseei achei que o algoritmo KAA teria uma diferença mais significativa da versão sequencial para a paralela de forma que seria um objeto de estudo mais interessante.
-
-\subsection{Treinamento Sequencial} \label{sec:LABEL_CHP_4_SEC_M}
-O treinamento do SVM consiste em descobrir os valores de $\alpha$ de forma que as amostras mais próximas da divisão entre as classes tenha mais peso na classificação. Para fazer isso é preciso calcular o peso de todas as amostras em todas as amostras e que nos da a complexidade de $O(n^2*t)$ onde $n$ é o tamanho do conjunto de treinamento e $t$ é o numero de parametros de cada amostra.
-
-\codec{Treinamento Sequencial}{alg:LABEL_CODE_1}{codigos/treinamentoSequencial.cpp}
-
-\section{References}\label{sec:LABEL_CHP_4_SEC_N}
-\begin{itemize}
-  \item Referencing \refchapter{chp:LABEL_CHP_4}
-  \item Referencing \refsection{sec:LABEL_CHP_4_SEC_A}
-  \item Article \cite{art:REF_ART_1}
-  \item Referencing \refappendix{chp:LABEL_APP_1}
-\end{itemize}

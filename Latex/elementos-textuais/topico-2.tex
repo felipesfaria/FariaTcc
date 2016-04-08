@@ -9,8 +9,7 @@ Maquina de Vetores de Suporte é uma classe de aprendizado de maquina que surgiu
 Por simplicidade vou abordar aqui os os classificadores binários, já que é preciso entender bem como ele funciona antes de entender os outros métodos. Sigo o fluxo de explicação abordado no livro \cite{art:LIVRO_SVM} que explica a teoria por tras da Maquina de Vetores de Suporte de forma bem didática.
 
 \section{Superfícies de Decisão Lineares}
-%silvana: sempre que usar termo em ingles, escrevê-lo em italico ({\em ...})
-Uma forma simples de se criar um classificador é através de uma superficie de decião linear. Dado um conjunto de dados $(\bar{x}_i,y_i)$ onde $\bar{x}_i \in \mathbb{R}^n$ são os parâmetros de cada exemplo e $y_i \in \{ -1,+1 \}$ é a classe que você deseja classificar definida como $+1$ ou $-1$. Se o conjunto for linearmente separável é possível criar uma superfície de decisão linear (reta, plano ou hiperplano) que separa esse conjunto de dados.
+Uma forma simples de se criar um classificador é através de uma superfície de decisão linear. Dado um conjunto de dados $(\bar{x}_i,y_i)$ onde $\bar{x}_i \in \mathbb{R}^n$ são os parâmetros de cada exemplo e $y_i \in \{ -1,+1 \}$ é a classe que você deseja classificar definida como $+1$ ou $-1$. Se o conjunto for linearmente separável é possível criar uma superfície de decisão linear (reta, plano ou hiperplano) que separa esse conjunto de dados.
 
 Uma vez encontrado o plano separador a classificação fica fácil. Se definirmos esse plano como $\bar{d}\cdot \bar{x} = \bar{d}\cdot \bar{c}$ onde $\bar{d}$ é o vetor ortogonal ao plano, $\bar{c}$ é o vetor de deslocamento de $\bar{d}$ e $\bar{x}$ são os pontos pertencentes a reta. Podemos classificar um ponto $\bar{\alpha}$ como pertencendo a uma classe usando uma função discriminante \ref{eq:LABEL_EQ_1} onde a classe é definida pelo sinal do resultado.
 
@@ -22,7 +21,7 @@ f(\bar{\alpha})=sgn((\bar{\alpha}-\bar{c})\cdot\bar{d})
 \begin{figure}
   \centering
   \includegraphics[width=0.4\textwidth]{imagens/svm_1.png}
-  \caption{Classificação de um ponto $\bar{\alpha}$ por uma superfície de decisão linear}
+  \captionsource{Classificação de um ponto $\bar{\alpha}$ por uma superfície de decisão linear}{\cite{art:LIVRO_SVM}}
   \label{fig:LABEL_FIG_1}
 \end{figure}
 
@@ -48,7 +47,7 @@ Formalmente problemas de otimização são definidos como: $\underset{\bar{x}}{m
 \begin{figure}
   \centering
   \includegraphics[width=0.7\textwidth]{imagens/svm_3.png}
-  \caption{Superfície de decisão ótima e seus vetores e hiperplanos de suporte}
+  \captionsource{Superfície de decisão ótima e seus vetores e hiperplanos de suporte}{\cite{art:LIVRO_SVM}}
   \label{fig:LABEL_FIG_3}
 \end{figure}
 
@@ -57,7 +56,7 @@ Podemos então traduzir o problema de separar o conjunto de dados em um problema
 \begin{figure}
   \centering
   \includegraphics[width=0.4\textwidth]{imagens/svm_4.png}
-  \caption{Calculando a margem $m^*$ entre os planos de suporte}
+  \captionsource{Calculando a margem $m^*$ entre os planos de suporte}{\cite{art:LIVRO_SVM}}
   \label{fig:LABEL_FIG_4}
 \end{figure}
 
@@ -195,7 +194,7 @@ Com isso conseguimos uma maquina de vetores de suporte linear. Acontece que pouc
 \begin{figure}
   \centering
   \includegraphics[width=1\textwidth]{imagens/svm_5.png}
-  \caption{Em (a) não é possível separar os conjuntos de forma linear, mas transformando os dados em $\mathbb{R}^2\rightarrow \mathbb{R}^3$ em (b) conseguimos separa-los linearmente}
+  \captionsource{Em (a) não é possível separar os conjuntos de forma linear, mas transformando os dados em $\mathbb{R}^2\rightarrow \mathbb{R}^3$ em (b) conseguimos separa-los linearmente}{\cite{art:LIVRO_SVM}}
   \label{fig:LABEL_FIG_5}
 \end{figure}
 
@@ -258,7 +257,7 @@ Conjuntos reais de dados possuem ruídos, e pontos anormais podem distorcer e pi
 \begin{figure}
   \centering
   \includegraphics[width=1\textwidth]{imagens/svm_6.png}
-  \caption{No exemplo da direita ignoramos $\bar{x}_j$ que pode ser considerado ruído}
+  \captionsource{No exemplo da direita ignoramos $\bar{x}_j$ que pode ser considerado ruído}{\cite{art:LIVRO_SVM}}
   \label{fig:LABEL_FIG_6}
 \end{figure}
 
@@ -295,5 +294,5 @@ Como a forma de se encontrar os valores de $\bar{\alpha}$ é um problema de otim
 \subsection{SMO: Sequential Minimal Optimization}
 Em vez de tentar encontrar todos os valores de $\alpha$ de uma vez o \emph{Sequential Minimal Optimization} escolhe dois pontos de treinamento, otimiza eles e vê se as restrições de KKT são válidas para o resto do conjunto de treinamento, caso contrário escolhe outros dois pontos e continua o algoritmo. Os pontos escolhidos são sempre de forma que um ponto respeite as restrições e o maior violador das restrições. Dessa forma é possível provar que o algoritmo vai convergir. Isso permite uma serie de otimizações mais complexas em cima das formulas vistas de forma que o calculo final fique mais simples e econômico.
 
-\subsection{Escolhido: KAA}
-O algoritmo que acabei escolhendo foi o KAA, sua implementação é só um pouco mais complexa que o de incremento de gradiente e ainda tem um fluxo fácil de compreender. Não escolhi o \emph{Quadratic Program Solver} pois mudaria o foco do projeto para um algoritmo mais genérico de otimização. Apesar de o SMO ser o algoritmo mais usado nos artigos em que me baseei achei que seria interessante implementar primeiro o KAA já que seria mais fácil de entender como o algoritmo está convergindo o que as variáveis representam no resultado final. Além disso por o KAA ser um algoritmo mais custoso espero um ganho mais significativo da versão sequencial para a paralela de forma que seria um objeto de estudo mais interessante.
+\subsection{Escolhido: Kernel-Adatron}
+O algoritmo que acabei escolhendo foi o Kernel-Adatron, sua implementação é só um pouco mais complexa que o de incremento de gradiente e ainda tem um fluxo fácil de compreender. Não escolhi o \emph{Quadratic Program Solver} pois mudaria o foco do projeto para um algoritmo mais genérico de otimização. Apesar de o SMO ser o algoritmo mais usado nos artigos em que me baseei achei que seria interessante implementar primeiro o Kernel-Adatron já que seria mais fácil de entender como o algoritmo está convergindo o que as variáveis representam no resultado final. Além disso por o Kernel-Adatron ser um algoritmo mais custoso espero um ganho mais significativo da versão sequencial para a paralela, diferente do SMO que é um algoritmo otimizado para a execução sequencial eu teria de desfazer alguns de suas otimizações para funcionar de forma paralela.
