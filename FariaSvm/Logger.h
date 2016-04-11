@@ -21,7 +21,8 @@ public:
 	TimeMetric* StartMetric(string name);
 	void AddIntMetric(string name, unsigned value);
 	void AddDoubleMetric(string name, double value);
-	void ClassifyProgress(int count, double step, double lastDif, double difAlpha);
+	void TrainingProgress(int count, double step, double lastDif, double difAlpha);
+	void ClassifyingProgress(int count, double step, double lastDif, double difAlpha);
 	void Stats(string statName, long stat);
 	void Stats(string statName, int stat);
 	void Stats(string statName, unsigned int stat);

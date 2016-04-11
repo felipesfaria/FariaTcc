@@ -63,7 +63,7 @@ namespace FariaTccTest
 		TEST_METHOD(Compare_Parallel_and_Sequential_Alpha)
 		{
 			int argc = 9;
-			char *argv[] = { "exePath", "-d", "i","-st","0.01","-mi","1","-sd","0"};
+			char *argv[] = { "exePath", "-d", "a1","-st","0.1","-mi","16","-sd","0"};
 			Settings::instance()->Init(argc, argv);
 			DataSet ds;
 
@@ -78,8 +78,12 @@ namespace FariaTccTest
 
 			ds.InitFoldSets(&sTs, &vs, 1);
 			sSvm->Train(&sTs);
+			int expected = 0;
+			int actual = 0;
 			for (int i = 0; i < pTs.height; ++i)
-				Assert::IsTrue(abs(pTs.alpha[i]-sTs.alpha[i])<0.01);
+				if (abs(pTs.alpha[i] - sTs.alpha[i]) < 1e-10)
+					actual++;
+			Assert::AreEqual(expected, actual);
 		}
 
 		TEST_METHOD(ParallelSvm_a1_GE_70_Prcnt)

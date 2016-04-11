@@ -3,6 +3,7 @@
 #include "Logger.h"
 #include <locale>
 #include "Utils.h"
+#include "CudaKernels.cuh"
 using namespace std;
 
 SequentialSvm::SequentialSvm(DataSet *ds)
@@ -16,15 +17,18 @@ SequentialSvm::~SequentialSvm()
 {
 }
 
-int SequentialSvm::Classify(TrainingSet *ts, double* sample)
+int SequentialSvm::Classify(TrainingSet *ts, ValidationSet* vs, unsigned vIndex)
 {
 	auto m = Logger::instance()->StartMetric("Classify");
+	auto x = ts->x;
+	auto y = ts->y;
+	auto vX = vs->x;
 	auto sum = 0.0;
-	for (auto i = 0; i < ts->height; ++i)
-	{
-		if (ts->alpha[i] == 0) continue;
-		sum += ts->alpha[i] * ts->y[i] * K(ts->GetSample(i), sample,ts->width);
-	}
+	auto height = ts->height;
+	auto width = ts->width;
+	auto alpha = ts->alpha;
+	for (auto i = 0; i < height; ++i)
+		sum += alpha[i] * y[i] * gaussKernel(x, i, vX, vIndex, width, g);
 	auto sign = sum - ts->b;
 	m->Stop();
 	if (sign > Precision)
@@ -37,37 +41,36 @@ int SequentialSvm::Classify(TrainingSet *ts, double* sample)
 void SequentialSvm::Train(TrainingSet *ts)
 {
 	auto m = Logger::instance()->StartMetric("Train");
-	double* alpha = ts->alpha;
-	vector<double> oldAlpha;
-	for (int i = 0; i < ts->height; ++i){
+	auto alpha = ts->alpha;
+	auto height = ts->height;
+	auto x = ts->x;
+	auto y = ts->y;
+	auto width = ts->width;
+	double* oldAlpha = new double[height];
+	for (int i = 0; i < height; ++i){
 		alpha[i] = _initialStep;
-		oldAlpha.push_back(_initialStep);
+		oldAlpha[i] = _initialStep;
 	}
 	int count = 0;
-	double *lastDif = (double*)malloc(ts->height*sizeof(double));
-	for (int i = 0; i < ts->height; i++)
+	double *lastDif = (double*)malloc(height*sizeof(double));
+	for (int i = 0; i < height; i++)
 		lastDif[i] = 0;
 	double difAlpha;
-	double *steps = (double*)malloc(ts->height*sizeof(double));
-	for (int i = 0; i < ts->height; i++)
+	double *steps = (double*)malloc(height*sizeof(double));
+	for (int i = 0; i < height; i++)
 		steps[i] = _initialStep;
 	double step;
 	do
 	{
-		for (int i = 0; i < ts->height; ++i)
+		for (int i = 0; i < height; ++i)
 		{
 			double sum = 0;
-			for (int j = 0; j < ts->height; ++j)
+			for (int j = 0; j < height; ++j)
 			{
-				if (oldAlpha[j] == 0) continue;
-				sum += ts->y[j] * oldAlpha[j] * K(ts->GetSample(i), ts->GetSample(j), ts->width);
+				sum += y[j] * oldAlpha[j] * gaussKernel(x,j,x,i,width,g);
 			}
-			double value = oldAlpha[i] + steps[i] - steps[i]*ts->y[i] * sum;
-			if (value > C)
-				value = C;
-			else if (value < 0)
-				value = 0.0;
-			
+			double value = CalcAlpha(oldAlpha, sum, y, steps, C, i);
+
 			auto dif = value - alpha[i];
 			if (dif*lastDif[i] < 0)
 				steps[i] /= 2;
@@ -76,24 +79,25 @@ void SequentialSvm::Train(TrainingSet *ts)
 		}
 		difAlpha = 0;
 		step = 0;
-		for (int i = 0; i < ts->height; ++i){
+		for (int i = 0; i < height; ++i){
 			difAlpha += lastDif[i];
 			step += steps[i];
 			oldAlpha[i] = alpha[i];
 		}
-		difAlpha /= ts->height;
-		step /= ts->height;
+		difAlpha /= height;
+		step /= height;
 
 		count++;
 
-		Logger::instance()->ClassifyProgress(count, step, 0, difAlpha);
+		Logger::instance()->TrainingProgress(count, step, 0, difAlpha);
 
-	} while ((abs(difAlpha) > Precision && count < MaxIterations) || count <= 1);
+	} while ((abs(difAlpha) > Precision && count < MaxIterations));
 
 	Logger::instance()->AddIntMetric("Iterations", count);
 
 	free(lastDif);
 	free(steps);
+	free(oldAlpha);
 	m->Stop();
 }
 
@@ -102,7 +106,7 @@ void SequentialSvm::Test(TrainingSet *ts, ValidationSet *vs)
 	auto m = Logger::instance()->StartMetric("Test");
 	for (auto i = 0; i < vs->height; ++i)
 	{
-		int classifiedY = Classify(ts, vs->GetSample(i));
+		int classifiedY = Classify(ts, vs,i);
 		vs->Validate(i, classifiedY);
 	}
 	m->Stop();

@@ -1,11 +1,9 @@
 #include "stdafx.h"
 #include "ParallelSvm.cuh"
 #include "Logger.h"
-#include <locale>
-#include "Utils.h"
-#include <device_launch_parameters.h>
 #include <cuda_runtime_api.h>
 #include "Settings.h"
+#include "CudaKernels.cuh"
 
 #define CUDA_SAFE_CALL(call) { \
    cudaError_t err = call;     \
@@ -14,67 +12,6 @@
       throw exception(cudaGetErrorString(err)); } } 
 
 using namespace std;
-
-__global__ void classificationKernel(double *saida, const double *tX, const double *tY, const double *vX, const double *alpha, const double gama, const int index, const int width, const int max)
-{
-	int idx = threadIdx.x + blockIdx.x * blockDim.x;
-	if (idx > max)return;
-	int vIndex = index * width;
-	int tIndex = idx*width;
-	double sum = 0;
-	double product;
-	for (int i = 0; i < width; ++i)
-	{
-		product = vX[vIndex + i] - tX[tIndex + i];
-		product *= product;
-		sum += product;
-	}
-	saida[idx] = tY[idx] * alpha[idx] * exp(-gama * sum);
-}
-
-__global__ void trainingKernelLoop(double *sum,const double *alpha, const double *x, const double *y, const double gama, const int nFeatures, const int nSamples,const int batchStart, const int batchEnd)
-{
-	int idx = threadIdx.x + blockIdx.x * blockDim.x;
-	if (idx > nSamples) return;
-	int bIndex = idx*nFeatures;
-	double outerSum = sum[idx];
-	for (int i = batchStart; i < batchEnd; i++){
-		int aIndex = i * nFeatures;
-		double product;
-		double innerSum = 0;
-		for (int j = 0; j < nFeatures; ++j)
-		{
-			product = x[aIndex + j] - x[bIndex + j];
-			product *= product;
-			innerSum += product;
-		}
-		outerSum += alpha[i] * y[i] * exp(-gama * innerSum);
-	}
-	sum[idx] = outerSum;
-}
-
-__global__ void trainingKernelFinish(double *alpha, const double *sum, const double *y, const int nSamples, double *step, double *last, const double C)
-{
-	int idx = threadIdx.x + blockIdx.x * blockDim.x;
-	if (idx > nSamples) return;
-	double deltaAlpha = step[idx] - step[idx]*y[idx] * sum[idx];
-	double newAlpha = deltaAlpha + alpha[idx];
-	if (newAlpha > C)
-		newAlpha = C;
-	else if (newAlpha < 0)
-		newAlpha = 0.0;
-	auto dif = newAlpha - alpha[idx];
-	if (dif*last[idx] < 0)
-		step[idx] /= 2;
-	last[idx] = dif;
-	alpha[idx] = newAlpha;
-}
-
-__global__ void initArray(double *array, const double value)
-{
-	int idx = threadIdx.x + blockIdx.x * blockDim.x;
-	array[idx] = value;
-}
 
 CudaArray::~CudaArray()
 {
@@ -233,15 +170,17 @@ void ParallelSvm::Train(TrainingSet *ts)
 		trainingKernelFinish << <_blocks, _threadsPerBlock >> >(caAlpha.device, caSum.device, caTrainingY.device, ts->height, caStep.device, caLastDif.device, C);
 		caLastDif.CopyToHost();
 		caStep.CopyToHost();
-
+#ifdef _DEBUG
+		caAlpha.CopyToHost();
+#endif
 		difAlpha = caLastDif.GetSum() / ts->height;
 		avgStep = caStep.GetSum() / ts->height;
 
 		count++;
 
-		Logger::instance()->ClassifyProgress(count, avgStep, lastDif, difAlpha);
+		Logger::instance()->TrainingProgress(count, avgStep, lastDif, difAlpha);
 
-	} while ((abs(difAlpha) > Precision && count < MaxIterations) || count <= 1);
+	} while ((abs(difAlpha) > Precision && count < MaxIterations));
 
 	Logger::instance()->AddIntMetric("Iterations", count);
 	caAlpha.CopyToHost();

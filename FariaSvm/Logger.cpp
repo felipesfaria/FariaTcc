@@ -79,7 +79,13 @@ void Logger::AddDoubleMetric(string name, double value)
 		Line(name + ": " + to_string(value));
 }
 
-void Logger::ClassifyProgress(int count, double step, double lastDif, double difAlpha)
+void Logger::TrainingProgress(int count, double step, double lastDif, double difAlpha)
+{
+	if (_type < ALL) return;
+	logFile << FormatClock() << "\t" << "Iteration: " << count << "\tstep: " << step << "\tlastDif:" << lastDif << "\tdifAlpha:" << difAlpha << endl;
+}
+
+void Logger::ClassifyingProgress(int count, double step, double lastDif, double difAlpha)
 {
 	if (_type < ALL) return;
 	logFile << FormatClock() << "\t" << "Iteration: " << count << "\tstep: " << step << "\tlastDif:" << lastDif << "\tdifAlpha:" << difAlpha << endl;

@@ -152,6 +152,7 @@
   <ItemGroup>
     <ClInclude Include="BaseSet.h" />
     <ClInclude Include="BaseSvm.h" />
+    <ClInclude Include="CudaKernels.cuh" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="DataSet.h" />
     <ClInclude Include="Settings.h" />
@@ -172,6 +173,9 @@
     <ClCompile Include="ValidationSet.cpp" />
     <ClCompile Include="BaseSvm.cpp" />
     <ClCompile Include="DataSet.cpp" />
+    <CudaCompile Include="CudaKernels.cu">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </CudaCompile>
     <CudaCompile Include="ParallelSvm.cu">
       <FileType>CppCode</FileType>
     </CudaCompile>
