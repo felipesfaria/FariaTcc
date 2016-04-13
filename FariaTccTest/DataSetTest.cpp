@@ -85,5 +85,39 @@ namespace FariaTccTest
 				Assert::IsTrue(ts.height + vs.height == ds.nSamples);
 			}
 		}
+
+		TEST_METHOD(DataReader_GetFileName)
+		{
+			string actual = DataSet::GetFileName("a1");
+			string expected = ("Data/adult1.data");
+			Assert::AreEqual(expected, actual);
+
+			actual = DataSet::GetFileName("i");
+			expected = ("Data/iris.data");
+			Assert::AreEqual(expected, actual);
+
+			actual = DataSet::GetFileName("w1");
+			expected = ("Data/web1.data");
+			Assert::AreEqual(expected, actual);
+		}
+
+		TEST_METHOD(DataSet_TestLoko)
+		{
+			vector<char*> argv =
+			{
+				"exePath",
+				"-d", "a1",
+				"-l", "n"
+			};
+			Settings::instance()->Init(argv.size(), argv.data());
+			DataSet ds;
+			int actual = ds.nSamples;
+			int expected = 1605;
+			Assert::AreEqual(expected, actual);
+
+			actual = ds.nFeatures;
+			expected = 119;
+			Assert::AreEqual(expected, actual);
+		}
 	};
 }

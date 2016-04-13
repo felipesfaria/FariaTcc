@@ -12,4 +12,4 @@ __global__ void trainingKernelLoop(double *sum, const double *alpha, const doubl
 
 __global__ void trainingKernelFinish(double *alpha, double *sum, const double *y, const int nSamples, double *step, double *last, const double C);
 
-__global__ void initArray(double *array, const double value);
+__global__ void initArray(double *array, const double value, const int max);

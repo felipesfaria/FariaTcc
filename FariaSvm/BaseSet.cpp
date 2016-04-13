@@ -32,8 +32,10 @@ void BaseSet::Init(int height, int width)
 
 void BaseSet::PushSample(vector<double> x, double y)
 {
-	for (int j = 0; j < width; j++)
+	for (int j = 0; j < x.size(); j++)
 		this->x[last*width + j] = x[j];
+	for (int j = x.size(); j <width; j++)
+		this->x[last*width + j] = 0;
 	this->y[last] = y;
 	last++;
 }

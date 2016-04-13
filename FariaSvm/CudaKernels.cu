@@ -8,7 +8,7 @@ __host__ __device__ double gaussKernel(const double* a, int aI, const double* b,
 {
 	int aIw = aI * width;
 	int bIw = bI * width;
-	double product;
+	double product=1;
 	double innerSum = 0;
 	for (int j = 0; j < width; ++j)
 	{
@@ -60,11 +60,11 @@ __global__ void trainingKernelFinish(double *alpha, double *sum, const double *y
 		step[idx] /= 2;
 	last[idx] = dif;
 	alpha[idx] = newAlpha;
-	//alpha[idx] = sum[idx];
 }
 
-__global__ void initArray(double *array, const double value)
+__global__ void initArray(double *array, const double value, const int max)
 {
 	int idx = threadIdx.x + blockIdx.x * blockDim.x;
-	array[idx] = value;
+	if (idx < max)
+		array[idx] = value;
 }

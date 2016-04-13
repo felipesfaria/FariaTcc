@@ -140,13 +140,13 @@ void ParallelSvm::Train(TrainingSet *ts)
 	caSum.Init(ts->height);
 
 	caStep.Init(ts->height);
-	initArray << <_blocks, _threadsPerBlock >> >(caStep.device, _initialStep);
+	initArray << <_blocks, _threadsPerBlock >> >(caStep.device, _initialStep,ts->height);
 
 	caLastDif.Init(ts->height);
-	initArray << <_blocks, _threadsPerBlock >> >(caLastDif.device, 0.0);
+	initArray << <_blocks, _threadsPerBlock >> >(caLastDif.device, 0.0, ts->height);
 
 	caAlpha.Init(ts->alpha, ts->height);
-	initArray << <_blocks, _threadsPerBlock >> >(caAlpha.device, _initialStep);
+	initArray << <_blocks, _threadsPerBlock >> >(caAlpha.device, _initialStep, ts->height);
 
 	int count = 0;
 	double lastDif = 0.0;
