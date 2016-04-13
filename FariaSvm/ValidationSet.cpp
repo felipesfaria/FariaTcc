@@ -8,10 +8,10 @@ void ValidationSet::Init(int height, int width)
 	nPositiveWrong = 0;
 	nNegativeWrong = 0;
 	nNullWrong = 0;
-	BaseInit(height, width);
+	BaseSet::Init(height, width);
 }
 
-double ValidationSet::GetPercentage()
+double ValidationSet::GetPercentage() const
 {
 	return nCorrect * 100.0 / height;
 }

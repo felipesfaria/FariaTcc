@@ -13,9 +13,8 @@ public:
 	int last = 0;
 	bool initialised = false;
 	BaseSet();
-	~BaseSet();
-	void Init(int height, int width);
-	void BaseInit(int height, int width);
+	virtual ~BaseSet();
+	virtual void Init(int height, int width);
 	void PushSample(vector<double> x, double y);
 	double* GetSample(int i);
 };

@@ -7,8 +7,8 @@ public:
 	double* alpha;
 	double b;
 
-	void Init(int height, int width);
-	unsigned CountSupportVectors();
+	void Init(int height, int width) override;
+	unsigned CountSupportVectors() const;
 	~TrainingSet();
 };
 

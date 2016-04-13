@@ -16,11 +16,6 @@ BaseSet::~BaseSet()
 
 void BaseSet::Init(int height, int width)
 {
-	BaseInit(height, width);
-};
-
-void BaseSet::BaseInit(int height, int width)
-{
 	if (height != this->height){
 		this->height = height;
 		this->width = width;

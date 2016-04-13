@@ -10,10 +10,10 @@ void TrainingSet::Init(int height, int width)
 		alpha = (double*)malloc(height*sizeof(double));
 		b = 0.0;
 	}
-	BaseInit(height, width);
+	BaseSet::Init(height, width);
 }
 
-unsigned TrainingSet::CountSupportVectors()
+unsigned TrainingSet::CountSupportVectors() const
 {
 	unsigned count = 0;
 	for (int i = 0; i < height; ++i){
