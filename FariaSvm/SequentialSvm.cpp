@@ -69,8 +69,8 @@ void SequentialSvm::Train(TrainingSet *ts)
 			{
 				sum += y[j] * oldAlpha[j] * gaussKernel(x,j,x,i,width,g);
 			}
-			double value = CalcAlpha(oldAlpha, sum, y, steps, C, i);
-
+			double value = calcAlpha(oldAlpha, sum, y, steps, C, i);
+			
 			auto dif = value - alpha[i];
 			if (dif*lastDif[i] < 0)
 				steps[i] /= 2;

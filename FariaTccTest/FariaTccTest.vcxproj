@@ -81,7 +81,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\Felipe\SkyDrive\Code\FariaTcc\FariaSvm\Release;$(CudaToolkitLibDir);$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>BaseSet.obj;BaseSvm.obj;CudaKernels.cu.obj;cudart.lib;DataSet.obj;FariaSvm.obj;Logger.obj;ParallelSvm.cu.obj;SequentialSvm.obj;Settings.obj;stdafx.obj;Timer.obj;TrainingSet.obj;Utils.obj;ValidationSet.obj;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
