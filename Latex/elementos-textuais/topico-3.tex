@@ -31,3 +31,5 @@ CUDA é um modelo de programação heterogênea, isso implica que a CPU (chamada
 \codec{C}{alg:cuda_2}{codigos/cuda_2.txt}
 
 Como as funções de cuda não rodam na CPU as vezes é difícil saber o que está acontecendo e se ocorreu um erro ou se o programa está em um estado inválido do lado da GPU. Por isso as funções de cuda retornam códigos de erro ou sucesso definidos pelo enum $cudaError$. O kernel não possui esse retorno então é possível checar o status da GPU após as chamadas de kernel para saber se ocorreu um erro com a função $cudaGetLastError()$.
+
+É possível incluir funções dentro de kernels de CUDA, para isso é preciso colocar a diretiva $\_\_device\_\_$ antes da função, assim o compilador vai saber que essa função deve ser executada em GPU e irá compilar de acordo. Caso queira que a função também possa rodar na CPU é possível colocar a diretiva $\_\_host\_\_$, assim usando as duas diretivas é possível usar a mesma função em códigos dentro e fora de kernels de CUDA.
