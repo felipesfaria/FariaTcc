@@ -39,8 +39,8 @@ void DataSet::InitData(string arg)
 		break;
 	case 'i':
 	default:
-		C = 4;
-		Gama = 0.1;
+		C = 16;
+		Gama = 0.5;
 	}
 }
 
