@@ -46,6 +46,14 @@ Settings* Settings::instance()
 }
 void Settings::Init(int argc, char** argv)
 {
+	Setting help;
+	help.name = "help";
+	help.isSet = false;
+	help.command = "-h";
+	help.description = "Shows options available.";
+	help.type = Setting::HELP;
+	settingsMap[help.name] = help;
+
 	Setting seed;
 	seed.name = "seed";
 	seed.isSet = false;
@@ -68,7 +76,7 @@ void Settings::Init(int argc, char** argv)
 	threadsPerBlock.name = "threadsPerBlock";
 	threadsPerBlock.isSet = false;
 	threadsPerBlock.command = "-t";
-	threadsPerBlock.description = "Threads Per Block used for cuda kernels. Default is: 128";
+	threadsPerBlock.description = "Threads Per Block used for cuda kernels.";
 	threadsPerBlock.type = Setting::UNSIGNED;
 	threadsPerBlock.uValue = 128;
 	settingsMap[threadsPerBlock.name] = threadsPerBlock;
@@ -77,7 +85,7 @@ void Settings::Init(int argc, char** argv)
 	maxIterations.name = "maxIterations";
 	maxIterations.isSet = false;
 	maxIterations.command = "-mi";
-	maxIterations.description = "Threads Per Block used for cuda kernels. Default is: 128";
+	maxIterations.description = "Threads Per Block used for cuda kernels.";
 	maxIterations.type = Setting::UNSIGNED;
 	maxIterations.uValue = 128;
 	settingsMap[maxIterations.name] = maxIterations;
@@ -86,7 +94,7 @@ void Settings::Init(int argc, char** argv)
 	svm.name = "svm";
 	svm.isSet = false;
 	svm.command = "-svm";
-	svm.description = "Type of SVM to use, 'p' for parallel, 's' for sequential. Default is: s";
+	svm.description = "Type of SVM to use, 'p' for parallel, 's' for sequential.";
 	svm.type = Setting::STRING;
 	svm.sValue = "s";
 	settingsMap[svm.name] = svm;
@@ -113,7 +121,7 @@ void Settings::Init(int argc, char** argv)
 	constraint.name = "constraint";
 	constraint.isSet = false;
 	constraint.command = "-c";
-	constraint.description = "Constraint for softmargin. Default is 999";
+	constraint.description = "Constraint for softmargin.";
 	constraint.type = Setting::DOUBLE;
 	constraint.dValue = 999;
 	settingsMap[constraint.name] = constraint;
@@ -122,10 +130,28 @@ void Settings::Init(int argc, char** argv)
 	step.name = "step";
 	step.isSet = false;
 	step.command = "-st";
-	step.description = "Size of first step in the algorithm. Default is 1";
+	step.description = "Size of first step in the algorithm.";
 	step.type = Setting::DOUBLE;
 	step.dValue = 1;
 	settingsMap[step.name] = step;
+
+	Setting stepMode;
+	stepMode.name = "stepMode";
+	stepMode.isSet = false;
+	stepMode.command = "-sm";
+	stepMode.description = "Single ot Multi-Step mode";
+	stepMode.type = Setting::STRING;
+	stepMode.sValue = "s";
+	settingsMap[stepMode.name] = stepMode;
+
+	Setting stochastic;
+	stochastic.name = "stochastic";
+	stochastic.isSet = false;
+	stochastic.command = "-t";
+	stochastic.description = "Stochastic update";
+	stochastic.type = Setting::STRING;
+	stochastic.sValue = "f";
+	settingsMap[stochastic.name] = stochastic;
 
 	Setting precission;
 	precission.name = "precision";
@@ -135,15 +161,7 @@ void Settings::Init(int argc, char** argv)
 	precission.type = Setting::DOUBLE;
 	precission.dValue = 1e-10;
 	settingsMap[precission.name] = precission;
-
-	Setting help;
-	help.name = "help";
-	help.isSet = false;
-	help.command = "-h";
-	help.description = "Shows options available.";
-	help.type = Setting::HELP;
-	settingsMap[help.name] = help;
-
+	
 	Setting log;
 	log.name = "log";
 	log.isSet = false;

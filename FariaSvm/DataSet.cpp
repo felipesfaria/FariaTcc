@@ -26,7 +26,6 @@ DataSet::~DataSet()
 
 void DataSet::InitData(string arg)
 {
-	kernelType = KernelType::GAUSSIAN;
 	switch (arg[0])
 	{
 	case 'a':
@@ -71,7 +70,6 @@ bool DataSet::readRow(istream& str)
 	if (!Utils::TryParseDouble(cell, y))
 		throw exception("Missing y value.");
 	vector<double> x;
-	int count = X.size();
 	int i = 1;
 	while (getline(lineStream, cell, ' '))
 	{
@@ -88,18 +86,18 @@ bool DataSet::readRow(istream& str)
 	return true;
 }
 
-void DataSet::InitFoldSets(TrainingSet *ts, ValidationSet*vs, int fold)
+void DataSet::InitFoldSets(TrainingSet &ts, ValidationSet &vs, int fold)
 {
 	int vStart = nSamples*(fold - 1) / nFolds;
 	int vEnd = nSamples*fold / nFolds;
-	ts->Init(nSamples - (vEnd - vStart), nFeatures);
-	vs->Init((vEnd - vStart), nFeatures);
+	ts.Init(nSamples - (vEnd - vStart), nFeatures);
+	vs.Init((vEnd - vStart), nFeatures);
 	for (int i = 0; i < nSamples; i++)
 	{
 		if (i >= vStart&&i<vEnd)
-			vs->PushSample(X[i], Y[i]);
+			vs.PushSample(X[i], Y[i]);
 		else
-			ts->PushSample(X[i], Y[i]);
+			ts.PushSample(X[i], Y[i]);
 	}
 }
 

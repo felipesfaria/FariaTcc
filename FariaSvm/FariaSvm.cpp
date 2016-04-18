@@ -19,13 +19,8 @@ int main(int argc, char* argv[])
 		srand(seed);
 
 		DataSet ds;
-		auto svmType = Settings::instance()->GetString("svm");
 		
-		BaseSvm *svm;
-		if (svmType == "p")
-			svm = new ParallelSvm(&ds);
-		else
-			svm = new SequentialSvm(&ds);
+		BaseSvm *svm = BaseSvm::GenerateSvm(ds);
 
 		Logger::instance()->LogSettings();
 
@@ -33,7 +28,7 @@ int main(int argc, char* argv[])
 		ValidationSet vs;
 		for (auto i = 1; i <= ds.nFolds; i++){
 			Logger::instance()->Line("Starting Fold "+to_string(i));
-			ds.InitFoldSets(&ts, &vs, i);
+			ds.InitFoldSets(ts, vs, i);
 			svm->Train(&ts);
 			Logger::instance()->AddIntMetric("SupportVectors", ts.CountSupportVectors());
 			svm->Test(&ts, &vs);

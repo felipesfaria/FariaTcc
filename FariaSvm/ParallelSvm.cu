@@ -77,11 +77,11 @@ double CudaArray::GetSum()
 	return sum;
 }
 
-ParallelSvm::ParallelSvm(DataSet *ds)
+ParallelSvm::ParallelSvm(DataSet &ds)
 	: BaseSvm(ds)
 {
 	int halfGigaByte = 1 << 29;
-	long gpuByteSize = ds->nSamples*ds->nFeatures*sizeof(double);
+	long gpuByteSize = ds.nSamples*ds.nFeatures*sizeof(double);
 
 	if (gpuByteSize > halfGigaByte || gpuByteSize < 0)
 		throw exception("gpuByteSize to big for gpu.");
@@ -136,11 +136,13 @@ void ParallelSvm::Train(TrainingSet *ts)
 	caTrainingX.CopyToDevice();
 	caTrainingY.Init(ts->y, ts->height);
 	caTrainingY.CopyToDevice();
-
+	
+	double step = _initialStep;
 	caSum.Init(ts->height);
-
-	caStep.Init(ts->height);
-	initArray << <_blocks, _threadsPerBlock >> >(caStep.device, _initialStep,ts->height);
+	if (isMultiStep){
+		caStep.Init(ts->height);
+		initArray << <_blocks, _threadsPerBlock >> >(caStep.device, _initialStep, ts->height);
+	}
 
 	caLastDif.Init(ts->height);
 	initArray << <_blocks, _threadsPerBlock >> >(caLastDif.device, 0.0, ts->height);
@@ -149,13 +151,12 @@ void ParallelSvm::Train(TrainingSet *ts)
 	initArray << <_blocks, _threadsPerBlock >> >(caAlpha.device, _initialStep, ts->height);
 
 	int count = 0;
-	double lastDif = 0.0;
-	double difAlpha;
+	double lastDif = 999999;
+	double avgDif;
 	int batchSize = 512;
 	int batchStart;
 	int batchEnd;
-	double avgStep;
-	CUDA_SAFE_CALL(cudaDeviceSynchronize());
+	//CUDA_SAFE_CALL(cudaDeviceSynchronize());
 	do
 	{
 		for (batchStart = 0; batchStart < ts->height; batchStart += batchSize)
@@ -167,20 +168,32 @@ void ParallelSvm::Train(TrainingSet *ts)
 			trainingKernelLoop << <_blocks, _threadsPerBlock >> >(caSum.device, caAlpha.device, caTrainingX.device, caTrainingY.device, g, ts->width, ts->height, batchStart, batchEnd);
 			CUDA_SAFE_CALL(cudaDeviceSynchronize());
 		}
-		trainingKernelFinish << <_blocks, _threadsPerBlock >> >(caAlpha.device, caSum.device, caTrainingY.device, ts->height, caStep.device, caLastDif.device, C);
+
+		if (isMultiStep)
+			trainingKernelFinishMultiple << <_blocks, _threadsPerBlock >> >(caAlpha.device, caSum.device, caTrainingY.device, ts->height, caStep.device, caLastDif.device, C);
+		else
+			trainingKernelFinishSingle << <_blocks, _threadsPerBlock >> >(caAlpha.device, caSum.device, caTrainingY.device, ts->height, step, caLastDif.device, C);
+		
 		caLastDif.CopyToHost();
-		caStep.CopyToHost();
+		avgDif = caLastDif.GetSum() / ts->height;
+
+		if (!isMultiStep)
+		{
+			updateStep(step, lastDif, avgDif);
+		}
+		else{
+			caStep.CopyToHost();
+			step = caStep.GetSum() / ts->height;
+		}
+
 #ifdef _DEBUG
 		caAlpha.CopyToHost();
 #endif
-		difAlpha = caLastDif.GetSum() / ts->height;
-		avgStep = caStep.GetSum() / ts->height;
-
 		count++;
 
-		Logger::instance()->TrainingProgress(count, avgStep, lastDif, difAlpha);
+		Logger::instance()->TrainingProgress(count, step, avgDif);
 
-	} while ((abs(difAlpha) > Precision && count < MaxIterations));
+	} while (abs(avgDif) > Precision && count < MaxIterations);
 
 	Logger::instance()->AddIntMetric("Iterations", count);
 	caAlpha.CopyToHost();

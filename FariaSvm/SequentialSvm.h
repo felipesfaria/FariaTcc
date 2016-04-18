@@ -5,7 +5,7 @@ class SequentialSvm:
 	public BaseSvm
 {
 public:
-	SequentialSvm(DataSet *ds);
+	SequentialSvm(DataSet &ds);
 	~SequentialSvm();
 	int Classify(TrainingSet* ts, ValidationSet* vs, unsigned vIndex);
 	void Train(TrainingSet *ts) override;

@@ -9,24 +9,51 @@ __host__ __device__ double gaussKernel(const double* a, int aI, const double* b,
 	int aIw = aI * width;
 	int bIw = bI * width;
 	double product=1;
-	double innerSum = 0;
+	double sum = 0;
 	for (int j = 0; j < width; ++j)
 	{
 		product = a[aIw + j] - b[bIw + j];
 		product *= product;
-		innerSum += product;
+		sum += product;
 	}
-	return exp(-g*innerSum);
+	return exp(-g*sum);
 }
+//
+//__host__ __device__ double calcAlphaMultiStep(double* alpha, const double sum, const double* y, double* step, const double C, int idx)
+//{
+//	auto newAlpha = alpha[idx] + step[idx] - step[idx] * y[idx] * sum;
+//	if (newAlpha > C)
+//		newAlpha = C;
+//	else if (newAlpha < 0)
+//		newAlpha = 0.0;
+//	return newAlpha;
+//}
+//
+//__host__ __device__ double calcAlphaSingleStep(double* alpha, const double sum, const double* y, double step, const double C, int idx)
+//{
+//	auto newAlpha = alpha[idx] + step - step * y[idx] * sum;
+//	if (newAlpha > C)
+//		newAlpha = C;
+//	else if (newAlpha < 0)
+//		newAlpha = 0.0;
+//	return newAlpha;
+//}
 
-__host__ __device__ double calcAlpha(double* alpha, const double sum, const double* y, double* step, const double C, int idx)
+__host__ __device__ double calcAlpha(double alpha, const double sum, const double y, double step, const double C)
 {
-	auto newAlpha = alpha[idx] + step[idx] - step[idx] * y[idx] * sum;
+	auto newAlpha = alpha + step - step * y * sum;
 	if (newAlpha > C)
 		newAlpha = C;
 	else if (newAlpha < 0)
 		newAlpha = 0.0;
 	return newAlpha;
+}
+
+__host__ __device__  void updateStep(double& step, double& oldDif, double newDif)
+{
+	if (oldDif*newDif<0 || abs(oldDif) <= abs(newDif))
+		step /= 2;
+	oldDif = newDif;
 }
 
 __global__ void classificationKernel(double *saida, const double *tX, const double *tY, const double *vX, const double *alpha, const double g, const int index, const int width, const int max)
@@ -47,17 +74,32 @@ __global__ void trainingKernelLoop(double *sum, const double *alpha, const doubl
 	sum[idx] = outerSum;
 }
 
-__global__ void trainingKernelFinish(double *alpha, double *sum, const double *y, const int nSamples, double *step, double *last, const double C)
+__global__ void trainingKernelFinishMultiple(double *alpha, double *sum, const double *y, const int nSamples, double *step, double *last, const double C)
 {
 	int idx = threadIdx.x + blockIdx.x * blockDim.x;
 	if (idx > nSamples) return;
-	double newAlpha = calcAlpha(alpha, sum[idx], y, step, C, idx);
+
+	double newAlpha = calcAlpha(alpha[idx], sum[idx], y[idx], step[idx], C);
 
 	sum[idx] = 0.0;
 
 	auto dif = newAlpha - alpha[idx];
-	if (dif*last[idx] < 0)
-		step[idx] /= 2;
+
+	updateStep(step[idx], last[idx], dif);
+
+	alpha[idx] = newAlpha;
+}
+
+__global__ void trainingKernelFinishSingle(double *alpha, double *sum, const double *y, const int nSamples, double step, double *last, const double C)
+{
+	int idx = threadIdx.x + blockIdx.x * blockDim.x;
+	if (idx > nSamples) return;
+
+	double newAlpha = calcAlpha(alpha[idx], sum[idx], y[idx], step, C);
+
+	sum[idx] = 0.0;
+
+	auto dif = newAlpha - alpha[idx];
 	last[idx] = dif;
 	alpha[idx] = newAlpha;
 }

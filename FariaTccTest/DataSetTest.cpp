@@ -4,7 +4,7 @@
 #include "../FariaSvm/DataSet.h"
 #include "../FariaSvm/TrainingSet.h"
 #include "../FariaSvm/ValidationSet.h"
-#include <Settings.h>
+#include "../FariaSvm/Settings.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace std;
@@ -81,7 +81,7 @@ namespace FariaTccTest
 			TrainingSet ts;
 			ValidationSet vs;
 			for (auto i = 1; i <= ds.nFolds; i++){
-				ds.InitFoldSets(&ts, &vs, i);
+				ds.InitFoldSets(ts, vs, i);
 				Assert::IsTrue(ts.height + vs.height == ds.nSamples);
 			}
 		}
