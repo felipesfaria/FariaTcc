@@ -26,23 +26,22 @@ f(\bar{\alpha})=sgn((\bar{\alpha}-\bar{c})\cdot\bar{d})
 \end{figure}
 
 %silvana: definir perceptron...
-Como estamos assumindo que nossos dados são linearmente separáveis já sabemos qual a função discriminante, falta encontrar os parâmetros $\bar{c}$ e $\bar{d}$ que classificam corretamente esse conjunto de dados. Existem algumas formas de encontrar os parâmetros que definem essa superfície de decisão linear, um método próximo da maquina de vetores de suporte é o perceptron. O perceptron da valores aleatórios a $\bar{c}$ e $\bar{d}$ e classifica o conjunto de dados usando a função discriminante. A cada iteração o perceptron corrige os valores de $\bar{c}$ e $\bar{d}$ para os dados que estiverem classificados de forma errada. Dessa forma se o conjunto de dados for realmente linearmente separável o perceptron vai convergir para a superfície de decisão linear.
+Como estamos assumindo que nossos dados são linearmente separáveis já sabemos qual a função discriminante, falta encontrar os parâmetros $\bar{c}$ e $\bar{d}$ que classificam corretamente esse conjunto de dados. Existem algumas formas de encontrar os parâmetros que definem essa superfície de decisão linear, um método próximo da maquina de vetores de suporte é o perceptron. O perceptron da valores aleatórios a $\bar{c}$ e $\bar{d}$ e classifica o conjunto de dados usando a função discriminante. A cada iteração o perceptron corrige os valores de $\bar{c}$ e $\bar{d}$ para os dados que estiverem classificados de forma errada. Dessa forma se o conjunto de dados for linearmente separável o perceptron vai convergir para a superfície de decisão linear.
 
-Essa superfície separa perfeitamente os exemplos usados no treinamento, mas pode ter muitos erros para classificar dados reais. Isso ocorre porque o perceptron dessa forma não tem nenhum critério para saber se a superfície é boa ou ruim. Usando a figura \ref{fig:LABEL_FIG_2} como exemplo vamos supor que os pontos +* e -* não estavam no conjunto de treinamento e o perceptron chegou na linha pontilhada como superfície de separação. A linha preta seria mais adequada já que divide o espaço de forma mais justa reduzindo a chance de ter um ponto classificado errado.
+Essa superfície separa perfeitamente os exemplos usados no treinamento, mas pode ter muitos erros para classificar dados reais. Isso ocorre porque o perceptron não tem nenhum critério para saber se a superfície é boa ou ruim. Usando a figura \ref{fig:LABEL_FIG_2} como exemplo vamos supor que os pontos +* e -* não estavam no conjunto de treinamento e o perceptron chegou na linha pontilhada como superfície de separação. A linha preta seria mais adequada já que divide o espaço de forma mais justa reduzindo a chance de ter um ponto classificado errado.
 
 \begin{figure}
   \centering
   \includegraphics[width=0.4\textwidth]{imagens/svm_2.png}
-  \caption{A linha pre representa a melhor separação e as linhas claras representam linhas com maior chance de erro}
+  \caption{A linha preta representa a melhor separação e a linha pontilhada representa uma separação com maior chance de erro}
   \label{fig:LABEL_FIG_2}
 \end{figure}
 
+Para encontrar essa superfície precisamos definir hiperplanos de suporte e vetores de suporte. Hiperplanos de suporte são as superfícies que tangenciam os dados de cada classe que nos queremos separar. Esses hiperplanos devem ser paralelos e a nossa superfície de decisão ótima deve se encontrar no meio desses dois hiperplanos. Vetores de suporte são os pontos que pertencem a essas superfícies.
+Podemos ver na figura \ref{fig:LABEL_FIG_3} que a superfície de decisão ótima vai ser encontrada quando a margem entre nossos hiperplanos de suporte for máxima.
+
 \section{Classificadores de Margem Máxima}
 Isso nos leva ao próximo conceito, classificadores de margem máxima. Essas técnicas tem como objetivo encontrar a superfície central entre dois conjuntos de dados (A linha preta, na figura anterior) para minimizar a chance de erro na classificação.
-
-Como estamos procurando a margem máxima dado um conjunto de margens possíveis faz sentido abordar o problema como um problema de otimização.
-
-Formalmente problemas de otimização são definidos como: $\underset{\bar{x}}{min}\phi(\bar{x})$ dado que $h_i(\bar{x})\ge c_i$ $\forall \bar{x} \in \mathbb{R}^n$. Onde $\phi: \mathbb{R}^n\rightarrow \mathbb{R}$ é a função objetivo que se quer minimizar e $h_i:\mathbb{R}^n\rightarrow\mathbb{R}$ é o limitante da função com limite $c_i$
 
 \begin{figure}
   \centering
@@ -51,11 +50,15 @@ Formalmente problemas de otimização são definidos como: $\underset{\bar{x}}{m
   \label{fig:LABEL_FIG_3}
 \end{figure}
 
-Podemos então traduzir o problema de separar o conjunto de dados em um problema de otimização onde o objetivo é maximizar a distancia entre as superfícies de suporte. As superfícies de suporte são definidas como hiperplanos paralelos que tangenciam os conjuntos de dados de cada classe. E vetores de suporte são pontos pertencentes a essas superfícies. Assim o que nós queremos é a função da superfície de decisão ótima $\bar{w}^*\cdot\bar{x}=b^*$ onde a projeção entre os vetores de suporte $m^*=|\bar{x}_p - \bar{x}_q|cos\gamma$ é máximo.
+Como estamos procurando a margem máxima dado um conjunto de margens possíveis faz sentido abordar o problema como um problema de otimização.
+
+Formalmente problemas de otimização são definidos como: $\underset{\bar{x}}{min}\phi(\bar{x})$ dado que $h_i(\bar{x})\ge c_i$ $\forall \bar{x} \in \mathbb{R}^n$. Onde $\phi: \mathbb{R}^n\rightarrow \mathbb{R}$ é a função objetivo que se quer minimizar e $h_i:\mathbb{R}^n\rightarrow\mathbb{R}$ é o limitante da função com limite $c_i$
+
+Podemos então traduzir o problema de separar o conjunto de dados em um problema de otimização onde o objetivo é maximizar a distancia entre as superfícies de suporte. As superfícies de suporte são definidas como hiperplanos paralelos que tangenciam os conjuntos de dados de cada classe. E vetores de suporte são pontos pertencentes a essas superfícies. Assim o que nós queremos é a função da superfície de decisão ótima $\bar{w}^*\cdot\bar{x}=b^*$ onde a projeção entre os vetores de suporte $m^*=|\bar{x}_p - \bar{x}_q|cos\gamma$ é máximo como podemos ver na figura \ref{fig:LABEL_FIG_4}. 
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.4\textwidth]{imagens/svm_4.png}
+  \includegraphics[width=0.6\textwidth]{imagens/svm_4.png}
   \captionsource{Calculando a margem $m^*$ entre os planos de suporte}{\cite{art:LIVRO_SVM}}
   \label{fig:LABEL_FIG_4}
 \end{figure}
@@ -123,7 +126,7 @@ Nossas restrições podem ser escritas como:
 
 Assim um classificador por margem máxima fica definido como: Dado um conjunto de dados linearmente separáveis $D=(\bar{x}_i,y_i) \subseteq \mathbb{R}^n\times\{+1,1\}$, podemos encontrar a superfície máxima de separação, $\bar{w}^*\cdot\bar{x}=b^*$, otimizando o problema $min\phi(\bar{w},b)=\underset{\bar{w},b}{min}\frac{1}{2}\bar{w}\cdot\bar{w}$ sujeito as restrições de $\bar{w}^*\cdot(y_i\bar{x}_i) \ge 1+y_i b \quad \forall (\bar{x}_i,y_i)\in D$.\par
 
-Uma maquina de suporte de vetor é o problema dual do classificador de margem máxima. Podemos entender um problema dual como uma versão análoga do problema onde invés de encontrar o vetor de define a superfície de separação $w$, queremos encontrar o conjunto de valores de $a$ do qual podemos inferir $w$. Para resolver esse problema dual utilizamos a técnica dual Lagrangiana.
+Uma maquina de vetores de suporte é o problema dual do classificador de margem máxima. Podemos entender um problema dual como uma versão análoga do problema onde invés de encontrar o vetor que define a superfície de separação $w$, queremos encontrar o conjunto de valores de $a$ do qual podemos inferir $w$. Para resolver esse problema dual utilizamos a técnica dual Lagrangiana. Essa técnica pode ser vista nos trabalhos de \cite{art:LIVRO_SVM} e \cite{art:LIVRO_KAA}.
 
 O método de otimização Lagrangiana reescreve um problema de otimização da forma:
 \begin{equation}
@@ -150,7 +153,7 @@ g_i(\bar{x}^*)&\ge\bar{0} , \\
 \end{split}
 \end{equation}
 
-Essas condições são conhecidas como as condições de Karush-Kuhn-Tucker ou KKT e podemos usar elas para reescrever nosso problema dependendo somente de $\alpha$ facilitando nossa busca. Agora podemos aplicar essa técnica no nosso problema de margem máxima, escrevemos nossa função lagrangiana como:
+Essas condições são conhecidas como as condições de Karush-Kuhn-Tucker ou KKT e podemos usar elas para reescrever nosso problema dependendo somente de $\bar{\alpha}$ facilitando nossa busca. Agora podemos aplicar essa técnica no nosso problema de margem máxima, escrevemos nossa função lagrangiana como:
 
 \begin{equation}
 \begin{split}
@@ -168,8 +171,11 @@ Aplicando as KKTs chegamos no nosso classificador de margem máxima dual:
 dado que:
 \begin{equation}
     \sum_{i=1}^{l}\alpha_i y_i = 0 \quad \text{e} \quad \alpha_i \ge 0 \forall \quad i \in \{1,l\}
+    \label{eq:restricoes}
 \end{equation}
+
 Uma vez encontrado nosso $\bar{\alpha}^*$ ótimo podemos classificar um novo ponto $\bar{x}$ com a formula:
+
 \begin{equation}
     f(\bar{x}) = sgn\Bigg(
         \sum_{i=1}^{l} \alpha_i^*y_i\bar{x}_i\cdot\bar{x}
@@ -232,7 +238,7 @@ Para transformar nossa maquina de vetor de suporte linear em um não linear apen
 
 Treinador:
 \begin{equation}
-    \bar{\alpha}^* = \underset{\bar{\alpha}}{argmax} \Bigg( \sum_{i=1}^{l}\alpha_i - \frac{1}{2}\sum_{i=1}^{l}\sum_{j=1}^{l}\alpha_i \alpha_j y_i y_j k(\bar{x}_i,\bar{x}_j) \Bigg)
+    \bar{\alpha}^* = \underset{\bar{\alpha}}{argmax}{\phi}'(\bar{\alpha}) =\underset{\bar{\alpha}}{argmax} \Bigg( \sum_{i=1}^{l}\alpha_i - \frac{1}{2}\sum_{i=1}^{l}\sum_{j=1}^{l}\alpha_i \alpha_j y_i y_j k(\bar{x}_i,\bar{x}_j) \Bigg)
     \label{eq:EQ_Treinador_2}
 \end{equation}
 
@@ -265,11 +271,36 @@ Para isso escolhemos uma constante $C$ que atribuímos como um peso para os erro
 
 \section{Implementação}
 Com isso definimos uma maquina de vetor de suporte bem robusto capaz de classificar conjuntos de dados não lineares e suscetíveis a ruídos. A complexidade de implementação de uma MVS consiste na dificuldade de se achar o valor máximo de $\bar{\alpha}$ existem alguns algoritmos diferentes para se chegar nesse resultado, alguns deles descritos em \cite{art:LIVRO_SVM} são:
+
 %Felipe No livro está Gradient Ascent, não sei se essa tradução está boa
-\subsection{Incremento de Gradiente}
-O gradiente de um vetor é um vetor que aponta para a direção onde a função cresce naquele ponto. Dessa forma podemos calcular o gradiente de $\alpha$ em um ponto aleatório e e incrementar os valores de $\alpha$ incrementalmente. Quando o gradiente for $0$ chegamos no máximo local e encontramos o valor ótimo de $\alpha$. Apesar de não considerarmos $b$ nessa implementação seu valor pode ser encontrado a partir do valor de $\alpha$.
-\subsection{Algoritmo Kernel-Adatron}
-O problema do incremento de gradiente é que ele ignora as restrições de otimização definidas por KKT e não converge e não considera o valor de $b$ que pode mudar o ponto máximo. O algoritmo Kernel-Adatron resolve esses dois problemas. Podemos fixar o valor de $b$ como zero, dessa forma ao garantirmos que o valor $\alpha$ é maior que zero garantimos também que as condições de KKT são válidas.
+\subsection{Gradiente Ascendente}
+O gradiente de um vetor é um vetor que aponta para a direção onde a função cresce naquele ponto. Dessa forma podemos calcular o gradiente de $\bar{\alpha}$ em um ponto aleatório e incrementar os valores de $\bar{\alpha}$ pelo gradiente. Sabemos que chegamos no máximo local quando o gradiente for $0$, ou quando a diferença de $\bar{\alpha}$ entre as iterações é aproximadamente $0$. Nesse ponto temos o valor ótimo de $\bar{\alpha}$. Apesar de não considerarmos $b$ nessa implementação seu valor pode ser encontrado a partir de $\bar{\alpha}$. Calculando o gradiente do nosso treinador encontrado em \ref{eq:EQ_Treinador_2} encontramos a equação \ref{eq:Gradiente}.
+
+\begin{equation}
+    \triangledown_i {\phi}'(\bar{\alpha}) = 1-y_i\sum_{j=1}^ly_j\alpha_jk(\bar{x}_j,\bar{x}_i)
+    \label{eq:Gradiente}
+\end{equation}
+Não temos garantia que o tamanho do gradiente não seja maior que a distancia até o ponto ótimo por devemos incluir uma taxa de aprendizado $\eta$ multiplicado pelo gradiente, valores comuns de $\eta$ variam na faixa de $[0,1]$. Como o máximo da dual lagrangiana é único podemos garantir que o algoritmo vai convergir dado um $\eta$ pequeno o suficiente.
+
+\begin{algorithm}
+\label{alg:gradiente}
+\caption{Algoritmo Gradiente Ascendente}
+\begin{algorithmic}
+\STATE $\eta>0$
+\STATE $\bar{\alpha} \leftarrow \bar{0}$
+\REPEAT
+\STATE $\bar{\alpha_{old}} \leftarrow \bar{\alpha}$
+\FOR{$i=1$ to $l$}
+\STATE $\alpha_i \leftarrow a_i + \eta \triangledown_i {\phi}'(\bar{\alpha})$
+\ENDFOR
+\UNTIL{$\bar{\alpha}-\bar{\alpha_{old}}\approx \bar{0}$}
+\RETURN $(\bar{\alpha},b)$
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Algoritmo Kernel-Adatron} \label{sec:kaa}
+O problema do Gradiente Ascendente é que ele ignora as restrições de otimização definidas em \ref{eq:restricoes}, não considera o valor de $b$ e não considera uma margem flexível. O algoritmo Kernel-Adatron resolve esses problemas. Em \cite{art:LIVRO_KAA} é explicado que a primeira restrição, $\sum_{i=1}^{l}\alpha_i y_i = 0$, só é necessária para restringir o valor de $b$ no ponto máximo. Ao fixar o valor de $b$ em zero podemos abrir mão dessa restrição. O valor de $b$ é usado para encontrar o deslocamento da origem da nossa superfície de decisão de forma que fixando ele em zero nos limitamos a hiperplanos que cruzem a origem no espaço de projeção. De acordo com Campbell, na pratica essa é uma generalização não prejudica os resultados quando estamos tratando de um espaço de muitas dimensões. Assim ficamos com as restrições $\alpha_i \ge 0$ e $\alpha_i \le C$ que pode ser facilmente implementado. Podemos ver o algoritmo descrito em \ref{alg:KAA}.
+
 \begin{algorithm}
 \label{alg:KAA}
 \caption{Algoritmo Kernel-Adatron}

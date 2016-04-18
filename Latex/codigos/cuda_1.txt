@@ -1,13 +1,7 @@
 // definicao do kernel
-__global__ void Square(float* A, float* B, int size)
+__global__ void Square(float* A, int size)
 {
     int i = threadIdx.x + blockIdx.x * blockDim.x;
     if(i<size)
-        B[i] = A[i] *A[i];
-}
-
-//chamada do kernel
-void SquareOnDevice(int blocks, int threads, float* devA, float* devB, int size)
-{
-    VecAdd<<<blocks, threads>>>(devA, devB, size);
+        A[i] = A[i] *A[i];
 }
