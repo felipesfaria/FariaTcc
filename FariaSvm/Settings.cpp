@@ -147,7 +147,7 @@ void Settings::Init(int argc, char** argv)
 	Setting stochastic;
 	stochastic.name = "stochastic";
 	stochastic.isSet = false;
-	stochastic.command = "-t";
+	stochastic.command = "-ua";
 	stochastic.description = "Stochastic update";
 	stochastic.type = Setting::STRING;
 	stochastic.sValue = "f";

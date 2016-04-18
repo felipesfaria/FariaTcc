@@ -38,6 +38,8 @@ Logger* Logger::instance()
 Logger::~Logger()
 {
 	logFile.close();
+	delete(s_instance);
+	s_instance = nullptr;
 }
 
 void Logger::Error(exception exception)

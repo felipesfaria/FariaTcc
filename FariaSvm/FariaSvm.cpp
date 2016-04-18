@@ -8,6 +8,7 @@
 #include <iostream>
 #include "Settings.h"
 #include "Utils.h"
+#include <ctime>
 
 using namespace std;
 int FariaSVM(int argc, char* argv[])
@@ -63,37 +64,45 @@ int main(int argc, char* argv[])
 	string arg;
 	if (!Utils::GetComandVariable(argc, argv, "-auto", arg))
 		return FariaSVM(argc, argv);
-
 	vector<char*> args;
 	vector<char*> pV = { "1e-2", "1e-4", "1e-8", "1e-12" };
 	vector<char*> stV = { "1", "1e-1", "1e-2", "1e-3" };
 	vector<char*> smV = { "s", "m" };
 	vector<char*> dV = { "a1", "w1" };
 	vector<char*> svmV = { "p", "s" };
-	vector<char*> tV = { "f", "t" };
+	vector<char*> tV = { "32","128","512"};
+	vector<char*> uaV = { "f", "t" };
 	for (auto &p : pV)
 		for (auto &st : stV)
 			for (auto &sm : smV)
 				for (auto &d : dV)
 					for (auto &svm : svmV)
 						for (auto &t : tV)
-						{
-							if (t == "t"&&svm == "p") continue;
-							args =
+							for (auto &ua : uaV)
 							{
-								"exePath",
-								"-d", d,
-								"-svm", svm,
-								"-f", "3",
-								"-mi", "512",
-								"-l", "r",
-								"-sm", sm,
-								"-p", p,
-								"-st", st,
-								"-t", t
+								if (svm[0] == 'p' && ua[0] == 't') continue;
+								if (svm[0] == 's' && t[0] != '3') continue;
+								args =
+								{
+									"./FariaSvm.exe",
+									"-sd", "0",
+									"-d", d,
+									"-svm", svm,
+									"-f", "3",
+									"-mi", "512",
+									"-l", "r",
+									"-sm", sm,
+									"-p", p,
+									"-st", st,
+									"-ua", ua,
+									"-t", t
+								};
+
+								for (auto &a : args)
+									cout << a << " ";
+								cout << endl;
+								//FariaSVM(args.size(), args.data());
 							};
-							FariaSVM(args.size(), args.data());
-						};
 
 	return 0;
 }
