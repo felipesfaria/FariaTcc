@@ -56,19 +56,19 @@ void SequentialSvm::Train(TrainingSet *ts)
 	double *steps;
 	double *oldDifs;
 	if (isMultiStep){
-		oldDifs = (double*)malloc(height*sizeof(double));
+		oldDifs = new double[height];
 		for (int i = 0; i < height; i++)
 			oldDifs[i] = 0.0;
 
-		steps = (double*)malloc(height*sizeof(double));
+		steps = new double[height];
 		for (int i = 0; i < height; i++)
 			steps[i] = _initialStep;
 	}
 	else{
-		oldDifs = (double*)malloc(sizeof(double));
+		oldDifs = new double[1];
 		oldDifs[0] = 0.0;
 
-		steps = (double*)malloc(sizeof(double));
+		steps = new double[1];
 		steps[0] = _initialStep;
 	}
 

@@ -7,9 +7,10 @@
 #include "ParallelSvm.cuh"
 #include <iostream>
 #include "Settings.h"
+#include "Utils.h"
 
 using namespace std;
-int main(int argc, char* argv[])
+int FariaSVM(int argc, char* argv[])
 {
 	try{
 		Settings::instance()->Init(argc, argv);
@@ -19,7 +20,7 @@ int main(int argc, char* argv[])
 		srand(seed);
 
 		DataSet ds;
-		
+
 		BaseSvm *svm = BaseSvm::GenerateSvm(ds);
 
 		Logger::instance()->LogSettings();
@@ -27,7 +28,7 @@ int main(int argc, char* argv[])
 		TrainingSet ts;
 		ValidationSet vs;
 		for (auto i = 1; i <= ds.nFolds; i++){
-			Logger::instance()->Line("Starting Fold "+to_string(i));
+			Logger::instance()->Line("Starting Fold " + to_string(i));
 			ds.InitFoldSets(ts, vs, i);
 			svm->Train(&ts);
 			Logger::instance()->AddIntMetric("SupportVectors", ts.CountSupportVectors());
@@ -47,11 +48,52 @@ int main(int argc, char* argv[])
 	{
 		try{
 			Logger::instance()->Error(e);
-		} catch (exception& e2)
+		}
+		catch (exception& e2)
 		{
 			cout << "Base error: " << e.what() << endl;
 			cout << "Logger error: " << e2.what() << endl;
 		}
 		return 1;
 	}
+}
+
+int main(int argc, char* argv[])
+{
+	string arg;
+	if (!Utils::GetComandVariable(argc, argv, "-auto", arg))
+		return FariaSVM(argc, argv);
+
+	vector<char*> args;
+	vector<char*> pV = { "1e-2", "1e-4", "1e-8", "1e-12" };
+	vector<char*> stV = { "1", "1e-1", "1e-2", "1e-3" };
+	vector<char*> smV = { "s", "m" };
+	vector<char*> dV = { "a1", "w1" };
+	vector<char*> svmV = { "p", "s" };
+	vector<char*> tV = { "f", "t" };
+	for (auto &p : pV)
+		for (auto &st : stV)
+			for (auto &sm : smV)
+				for (auto &d : dV)
+					for (auto &svm : svmV)
+						for (auto &t : tV)
+						{
+							if (t == "t"&&svm == "p") continue;
+							args =
+							{
+								"exePath",
+								"-d", d,
+								"-svm", svm,
+								"-f", "3",
+								"-mi", "512",
+								"-l", "r",
+								"-sm", sm,
+								"-p", p,
+								"-st", st,
+								"-t", t
+							};
+							FariaSVM(args.size(), args.data());
+						};
+
+	return 0;
 }
