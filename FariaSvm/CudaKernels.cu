@@ -18,26 +18,6 @@ __host__ __device__ double gaussKernel(const double* a, int aI, const double* b,
 	}
 	return exp(-g*sum);
 }
-//
-//__host__ __device__ double calcAlphaMultiStep(double* alpha, const double sum, const double* y, double* step, const double C, int idx)
-//{
-//	auto newAlpha = alpha[idx] + step[idx] - step[idx] * y[idx] * sum;
-//	if (newAlpha > C)
-//		newAlpha = C;
-//	else if (newAlpha < 0)
-//		newAlpha = 0.0;
-//	return newAlpha;
-//}
-//
-//__host__ __device__ double calcAlphaSingleStep(double* alpha, const double sum, const double* y, double step, const double C, int idx)
-//{
-//	auto newAlpha = alpha[idx] + step - step * y[idx] * sum;
-//	if (newAlpha > C)
-//		newAlpha = C;
-//	else if (newAlpha < 0)
-//		newAlpha = 0.0;
-//	return newAlpha;
-//}
 
 __host__ __device__ double calcAlpha(double alpha, const double sum, const double y, double step, const double C)
 {

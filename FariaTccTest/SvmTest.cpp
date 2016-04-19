@@ -34,8 +34,8 @@ namespace FariaTccTest
 			Settings::instance()->GetUnsigned("folds", nFolds);
 			for (auto i = 1; i <= nFolds; i++){
 				ds.InitFoldSets(ts, vs, i);
-				svm->Train(&ts);
-				svm->Test(&ts, &vs);
+				svm->Train(ts);
+				svm->Test(ts, vs);
 				totalCorrect += vs.nCorrect;
 			}
 			double expected = 100.0;
@@ -65,8 +65,8 @@ namespace FariaTccTest
 			Settings::instance()->GetUnsigned("folds", nFolds);
 			for (auto i = 1; i <= nFolds; i++){
 				ds.InitFoldSets(ts, vs, i);
-				svm->Train(&ts);
-				svm->Test(&ts, &vs);
+				svm->Train(ts);
+				svm->Test(ts, vs);
 				totalCorrect += vs.nCorrect;
 			}
 			double expected = 100.0;
@@ -96,8 +96,8 @@ namespace FariaTccTest
 			Settings::instance()->GetUnsigned("folds", nFolds);
 			for (auto i = 1; i <= nFolds; i++){
 				ds.InitFoldSets(ts, vs, i);
-				svm->Train(&ts);
-				svm->Test(&ts, &vs);
+				svm->Train(ts);
+				svm->Test(ts, vs);
 				totalCorrect += vs.nCorrect;
 			}
 			double expected = 100.0;
@@ -128,8 +128,8 @@ namespace FariaTccTest
 			Settings::instance()->GetUnsigned("folds", nFolds);
 			for (auto i = 1; i <= nFolds; i++){
 				ds.InitFoldSets(ts, vs, i);
-				svm->Train(&ts);
-				svm->Test(&ts, &vs);
+				svm->Train(ts);
+				svm->Test(ts, vs);
 				totalCorrect += vs.nCorrect;
 			}
 			double expected = 100.0;
@@ -155,13 +155,13 @@ namespace FariaTccTest
 			TrainingSet sTs;
 			ValidationSet sVs;
 			ds.InitFoldSets(sTs, sVs, 1);
-			sSvm->Train(&sTs);
+			sSvm->Train(sTs);
 
 			BaseSvm *pSvm = BaseSvm::GenerateSvm(ds, "p");
 			TrainingSet pTs;
 			ValidationSet pVs;
 			ds.InitFoldSets(pTs, pVs, 1);
-			pSvm->Train(&pTs);
+			pSvm->Train(pTs);
 
 			int expected = 0;
 			int actual = 0;
@@ -190,13 +190,13 @@ namespace FariaTccTest
 			TrainingSet sTs;
 			ValidationSet sVs;
 			ds.InitFoldSets(sTs, sVs, 1);
-			sSvm->Train(&sTs);
+			sSvm->Train(sTs);
 
 			BaseSvm *pSvm = BaseSvm::GenerateSvm(ds, "p");
 			TrainingSet pTs;
 			ValidationSet pVs;
 			ds.InitFoldSets(pTs, pVs, 1);
-			pSvm->Train(&pTs);
+			pSvm->Train(pTs);
 
 			int expected = 0;
 			int actual = 0;
@@ -229,8 +229,8 @@ namespace FariaTccTest
 			int totalCorrect = 0;
 			for (auto i = 1; i <= nFolds; i++){
 				ds.InitFoldSets(ts, vs, i);
-				svm->Train(&ts);
-				svm->Test(&ts, &vs);
+				svm->Train(ts);
+				svm->Test(ts, vs);
 				totalCorrect += vs.nCorrect;
 			}
 			double expected = true;
@@ -262,8 +262,8 @@ namespace FariaTccTest
 			int totalCorrect = 0;
 			for (auto i = 1; i <= nFolds; i++){
 				ds.InitFoldSets(ts, vs, i);
-				svm->Train(&ts);
-				svm->Test(&ts, &vs);
+				svm->Train(ts);
+				svm->Test(ts, vs);
 				totalCorrect += vs.nCorrect;
 			}
 			double expected = true;

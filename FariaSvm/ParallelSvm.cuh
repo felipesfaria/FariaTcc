@@ -26,10 +26,10 @@ class ParallelSvm :
 public:
 	ParallelSvm(DataSet &ds);
 	~ParallelSvm();
-	int Classify(TrainingSet *ts, int index);
-	void UpdateBlocks(TrainingSet* ts);
-	void Train(TrainingSet *ts) override;
-	void Test(TrainingSet *ts, ValidationSet *vs) override;
+	int Classify(TrainingSet & ts, int index);
+	void UpdateBlocks(TrainingSet& ts);
+	void Train(TrainingSet & ts) override;
+	void Test(TrainingSet & ts, ValidationSet & vs) override;
 private:
 	cudaError_t cudaStatus;
 	int _blocks;

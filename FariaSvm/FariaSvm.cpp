@@ -31,9 +31,9 @@ int FariaSVM(int argc, char* argv[])
 		for (auto i = 1; i <= ds.nFolds; i++){
 			Logger::instance()->Line("Starting Fold " + to_string(i));
 			ds.InitFoldSets(ts, vs, i);
-			svm->Train(&ts);
+			svm->Train(ts);
 			Logger::instance()->AddIntMetric("SupportVectors", ts.CountSupportVectors());
-			svm->Test(&ts, &vs);
+			svm->Test(ts, vs);
 			Logger::instance()->AddDoubleMetric("PercentCorrect", vs.GetPercentage());
 			Logger::instance()->AddIntMetric("Correct", vs.nCorrect);
 			Logger::instance()->AddIntMetric("NullWrong", vs.nNullWrong);
@@ -64,6 +64,7 @@ int main(int argc, char* argv[])
 	string arg;
 	if (!Utils::GetComandVariable(argc, argv, "-auto", arg))
 		return FariaSVM(argc, argv);
+
 	vector<char*> args;
 	vector<char*> pV = { "1e-2", "1e-4", "1e-8", "1e-12" };
 	vector<char*> stV = { "1", "1e-1", "1e-2", "1e-3" };
@@ -84,7 +85,7 @@ int main(int argc, char* argv[])
 								if (svm[0] == 's' && t[0] != '3') continue;
 								args =
 								{
-									"./FariaSvm.exe",
+									"FariaSvm.exe",
 									"-sd", "0",
 									"-d", d,
 									"-svm", svm,

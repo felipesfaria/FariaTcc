@@ -39,12 +39,12 @@ BaseSvm* BaseSvm::GenerateSvm(DataSet ds, string arg)
 	return new SequentialSvm(ds);
 }
 
-void BaseSvm::Train(TrainingSet *ts)
+void BaseSvm::Train(TrainingSet & ts)
 {
 	throw(exception("Not Implemented."));
 }
 
-void BaseSvm::Test(TrainingSet *ts, ValidationSet *vs)
+void BaseSvm::Test(TrainingSet & ts, ValidationSet & vs)
 {
 	throw(exception("Not Implemented."));
 }

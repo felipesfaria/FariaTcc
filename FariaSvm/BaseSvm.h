@@ -8,8 +8,8 @@ public:
 	BaseSvm();
 	BaseSvm(DataSet &ds);
 	static BaseSvm* GenerateSvm(DataSet ds, string arg = "");
-	virtual void Train(TrainingSet *ts);
-	virtual void Test(TrainingSet *ts, ValidationSet *vs);
+	virtual void Train(TrainingSet & ts);
+	virtual void Test(TrainingSet & ts, ValidationSet & vs);
 	virtual ~BaseSvm();
 protected:
 	DataSet _ds;

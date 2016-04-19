@@ -17,19 +17,13 @@ SequentialSvm::~SequentialSvm()
 {
 }
 
-int SequentialSvm::Classify(TrainingSet *ts, ValidationSet* vs, unsigned vIndex)
+int SequentialSvm::Classify(TrainingSet & ts, ValidationSet& vs, unsigned vIndex)
 {
 	auto m = Logger::instance()->StartMetric("Classify");
-	auto x = ts->x;
-	auto y = ts->y;
-	auto vX = vs->x;
 	auto sum = 0.0;
-	auto height = ts->height;
-	auto width = ts->width;
-	auto alpha = ts->alpha;
-	for (auto i = 0; i < height; ++i)
-		sum += alpha[i] * y[i] * gaussKernel(x, i, vX, vIndex, width, g);
-	auto sign = sum - ts->b;
+	for (auto i = 0; i < ts.height; ++i)
+		sum += ts.alpha[i] * ts.y[i] * gaussKernel(ts.x, i, vs.x, vIndex, ts.width, g);
+	auto sign = sum - ts.b;
 	m->Stop();
 	if (sign > Precision)
 		return 1;
@@ -38,68 +32,53 @@ int SequentialSvm::Classify(TrainingSet *ts, ValidationSet* vs, unsigned vIndex)
 	return 0;
 }
 
-void SequentialSvm::Train(TrainingSet *ts)
+void SequentialSvm::Train(TrainingSet & ts)
 {
 	auto m = Logger::instance()->StartMetric("Train");
-	auto newAlpha = ts->alpha;
-	auto height = ts->height;
-	auto x = ts->x;
-	auto y = ts->y;
-	auto width = ts->width;
-	double* alpha = new double[height];
+	auto alpha = ts.alpha;
+	auto height = ts.height;
+	auto x = ts.x;
+	auto y = ts.y;
+	auto width = ts.width;
+	double* newAlpha = new double[height];
 	for (int i = 0; i < height; ++i){
 		newAlpha[i] = _initialStep;
 		alpha[i] = _initialStep;
 	}
 	int count = 0;
 
-	double *steps;
-	double *oldDifs;
-	if (isMultiStep){
-		oldDifs = new double[height];
-		for (int i = 0; i < height; i++)
-			oldDifs[i] = 0.0;
+	unsigned stepsSize = isMultiStep?height:1;
+	auto steps = new double[stepsSize];
+	for (int i = 0; i < stepsSize; i++)
+		steps[i] = _initialStep;
 
-		steps = new double[height];
-		for (int i = 0; i < height; i++)
-			steps[i] = _initialStep;
-	}
-	else{
-		oldDifs = new double[1];
-		oldDifs[0] = 0.0;
-
-		steps = new double[1];
-		steps[0] = _initialStep;
-	}
+	unsigned oldDifsSize = isMultiStep ? height : 1;;
+	auto oldDifs = new double[oldDifsSize];
+	for (auto i = 0; i < oldDifsSize; i++)
+		oldDifs[i] = 0.0;
 
 	double avgDif;
 	double avgStep;
 	do
 	{
 		avgDif = 0;
-		avgStep = 0.0;
 		for (int i = 0; i < height; ++i)
 		{
 			double sum = 0;
 			for (int j = 0; j < height; ++j)
 				sum += y[j] * alpha[j] * gaussKernel(x, j, x, i, width, g);
 
-			double value;
-			if (isMultiStep)
-				value = calcAlpha(alpha[i], sum, y[i], steps[i], C);
-			else
-				value = calcAlpha(alpha[i], sum, y[i], steps[0], C);
+			auto stepIndex = isMultiStep ? i : 0;
+			newAlpha[i] = calcAlpha(alpha[i], sum, y[i], steps[stepIndex], C);
 
-			auto newDif = value - alpha[i];
+			auto newDif = newAlpha[i] - alpha[i];
 
 			if (isMultiStep)
 				updateStep(steps[i], oldDifs[i], newDif);
 
 			avgDif += newDif;
 			if (isStochastic)
-				alpha[i] = value;
-			else
-				newAlpha[i] = value;
+				alpha[i] = newAlpha[i];
 		}
 
 		if (!isStochastic)
@@ -108,16 +87,13 @@ void SequentialSvm::Train(TrainingSet *ts)
 
 		avgDif /= height;
 
-		if (!isMultiStep){
+		if (!isMultiStep)
 			updateStep(steps[0], oldDifs[0], avgDif);
-			avgStep = steps[0];
-		}
-		else{
-			for (int i = 0; i < height; ++i){
-				avgStep += steps[i];
-				avgStep /= height;
-			}
-		}
+
+		avgStep = 0.0;
+		for (int i = 0; i < stepsSize; ++i)
+			avgStep += steps[i];
+		avgStep /= stepsSize;
 
 		count++;
 
@@ -129,17 +105,17 @@ void SequentialSvm::Train(TrainingSet *ts)
 
 	free(oldDifs);
 	free(steps);
-	free(alpha);
+	free(newAlpha);
 	m->Stop();
 }
 
-void SequentialSvm::Test(TrainingSet *ts, ValidationSet *vs)
+void SequentialSvm::Test(TrainingSet & ts, ValidationSet & vs)
 {
 	auto m = Logger::instance()->StartMetric("Test");
-	for (auto i = 0; i < vs->height; ++i)
+	for (auto i = 0; i < vs.height; ++i)
 	{
 		int classifiedY = Classify(ts, vs, i);
-		vs->Validate(i, classifiedY);
+		vs.Validate(i, classifiedY);
 	}
 	m->Stop();
 }

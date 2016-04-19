@@ -95,17 +95,17 @@ ParallelSvm::~ParallelSvm()
 {
 }
 
-int ParallelSvm::Classify(TrainingSet *ts, int index)
+int ParallelSvm::Classify(TrainingSet & ts, int index)
 {
 	auto m = Logger::instance()->StartMetric("Classify");
-	classificationKernel << <_blocks, _threadsPerBlock >> >(caSum.device, caTrainingX.device, caTrainingY.device, caValidationX.device, caAlpha.device, g, index, ts->width, ts->height);
+	classificationKernel << <_blocks, _threadsPerBlock >> >(caSum.device, caTrainingX.device, caTrainingY.device, caValidationX.device, caAlpha.device, g, index, ts.width, ts.height);
 
 	caSum.CopyToHost();
 
 	double cudaSum = caSum.GetSum();
 
 	auto precision = 0;
-	auto sign = cudaSum - ts->b;
+	auto sign = cudaSum - ts.b;
 	m->Stop();
 	if (sign > precision)
 		return 1;
@@ -114,9 +114,9 @@ int ParallelSvm::Classify(TrainingSet *ts, int index)
 	return 0;
 }
 
-void ParallelSvm::UpdateBlocks(TrainingSet *ts)
+void ParallelSvm::UpdateBlocks(TrainingSet & ts)
 {
-	int newBlockSize = (ts->height + _threadsPerBlock - 1) / _threadsPerBlock;;
+	int newBlockSize = (ts.height + _threadsPerBlock - 1) / _threadsPerBlock;;
 	if (newBlockSize == _blocks) return;
 	if (newBlockSize<1)
 	{
@@ -128,27 +128,27 @@ void ParallelSvm::UpdateBlocks(TrainingSet *ts)
 	Logger::instance()->Stats("Threads", _threadsPerBlock * _blocks);
 }
 
-void ParallelSvm::Train(TrainingSet *ts)
+void ParallelSvm::Train(TrainingSet & ts)
 {
 	auto m = Logger::instance()->StartMetric("Train");
 	UpdateBlocks(ts);
-	caTrainingX.Init(ts->x, ts->height*ts->width);
+	caTrainingX.Init(ts.x, ts.height*ts.width);
 	caTrainingX.CopyToDevice();
-	caTrainingY.Init(ts->y, ts->height);
+	caTrainingY.Init(ts.y, ts.height);
 	caTrainingY.CopyToDevice();
 	
 	double step = _initialStep;
-	caSum.Init(ts->height);
+	caSum.Init(ts.height);
 	if (isMultiStep){
-		caStep.Init(ts->height);
-		initArray << <_blocks, _threadsPerBlock >> >(caStep.device, _initialStep, ts->height);
+		caStep.Init(ts.height);
+		initArray << <_blocks, _threadsPerBlock >> >(caStep.device, _initialStep, ts.height);
 	}
 
-	caLastDif.Init(ts->height);
-	initArray << <_blocks, _threadsPerBlock >> >(caLastDif.device, 0.0, ts->height);
+	caLastDif.Init(ts.height);
+	initArray << <_blocks, _threadsPerBlock >> >(caLastDif.device, 0.0, ts.height);
 
-	caAlpha.Init(ts->alpha, ts->height);
-	initArray << <_blocks, _threadsPerBlock >> >(caAlpha.device, _initialStep, ts->height);
+	caAlpha.Init(ts.alpha, ts.height);
+	initArray << <_blocks, _threadsPerBlock >> >(caAlpha.device, _initialStep, ts.height);
 
 	int count = 0;
 	double lastDif = 999999;
@@ -159,23 +159,23 @@ void ParallelSvm::Train(TrainingSet *ts)
 	//CUDA_SAFE_CALL(cudaDeviceSynchronize());
 	do
 	{
-		for (batchStart = 0; batchStart < ts->height; batchStart += batchSize)
+		for (batchStart = 0; batchStart < ts.height; batchStart += batchSize)
 		{
-			if (batchStart + batchSize>ts->height)
-				batchEnd = ts->height;
+			if (batchStart + batchSize>ts.height)
+				batchEnd = ts.height;
 			else
 				batchEnd = batchStart + batchSize;
-			trainingKernelLoop << <_blocks, _threadsPerBlock >> >(caSum.device, caAlpha.device, caTrainingX.device, caTrainingY.device, g, ts->width, ts->height, batchStart, batchEnd);
+			trainingKernelLoop << <_blocks, _threadsPerBlock >> >(caSum.device, caAlpha.device, caTrainingX.device, caTrainingY.device, g, ts.width, ts.height, batchStart, batchEnd);
 			CUDA_SAFE_CALL(cudaDeviceSynchronize());
 		}
 
 		if (isMultiStep)
-			trainingKernelFinishMultiple << <_blocks, _threadsPerBlock >> >(caAlpha.device, caSum.device, caTrainingY.device, ts->height, caStep.device, caLastDif.device, C);
+			trainingKernelFinishMultiple << <_blocks, _threadsPerBlock >> >(caAlpha.device, caSum.device, caTrainingY.device, ts.height, caStep.device, caLastDif.device, C);
 		else
-			trainingKernelFinishSingle << <_blocks, _threadsPerBlock >> >(caAlpha.device, caSum.device, caTrainingY.device, ts->height, step, caLastDif.device, C);
+			trainingKernelFinishSingle << <_blocks, _threadsPerBlock >> >(caAlpha.device, caSum.device, caTrainingY.device, ts.height, step, caLastDif.device, C);
 		
 		caLastDif.CopyToHost();
-		avgDif = caLastDif.GetSum() / ts->height;
+		avgDif = caLastDif.GetSum() / ts.height;
 
 		if (!isMultiStep)
 		{
@@ -183,7 +183,7 @@ void ParallelSvm::Train(TrainingSet *ts)
 		}
 		else{
 			caStep.CopyToHost();
-			step = caStep.GetSum() / ts->height;
+			step = caStep.GetSum() / ts.height;
 		}
 
 #ifdef _DEBUG
@@ -200,16 +200,16 @@ void ParallelSvm::Train(TrainingSet *ts)
 	m->Stop();
 }
 
-void ParallelSvm::Test(TrainingSet *ts, ValidationSet *vs)
+void ParallelSvm::Test(TrainingSet & ts, ValidationSet & vs)
 {
 	auto m = Logger::instance()->StartMetric("Test");
-	caValidationX.Init(vs->x, vs->height*vs->width);
+	caValidationX.Init(vs.x, vs.height*vs.width);
 	caValidationX.CopyToDevice();
-	caSum.Init(ts->height);
-	for (auto i = 0; i < vs->height; ++i)
+	caSum.Init(ts.height);
+	for (auto i = 0; i < vs.height; ++i)
 	{
 		int classifiedY = Classify(ts,i);
-		vs->Validate(i, classifiedY);
+		vs.Validate(i, classifiedY);
 	}
 	m->Stop();
 }
