@@ -2,6 +2,7 @@
 #include "Utils.h"
 #include <sstream>
 
+using namespace FariaSvm;
 
 Utils::Utils()
 {
@@ -114,4 +115,16 @@ void Utils::Reverse(vector<vector<double>> &x, vector<double> &y)
 		x[i] = tx;
 		y[i] = ty;
 	}
+}
+
+string Utils::PadLeft(int value, int pad)
+{
+	return PadLeft(to_string(value), pad);
+}
+
+string Utils::PadLeft(string s, int pad)
+{
+	while (s.length() < pad)
+		s = "0" + s;
+	return s;
 }

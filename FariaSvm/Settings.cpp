@@ -5,6 +5,7 @@
 #include <iostream>
 #include <sstream>
 
+using namespace FariaSvm;
 
 Settings *Settings::s_instance = nullptr;
 void Settings::ShowHelp()
@@ -36,6 +37,12 @@ string Setting::ToString()
 		break;
 	}
 	return ss.str();
+}
+
+void Settings::Delete()
+{
+	delete(s_instance);
+	s_instance = nullptr;
 }
 
 Settings* Settings::instance()

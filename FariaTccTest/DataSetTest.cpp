@@ -8,6 +8,7 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace std;
+using namespace FariaSvm;
 namespace FariaTccTest
 {
 	TEST_CLASS(DataSetTest)

@@ -6,6 +6,8 @@
 #include "Utils.h"
 #include <fstream>
 using namespace std;
+using namespace FariaSvm;
+
 Logger *Logger::s_instance = nullptr;
 
 Logger::Logger()
@@ -21,10 +23,11 @@ Logger::Logger()
 	else
 		_type = RESULTS;
 
-	logFile.open("log.txt", fstream::out | fstream::trunc);
-
-
+	if (_type < ERRORS) return;
+	errorFile.open("log.txt", fstream::out | fstream::app);
+	
 	if (_type < ALL) return;
+	logFile.open("log.txt", fstream::out | fstream::trunc);
 	logFile << FormatClock() << "\t" << "Program Started" << endl;
 }
 
@@ -34,24 +37,37 @@ Logger* Logger::instance()
 		s_instance = new Logger();
 	return s_instance;
 }
+void Logger::Delete()
+{
+	if (s_instance!=nullptr)
+		delete(s_instance);
+	s_instance = nullptr;
+}
 
 Logger::~Logger()
 {
 	logFile.close();
-	delete(s_instance);
-	s_instance = nullptr;
+	for (auto kvp : Metrics)
+		delete(kvp.second);
+	for (auto kvp : FunctionTimers)
+		delete(kvp.second);
 }
 
 void Logger::Error(exception exception)
 {
+
 	cout << FormatClock() << "\t" << "Fatal error ocurred: " << exception.what() << endl;
 
 	if (_type < ERRORS) return;
+	errorFile << FormatClock() << "\t" << "Fatal error ocurred: " << exception.what() << endl;
+
+	if (_type < ALL) return;
 	logFile << FormatClock() << "\t" << "Fatal error ocurred: " << exception.what() << endl;
 }
 
 TimeMetric* Logger::StartMetric(string name)
 {
+	if (_type <= NONE) return nullptr;
 	if (Metrics.count(name) == 0)
 		Metrics[name] = new TimeMetric(name);
 	auto m = (TimeMetric*)Metrics[name];
@@ -61,8 +77,16 @@ TimeMetric* Logger::StartMetric(string name)
 	return m;
 }
 
+void Logger::StopMetric(TimeMetric* m)
+{
+	if (_type <= NONE) return;
+	if (m != nullptr)
+		m->Stop();
+}
+
 void Logger::AddIntMetric(string name, unsigned value)
 {
+	if (_type <= NONE) return;
 	if (Metrics.count(name) == 0)
 		Metrics[name] = new IntMetric(name);
 	auto m = (IntMetric*)Metrics[name];
@@ -73,6 +97,7 @@ void Logger::AddIntMetric(string name, unsigned value)
 
 void Logger::AddDoubleMetric(string name, double value)
 {
+	if (_type <= NONE) return;
 	if (Metrics.count(name) == 0)
 		Metrics[name] = new DoubleMetric(name);
 	auto m = (DoubleMetric*)Metrics[name];
@@ -93,31 +118,6 @@ void Logger::ClassifyingProgress(int count, double step, double lastDif, double 
 	logFile << FormatClock() << "\t" << "Iteration: " << count << "\tstep: " << step << "\tlastDif:" << lastDif << "\tdifAlpha:" << difAlpha << endl;
 }
 
-void Logger::Stats(string statName, long stat)
-{
-	std::ostringstream strs;
-	strs << stat;
-	Stats(statName, strs.str());
-}
-
-void Logger::Stats(string statName, int stat)
-{
-	std::ostringstream strs;
-	strs << stat;
-	Stats(statName, strs.str());
-}
-void Logger::Stats(string statName, unsigned int stat)
-{
-	std::ostringstream strs;
-	strs << stat;
-	Stats(statName, strs.str());
-}
-void Logger::Stats(string statName, double stat)
-{
-	std::ostringstream strs;
-	strs << stat;
-	Stats(statName, strs.str());
-}
 void Logger::Stats(string statName, string stat)
 {
 	StatsMap[statName] = stat;
@@ -217,15 +217,21 @@ void Logger::End()
 	logFile << endl;
 }
 
-std::string Logger::FormatClock(unsigned milliseconds)
+std::string Logger::FormatClock(unsigned clocks)
 {
 	std::stringstream ss;
-	auto hours = milliseconds / (60 * 60 * CLOCKS_PER_SEC);
-	milliseconds = milliseconds % (60 * 60 * CLOCKS_PER_SEC);
-	auto minutes = milliseconds / (60 * CLOCKS_PER_SEC);
-	milliseconds = milliseconds % (60 * CLOCKS_PER_SEC);
-	auto seconds = milliseconds / (CLOCKS_PER_SEC);
-	milliseconds = milliseconds % (CLOCKS_PER_SEC);
+	auto h = clocks / (60 * 60 * CLOCKS_PER_SEC);
+	auto hours = Utils::PadLeft(h, 2);
+	clocks = clocks % (60 * 60 * CLOCKS_PER_SEC);
+	auto m= clocks / (60 * CLOCKS_PER_SEC);
+	auto minutes = Utils::PadLeft(m, 2);
+	clocks = clocks % (60 * CLOCKS_PER_SEC);
+	auto s = clocks / (CLOCKS_PER_SEC);
+	auto seconds = Utils::PadLeft(s, 2);
+	clocks = clocks % (CLOCKS_PER_SEC);
+	auto ms = clocks;
+	auto milliseconds = Utils::PadLeft(ms, 3);
+
 	ss << hours << ":" << minutes << ":" << seconds << ":" << milliseconds;
 	return ss.str();
 }

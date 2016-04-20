@@ -5,6 +5,7 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace std;
+using namespace FariaSvm;
 namespace FariaTccTest
 {
 	TEST_CLASS(UtilsTest)
@@ -46,6 +47,19 @@ namespace FariaTccTest
 			string arg;
 			auto actual = Utils::GetComandVariable(3, argv, "-x", arg);
 			Assert::IsFalse(actual);
+		}
+
+		TEST_METHOD(PadLeft)
+		{
+			string expected = "01";
+			string actual = Utils::PadLeft("1", 2);
+			Assert::AreEqual(expected, actual);
+			expected = "002";
+			actual = Utils::PadLeft("2", 3);
+			Assert::AreEqual(expected, actual);
+			expected = "003";
+			actual = Utils::PadLeft(3, 3);
+			Assert::AreEqual(expected, actual);
 		}
 
 	};

@@ -5,6 +5,7 @@
 #include <fstream>
 #include "Settings.h"
 using namespace std;
+using namespace FariaSvm;
 
 DataSet::DataSet()
 {
@@ -13,9 +14,9 @@ DataSet::DataSet()
 	InitData(dataSet);
 	ReadFile();
 	Logger::instance()->Stats("FileName", FileName);
-	Logger::instance()->Stats("Samples", nSamples);
-	Logger::instance()->Stats("Features", nFeatures);
-	Logger::instance()->Stats("Classes", nClasses);
+	Logger::instance()->Stats("Samples", to_string(nSamples));
+	Logger::instance()->Stats("Features", to_string(nFeatures));
+	Logger::instance()->Stats("Classes", to_string(nClasses));
 	Settings::instance()->GetUnsigned("folds", nFolds);
 	Utils::Shuffle(X, Y);
 }

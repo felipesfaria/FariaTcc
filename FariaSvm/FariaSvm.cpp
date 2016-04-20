@@ -11,6 +11,7 @@
 #include <ctime>
 
 using namespace std;
+using namespace FariaSvm;
 int FariaSVM(int argc, char* argv[])
 {
 	try{
@@ -22,7 +23,7 @@ int FariaSVM(int argc, char* argv[])
 
 		DataSet ds;
 
-		BaseSvm *svm = BaseSvm::GenerateSvm(ds);
+		auto svm = BaseSvm::GenerateSvm(ds);
 
 		Logger::instance()->LogSettings();
 
@@ -40,9 +41,8 @@ int FariaSVM(int argc, char* argv[])
 			Logger::instance()->AddIntMetric("PositiveWrong", vs.nPositiveWrong);
 			Logger::instance()->AddIntMetric("NegativeWrong", vs.nNegativeWrong);
 		}
-		m->Stop();
+		Logger::instance()->StopMetric(m);
 		Logger::instance()->End();
-		delete(svm);
 		return 0;
 	}
 	catch (exception& e)

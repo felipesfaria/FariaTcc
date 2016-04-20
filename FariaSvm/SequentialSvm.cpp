@@ -5,31 +5,28 @@
 #include "Utils.h"
 #include "CudaKernels.cuh"
 using namespace std;
+using namespace FariaSvm;
 
 SequentialSvm::SequentialSvm(DataSet &ds)
 	: BaseSvm(ds)
 {
-	Logger::instance()->Stats("Blocks", 0);
-	Logger::instance()->Stats("Threads", 0);
+	Logger::instance()->Stats("Blocks", to_string(0));
+	Logger::instance()->Stats("Threads", to_string(0));
 }
 
 SequentialSvm::~SequentialSvm()
 {
 }
 
-int SequentialSvm::Classify(TrainingSet & ts, ValidationSet& vs, unsigned vIndex)
+int SequentialSvm::Classify(TrainingSet& ts, ValidationSet& vs, int index)
 {
 	auto m = Logger::instance()->StartMetric("Classify");
 	auto sum = 0.0;
 	for (auto i = 0; i < ts.height; ++i)
-		sum += ts.alpha[i] * ts.y[i] * gaussKernel(ts.x, i, vs.x, vIndex, ts.width, g);
-	auto sign = sum - ts.b;
-	m->Stop();
-	if (sign > Precision)
-		return 1;
-	if (sign < Precision)
-		return -1;
-	return 0;
+		sum += ts.alpha[i] * ts.y[i] * gaussKernel(ts.x, i, vs.x, index, ts.width, g);
+	auto value = sum - ts.b;
+	Logger::instance()->StopMetric(m);
+	return SignOf(value);
 }
 
 void SequentialSvm::Train(TrainingSet & ts)
@@ -106,18 +103,7 @@ void SequentialSvm::Train(TrainingSet & ts)
 	free(oldDifs);
 	free(steps);
 	free(newAlpha);
-	m->Stop();
-}
-
-void SequentialSvm::Test(TrainingSet & ts, ValidationSet & vs)
-{
-	auto m = Logger::instance()->StartMetric("Test");
-	for (auto i = 0; i < vs.height; ++i)
-	{
-		int classifiedY = Classify(ts, vs, i);
-		vs.Validate(i, classifiedY);
-	}
-	m->Stop();
+	Logger::instance()->StopMetric(m);
 }
 
 double SequentialSvm::K(double* x, double* y, int size)

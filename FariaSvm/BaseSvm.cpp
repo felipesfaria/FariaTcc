@@ -3,18 +3,20 @@
 #include "Settings.h"
 #include "SequentialSvm.h"
 #include "ParallelSvm.cuh"
+#include "Logger.h"
 
+using namespace FariaSvm;
 
 class ParallelSvm;
 
 BaseSvm::BaseSvm(DataSet &ds)
 {
-	_ds = ds;
+	_ds = &ds;
 
 	Settings::instance()->GetDouble("precision", Precision);
 
 	double gama;
-	Settings::instance()->GetDouble("gamma", gama, _ds.Gama);
+	Settings::instance()->GetDouble("gamma", gama, _ds->Gama);
 	g = gama;
 	string arg;
 	arg = Settings::instance()->GetString("stepMode");
@@ -23,20 +25,25 @@ BaseSvm::BaseSvm(DataSet &ds)
 	arg = Settings::instance()->GetString("stochastic");
 	isStochastic = arg == "t";
 
-	Settings::instance()->GetDouble("constraint", C, _ds.C);
+	Settings::instance()->GetDouble("constraint", C, _ds->C);
 
 	Settings::instance()->GetDouble("step", _initialStep);
 
 	Settings::instance()->GetUnsigned("maxIterations", MaxIterations);
 }
 
-BaseSvm* BaseSvm::GenerateSvm(DataSet ds, string arg)
+unique_ptr<BaseSvm> BaseSvm::GenerateSvm(DataSet& ds, string arg)
 {
 	if (arg.empty())
 		arg = Settings::instance()->GetString("svm");
 	if (arg == "p")
-		return new ParallelSvm(ds);
-	return new SequentialSvm(ds);
+		return unique_ptr<BaseSvm>(make_unique<ParallelSvm>(ds));
+	return unique_ptr<BaseSvm>(make_unique<SequentialSvm>(ds));
+}
+
+int BaseSvm::Classify(TrainingSet& ts, ValidationSet& vs, int index)
+{
+	throw(exception("Not Implemented."));
 }
 
 void BaseSvm::Train(TrainingSet & ts)
@@ -46,7 +53,18 @@ void BaseSvm::Train(TrainingSet & ts)
 
 void BaseSvm::Test(TrainingSet & ts, ValidationSet & vs)
 {
-	throw(exception("Not Implemented."));
+	auto m = Logger::instance()->StartMetric("Test");
+	for (auto i = 0; i < vs.height; ++i)
+	{
+		int classifiedY = Classify(ts, vs, i);
+		vs.Validate(i, classifiedY);
+	}
+	Logger::instance()->StopMetric(m);
+}
+
+int BaseSvm::SignOf(double value)
+{
+	return value > 0 ? 1 : value < 0 ? -1 : 0;
 }
 
 BaseSvm::~BaseSvm()

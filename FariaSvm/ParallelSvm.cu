@@ -12,6 +12,7 @@
       throw exception(cudaGetErrorString(err)); } } 
 
 using namespace std;
+using namespace FariaSvm;
 
 CudaArray::~CudaArray()
 {
@@ -33,18 +34,6 @@ void CudaArray::Init(int size)
 	Init(host, size);
 }
 
-void CudaArray::SetAll(int value)
-{
-	deviceOnly = true;
-	if (size != this->size)
-	{
-		if (host != NULL)
-			free(host);
-		host = (double*)malloc(size*sizeof(double));
-	}
-	Init(host, size);
-}
-
 void CudaArray::Init(double* host, int size)
 {
 	if (size != this->size)
@@ -57,17 +46,17 @@ void CudaArray::Init(double* host, int size)
 	this->host = host;
 }
 
-void CudaArray::CopyToDevice()
+void CudaArray::CopyToDevice() const
 {
 	CUDA_SAFE_CALL(cudaMemcpy(device, host, size* sizeof(double), cudaMemcpyHostToDevice));
 }
 
-void CudaArray::CopyToHost()
+void CudaArray::CopyToHost() const
 {
 	CUDA_SAFE_CALL(cudaMemcpy(host, device, size* sizeof(double), cudaMemcpyDeviceToHost));
 }
 
-double CudaArray::GetSum()
+double CudaArray::GetSum() const
 {
 	double sum = 0;
 	for (int i = 0; i < size; i++)
@@ -77,7 +66,7 @@ double CudaArray::GetSum()
 	return sum;
 }
 
-ParallelSvm::ParallelSvm(DataSet &ds)
+ParallelSvm::ParallelSvm(DataSet& ds)
 	: BaseSvm(ds)
 {
 	int halfGigaByte = 1 << 29;
@@ -95,8 +84,11 @@ ParallelSvm::~ParallelSvm()
 {
 }
 
-int ParallelSvm::Classify(TrainingSet & ts, int index)
+int ParallelSvm::Classify(TrainingSet& ts, ValidationSet& vs, int index)
 {
+	if (!isTestPrepared)
+		PrepareTest(ts, vs);
+
 	auto m = Logger::instance()->StartMetric("Classify");
 	classificationKernel << <_blocks, _threadsPerBlock >> >(caSum.device, caTrainingX.device, caTrainingY.device, caValidationX.device, caAlpha.device, g, index, ts.width, ts.height);
 
@@ -104,14 +96,9 @@ int ParallelSvm::Classify(TrainingSet & ts, int index)
 
 	double cudaSum = caSum.GetSum();
 
-	auto precision = 0;
-	auto sign = cudaSum - ts.b;
-	m->Stop();
-	if (sign > precision)
-		return 1;
-	if (sign < -precision)
-		return -1;
-	return 0;
+	auto value = cudaSum - ts.b;
+	Logger::instance()->StopMetric(m);
+	return SignOf(value);
 }
 
 void ParallelSvm::UpdateBlocks(TrainingSet & ts)
@@ -124,13 +111,14 @@ void ParallelSvm::UpdateBlocks(TrainingSet & ts)
 		return;
 	}
 	_blocks = newBlockSize;
-	Logger::instance()->Stats("Blocks", _blocks);
-	Logger::instance()->Stats("Threads", _threadsPerBlock * _blocks);
+	Logger::instance()->Stats("Blocks", to_string(_blocks));
+	Logger::instance()->Stats("Threads", to_string(_threadsPerBlock * _blocks));
 }
 
 void ParallelSvm::Train(TrainingSet & ts)
 {
 	auto m = Logger::instance()->StartMetric("Train");
+	isTestPrepared = false;
 	UpdateBlocks(ts);
 	caTrainingX.Init(ts.x, ts.height*ts.width);
 	caTrainingX.CopyToDevice();
@@ -197,19 +185,13 @@ void ParallelSvm::Train(TrainingSet & ts)
 
 	Logger::instance()->AddIntMetric("Iterations", count);
 	caAlpha.CopyToHost();
-	m->Stop();
+	Logger::instance()->StopMetric(m);
 }
 
-void ParallelSvm::Test(TrainingSet & ts, ValidationSet & vs)
+void ParallelSvm::PrepareTest(TrainingSet& ts, ValidationSet& vs)
 {
-	auto m = Logger::instance()->StartMetric("Test");
 	caValidationX.Init(vs.x, vs.height*vs.width);
 	caValidationX.CopyToDevice();
 	caSum.Init(ts.height);
-	for (auto i = 0; i < vs.height; ++i)
-	{
-		int classifiedY = Classify(ts,i);
-		vs.Validate(i, classifiedY);
-	}
-	m->Stop();
+	isTestPrepared = true;
 }
