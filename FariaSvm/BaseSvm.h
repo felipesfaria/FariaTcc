@@ -10,7 +10,7 @@ namespace FariaSvm{
 	public:
 		BaseSvm(shared_ptr<DataSet> ds);
 		static unique_ptr<BaseSvm> GenerateSvm(shared_ptr<DataSet> ds, string arg = "");
-		virtual int Classify(TrainingSet& ts, ValidationSet& vs, int index);
+		virtual int Classify(const TrainingSet& ts, const ValidationSet& vs, const int vIndex);
 		virtual void Train(TrainingSet & ts);
 		virtual void Test(TrainingSet & ts, ValidationSet & vs);
 		int SignOf(double value);

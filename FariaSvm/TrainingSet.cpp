@@ -5,9 +5,9 @@
 void TrainingSet::Init(int height, int width)
 {
 	if (height != this->height){
-		if (initialised)
-			free(alpha);
-		alpha = (double*)malloc(height*sizeof(double));
+		if (alpha != nullptr)
+			delete[] alpha;
+			alpha = new double[height];
 		b = 0.0;
 	}
 	BaseSet::Init(height, width);
@@ -25,6 +25,6 @@ unsigned TrainingSet::CountSupportVectors() const
 
 TrainingSet::~TrainingSet()
 {
-	if (initialised)
-		free(alpha);
+	if (alpha != nullptr)
+		delete[] alpha;
 }

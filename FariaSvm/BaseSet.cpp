@@ -8,10 +8,11 @@ BaseSet::BaseSet()
 
 BaseSet::~BaseSet()
 {
-	if (initialised){
-		free(x);
-		free(y);
-	}
+	if (x != nullptr)
+		delete[] x;
+
+	if (y != nullptr)
+		delete[] y;
 }
 
 void BaseSet::Init(int height, int width)
@@ -19,15 +20,16 @@ void BaseSet::Init(int height, int width)
 	if (height != this->height){
 		this->height = height;
 		this->width = width;
-		if (initialised){
-			free(x);
-			free(y);
-		}
-		x = (double*)malloc(height*width*sizeof(double));
-		y = (double*)malloc(height*sizeof(double));
+
+		if (x != nullptr)
+			delete[] x;
+		x = new double[height*width];
+
+		if (y != nullptr)
+			delete[] y;
+		y = new double[height];
 	}
 	last = 0;
-	initialised = true;
 };
 
 void BaseSet::PushSample(vector<double> x, double y)

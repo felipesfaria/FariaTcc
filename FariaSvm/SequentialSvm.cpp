@@ -18,18 +18,18 @@ SequentialSvm::~SequentialSvm()
 {
 }
 
-int SequentialSvm::Classify(TrainingSet& ts, ValidationSet& vs, int index)
+int SequentialSvm::Classify(const TrainingSet& ts, const ValidationSet& vs, const int vIndex)
 {
 	auto m = Logger::instance()->StartMetric("Classify");
 	auto sum = 0.0;
 	for (auto i = 0; i < ts.height; ++i)
-		sum += ts.alpha[i] * ts.y[i] * gaussKernel(ts.x, i, vs.x, index, ts.width, g);
+		sum += ts.alpha[i] * ts.y[i] * gaussKernel(ts.x, i, vs.x, vIndex, ts.width, g);
 	auto value = sum - ts.b;
 	Logger::instance()->StopMetric(m);
 	return SignOf(value);
 }
 
-void SequentialSvm::Train(TrainingSet & ts)
+void SequentialSvm::Train(TrainingSet& ts)
 {
 	auto m = Logger::instance()->StartMetric("Train");
 	auto alpha = ts.alpha;

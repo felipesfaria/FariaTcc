@@ -16,10 +16,10 @@ using namespace FariaSvm;
 
 CudaArray::~CudaArray()
 {
-	if (device!=NULL)
+	if (device!= nullptr)
 		cudaFree(device);
-	if (deviceOnly && host != NULL)
-		free(host);
+	if (deviceOnly && host != nullptr)
+		delete[] host;
 }
 
 void CudaArray::Init(int size)
@@ -27,9 +27,9 @@ void CudaArray::Init(int size)
 	deviceOnly = true;
 	if (size != this->size)
 	{
-		if (host!=NULL)
-			free(host);
-		host = (double*)malloc(size*sizeof(double));
+		if (host != nullptr)
+			delete[] host;
+		host = new double[size];
 	}
 	Init(host, size);
 }
@@ -38,7 +38,7 @@ void CudaArray::Init(double* host, int size)
 {
 	if (size != this->size)
 	{
-		if (device!=NULL)
+		if (device!= nullptr)
 			cudaFree(device);
 		CUDA_SAFE_CALL(cudaMalloc((void**)&device, size * sizeof(double)));
 	}
@@ -84,13 +84,13 @@ ParallelSvm::~ParallelSvm()
 {
 }
 
-int ParallelSvm::Classify(TrainingSet& ts, ValidationSet& vs, int index)
+int ParallelSvm::Classify(const TrainingSet& ts, const ValidationSet& vs, const int vIndex)
 {
 	if (!isTestPrepared)
 		PrepareTest(ts, vs);
 
 	auto m = Logger::instance()->StartMetric("Classify");
-	classificationKernel << <_blocks, _threadsPerBlock >> >(caSum.device, caTrainingX.device, caTrainingY.device, caValidationX.device, caAlpha.device, g, index, ts.width, ts.height);
+	classificationKernel << <_blocks, _threadsPerBlock >> >(caSum.device, caTrainingX.device, caTrainingY.device, caValidationX.device, caAlpha.device, g, vIndex, ts.width, ts.height);
 
 	caSum.CopyToHost();
 
@@ -188,7 +188,7 @@ void ParallelSvm::Train(TrainingSet & ts)
 	Logger::instance()->StopMetric(m);
 }
 
-void ParallelSvm::PrepareTest(TrainingSet& ts, ValidationSet& vs)
+void ParallelSvm::PrepareTest(const TrainingSet& ts, const ValidationSet& vs)
 {
 	caValidationX.Init(vs.x, vs.height*vs.width);
 	caValidationX.CopyToDevice();

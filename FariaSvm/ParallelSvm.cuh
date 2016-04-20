@@ -23,10 +23,10 @@ namespace FariaSvm{
 	public:
 		ParallelSvm(shared_ptr<DataSet> ds);
 		~ParallelSvm();
-		int Classify(TrainingSet& ts, ValidationSet& vs, int index) override;
+		int Classify(const TrainingSet& ts, const ValidationSet& vs, const int vIndex) override;
 		void UpdateBlocks(TrainingSet& ts);
 		void Train(TrainingSet & ts) override;
-		void PrepareTest(TrainingSet& ts, ValidationSet& vs);
+		void PrepareTest(const TrainingSet& ts, const ValidationSet& vs);
 	private:
 		int _blocks = 1;
 		unsigned _threadsPerBlock = 128;

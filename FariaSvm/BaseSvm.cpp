@@ -41,7 +41,7 @@ unique_ptr<BaseSvm> BaseSvm::GenerateSvm(shared_ptr<DataSet>ds, string arg)
 	return unique_ptr<BaseSvm>(make_unique<SequentialSvm>(ds));
 }
 
-int BaseSvm::Classify(TrainingSet& ts, ValidationSet& vs, int index)
+int BaseSvm::Classify(const TrainingSet& ts, const ValidationSet& vs, const int vIndex)
 {
 	throw(exception("Not Implemented."));
 }
