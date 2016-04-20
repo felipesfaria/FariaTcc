@@ -21,7 +21,7 @@ int FariaSVM(int argc, char* argv[])
 		Settings::instance()->GetUnsigned("seed", seed);
 		srand(seed);
 
-		DataSet ds;
+		auto ds = make_shared<DataSet>();
 
 		auto svm = BaseSvm::GenerateSvm(ds);
 
@@ -29,9 +29,9 @@ int FariaSVM(int argc, char* argv[])
 
 		TrainingSet ts;
 		ValidationSet vs;
-		for (auto i = 1; i <= ds.nFolds; i++){
+		for (auto i = 1; i <= ds->nFolds; i++){
 			Logger::instance()->Line("Starting Fold " + to_string(i));
-			ds.InitFoldSets(ts, vs, i);
+			ds->InitFoldSets(ts, vs, i);
 			svm->Train(ts);
 			Logger::instance()->AddIntMetric("SupportVectors", ts.CountSupportVectors());
 			svm->Test(ts, vs);

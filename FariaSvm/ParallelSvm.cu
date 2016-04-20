@@ -66,11 +66,11 @@ double CudaArray::GetSum() const
 	return sum;
 }
 
-ParallelSvm::ParallelSvm(DataSet& ds)
+ParallelSvm::ParallelSvm(shared_ptr<DataSet> ds)
 	: BaseSvm(ds)
 {
 	int halfGigaByte = 1 << 29;
-	long gpuByteSize = ds.nSamples*ds.nFeatures*sizeof(double);
+	long gpuByteSize = ds->nSamples*ds->nFeatures*sizeof(double);
 
 	if (gpuByteSize > halfGigaByte || gpuByteSize < 0)
 		throw exception("gpuByteSize to big for gpu.");

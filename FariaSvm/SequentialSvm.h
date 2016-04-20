@@ -5,7 +5,7 @@ namespace FariaSvm{
 		public BaseSvm
 	{
 	public:
-		SequentialSvm(DataSet &ds);
+		SequentialSvm(shared_ptr<DataSet> ds);
 		~SequentialSvm();
 		int Classify(TrainingSet& ts, ValidationSet& vs, int vIndex) override;
 		void Train(TrainingSet & ts) override;

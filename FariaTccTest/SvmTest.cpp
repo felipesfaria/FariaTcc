@@ -31,7 +31,7 @@ namespace FariaTccTest
 				"-l", "n"
 			};
 			Settings::instance()->Init(argv.size(), argv.data());
-			DataSet ds;
+			auto ds = make_shared<DataSet>();
 
 			auto svm = BaseSvm::GenerateSvm(ds);
 
@@ -41,16 +41,16 @@ namespace FariaTccTest
 			unsigned nFolds;
 			Settings::instance()->GetUnsigned("folds", nFolds);
 			for (auto i = 1; i <= nFolds; i++){
-				ds.InitFoldSets(ts, vs, i);
+				ds->InitFoldSets(ts, vs, i);
 				svm->Train(ts);
 				svm->Test(ts, vs);
 				totalCorrect += vs.nCorrect;
 			}
 			double expected = 100.0;
-			double actual = 100.0*totalCorrect / ds.nSamples;
+			double actual = 100.0*totalCorrect / ds->nSamples;
 			Assert::AreEqual(expected, actual);
 
-			
+
 		}
 
 		TEST_METHOD(SequentialSvm_i_100PrcntMultiStep)
@@ -66,7 +66,7 @@ namespace FariaTccTest
 				"-sm", "m"
 			};
 			Settings::instance()->Init(argv.size(), argv.data());
-			DataSet ds;
+			auto ds = make_shared<DataSet>();
 
 			auto svm = BaseSvm::GenerateSvm(ds);
 
@@ -76,16 +76,16 @@ namespace FariaTccTest
 			unsigned nFolds;
 			Settings::instance()->GetUnsigned("folds", nFolds);
 			for (auto i = 1; i <= nFolds; i++){
-				ds.InitFoldSets(ts, vs, i);
+				ds->InitFoldSets(ts, vs, i);
 				svm->Train(ts);
 				svm->Test(ts, vs);
 				totalCorrect += vs.nCorrect;
 			}
 			double expected = 100.0;
-			double actual = 100.0*totalCorrect / ds.nSamples;
+			double actual = 100.0*totalCorrect / ds->nSamples;
 			Assert::AreEqual(expected, actual);
 
-			
+
 		}
 
 		TEST_METHOD(ParallelSvm_i_100Prcnt)
@@ -100,7 +100,7 @@ namespace FariaTccTest
 				"-l", "n"
 			};
 			Settings::instance()->Init(argv.size(), argv.data());
-			DataSet ds;
+			auto ds = make_shared<DataSet>();
 
 			auto svm = BaseSvm::GenerateSvm(ds);
 
@@ -110,16 +110,16 @@ namespace FariaTccTest
 			unsigned nFolds;
 			Settings::instance()->GetUnsigned("folds", nFolds);
 			for (auto i = 1; i <= nFolds; i++){
-				ds.InitFoldSets(ts, vs, i);
+				ds->InitFoldSets(ts, vs, i);
 				svm->Train(ts);
 				svm->Test(ts, vs);
 				totalCorrect += vs.nCorrect;
 			}
 			double expected = 100.0;
-			double actual = 100.0*totalCorrect / ds.nSamples;
+			double actual = 100.0*totalCorrect / ds->nSamples;
 			Assert::AreEqual(expected, actual);
 
-			
+
 		}
 
 		TEST_METHOD(ParallelSvm_i_100Prcnt_MultiStep)
@@ -135,7 +135,7 @@ namespace FariaTccTest
 				"-sm", "m"
 			};
 			Settings::instance()->Init(argv.size(), argv.data());
-			DataSet ds;
+			auto ds = make_shared<DataSet>();
 
 			auto svm = BaseSvm::GenerateSvm(ds);
 
@@ -145,16 +145,16 @@ namespace FariaTccTest
 			unsigned nFolds;
 			Settings::instance()->GetUnsigned("folds", nFolds);
 			for (auto i = 1; i <= nFolds; i++){
-				ds.InitFoldSets(ts, vs, i);
+				ds->InitFoldSets(ts, vs, i);
 				svm->Train(ts);
 				svm->Test(ts, vs);
 				totalCorrect += vs.nCorrect;
 			}
 			double expected = 100.0;
-			double actual = 100.0*totalCorrect / ds.nSamples;
+			double actual = 100.0*totalCorrect / ds->nSamples;
 			Assert::AreEqual(expected, actual);
 
-			
+
 		}
 
 		TEST_METHOD(Compare_Parallel_and_Sequential_Alpha)
@@ -169,18 +169,18 @@ namespace FariaTccTest
 				"-l", "n"
 			};
 			Settings::instance()->Init(argv.size(), argv.data());
-			DataSet ds;
+			auto ds = make_shared<DataSet>();
 
 			auto sSvm = BaseSvm::GenerateSvm(ds, "s");
 			TrainingSet sTs;
 			ValidationSet sVs;
-			ds.InitFoldSets(sTs, sVs, 1);
+			ds->InitFoldSets(sTs, sVs, 1);
 			sSvm->Train(sTs);
 
 			auto pSvm = BaseSvm::GenerateSvm(ds, "p");
 			TrainingSet pTs;
 			ValidationSet pVs;
-			ds.InitFoldSets(pTs, pVs, 1);
+			ds->InitFoldSets(pTs, pVs, 1);
 			pSvm->Train(pTs);
 
 			int nErrors = 0;
@@ -199,8 +199,8 @@ namespace FariaTccTest
 			double avgErrorTolerance = 1e-14;
 			Assert::IsTrue(avgError < avgErrorTolerance);
 
-			
-			
+
+
 		}
 
 		TEST_METHOD(Compare_Parallel_and_Sequential_Classification)
@@ -216,18 +216,18 @@ namespace FariaTccTest
 				"-l", "n",
 			};
 			Settings::instance()->Init(argv.size(), argv.data());
-			DataSet ds;
+			auto ds = make_shared<DataSet>();
 
 			auto sequentialSvm = BaseSvm::GenerateSvm(ds, "s");
 			TrainingSet sequentialTrainingSet;
 			ValidationSet sequentialValidationSet;
-			ds.InitFoldSets(sequentialTrainingSet, sequentialValidationSet, 1);
+			ds->InitFoldSets(sequentialTrainingSet, sequentialValidationSet, 1);
 			sequentialSvm->Train(sequentialTrainingSet);
 
 			auto parallelSvm = BaseSvm::GenerateSvm(ds, "p");
 			TrainingSet parallelTrainingSet;
 			ValidationSet parallelValidationSet;
-			ds.InitFoldSets(parallelTrainingSet, parallelValidationSet, 1);
+			ds->InitFoldSets(parallelTrainingSet, parallelValidationSet, 1);
 			parallelSvm->Train(parallelTrainingSet);
 
 			int actual = 0;
@@ -255,18 +255,18 @@ namespace FariaTccTest
 				"-sm", "m"
 			};
 			Settings::instance()->Init(argv.size(), argv.data());
-			DataSet ds;
+			auto ds = make_shared<DataSet>();
 
 			auto sSvm = BaseSvm::GenerateSvm(ds, "s");
 			TrainingSet sTs;
 			ValidationSet sVs;
-			ds.InitFoldSets(sTs, sVs, 1);
+			ds->InitFoldSets(sTs, sVs, 1);
 			sSvm->Train(sTs);
 
 			auto pSvm = BaseSvm::GenerateSvm(ds, "p");
 			TrainingSet pTs;
 			ValidationSet pVs;
-			ds.InitFoldSets(pTs, pVs, 1);
+			ds->InitFoldSets(pTs, pVs, 1);
 			pSvm->Train(pTs);
 
 			int nErrors = 0;
@@ -298,7 +298,7 @@ namespace FariaTccTest
 				"-l", "n"
 			};
 			Settings::instance()->Init(argv.size(), argv.data());
-			DataSet ds;
+			auto ds = make_shared<DataSet>();
 
 			auto svm = BaseSvm::GenerateSvm(ds);
 
@@ -308,13 +308,13 @@ namespace FariaTccTest
 			ValidationSet vs;
 			int totalCorrect = 0;
 			for (auto i = 1; i <= nFolds; i++){
-				ds.InitFoldSets(ts, vs, i);
+				ds->InitFoldSets(ts, vs, i);
 				svm->Train(ts);
 				svm->Test(ts, vs);
 				totalCorrect += vs.nCorrect;
 			}
 			double expected = true;
-			double actual = 100.0*totalCorrect / ds.nSamples > 70.0;
+			double actual = 100.0*totalCorrect / ds->nSamples > 70.0;
 			Assert::AreEqual(expected, actual);
 		}
 
@@ -331,7 +331,7 @@ namespace FariaTccTest
 				"-sm", "m"
 			};
 			Settings::instance()->Init(argv.size(), argv.data());
-			DataSet ds;
+			auto ds = make_shared<DataSet>();
 
 			auto svm = BaseSvm::GenerateSvm(ds);
 
@@ -341,16 +341,16 @@ namespace FariaTccTest
 			ValidationSet vs;
 			int totalCorrect = 0;
 			for (auto i = 1; i <= nFolds; i++){
-				ds.InitFoldSets(ts, vs, i);
+				ds->InitFoldSets(ts, vs, i);
 				svm->Train(ts);
 				svm->Test(ts, vs);
 				totalCorrect += vs.nCorrect;
 			}
 			double expected = true;
-			double actual = 100.0*totalCorrect / ds.nSamples > 70.0;
+			double actual = 100.0*totalCorrect / ds->nSamples > 70.0;
 			Assert::AreEqual(expected, actual);
 
-			
+
 		}
 
 	};

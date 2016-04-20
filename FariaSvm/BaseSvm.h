@@ -8,16 +8,15 @@ namespace FariaSvm{
 	class BaseSvm
 	{
 	public:
-		BaseSvm();
-		BaseSvm(DataSet &ds);
-		static unique_ptr<BaseSvm> GenerateSvm(DataSet& ds, string arg = "");
+		BaseSvm(shared_ptr<DataSet> ds);
+		static unique_ptr<BaseSvm> GenerateSvm(shared_ptr<DataSet> ds, string arg = "");
 		virtual int Classify(TrainingSet& ts, ValidationSet& vs, int index);
 		virtual void Train(TrainingSet & ts);
 		virtual void Test(TrainingSet & ts, ValidationSet & vs);
 		int SignOf(double value);
 		virtual ~BaseSvm();
 	protected:
-		DataSet* _ds;
+		shared_ptr<DataSet> _ds;
 		bool isMultiStep;
 		bool isStochastic;
 		double Precision;

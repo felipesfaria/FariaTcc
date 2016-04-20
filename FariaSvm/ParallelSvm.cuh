@@ -5,8 +5,8 @@ namespace FariaSvm{
 	class CudaArray
 	{
 	public:
-		double* device = NULL;
-		double* host = NULL;
+		double* device = nullptr;
+		double* host = nullptr;
 		int size = 0;
 		bool deviceOnly = false;
 		~CudaArray();
@@ -21,7 +21,7 @@ namespace FariaSvm{
 		public BaseSvm
 	{
 	public:
-		ParallelSvm(DataSet& ds);
+		ParallelSvm(shared_ptr<DataSet> ds);
 		~ParallelSvm();
 		int Classify(TrainingSet& ts, ValidationSet& vs, int index) override;
 		void UpdateBlocks(TrainingSet& ts);

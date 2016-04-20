@@ -7,7 +7,7 @@
 using namespace std;
 using namespace FariaSvm;
 
-SequentialSvm::SequentialSvm(DataSet &ds)
+SequentialSvm::SequentialSvm(shared_ptr<DataSet> ds)
 	: BaseSvm(ds)
 {
 	Logger::instance()->Stats("Blocks", to_string(0));

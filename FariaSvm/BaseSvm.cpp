@@ -9,9 +9,9 @@ using namespace FariaSvm;
 
 class ParallelSvm;
 
-BaseSvm::BaseSvm(DataSet &ds)
+BaseSvm::BaseSvm(shared_ptr<DataSet> ds)
 {
-	_ds = &ds;
+	_ds = ds;
 
 	Settings::instance()->GetDouble("precision", Precision);
 
@@ -32,7 +32,7 @@ BaseSvm::BaseSvm(DataSet &ds)
 	Settings::instance()->GetUnsigned("maxIterations", MaxIterations);
 }
 
-unique_ptr<BaseSvm> BaseSvm::GenerateSvm(DataSet& ds, string arg)
+unique_ptr<BaseSvm> BaseSvm::GenerateSvm(shared_ptr<DataSet>ds, string arg)
 {
 	if (arg.empty())
 		arg = Settings::instance()->GetString("svm");
