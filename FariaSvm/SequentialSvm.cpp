@@ -38,9 +38,10 @@ void SequentialSvm::Train(TrainingSet& ts)
 	auto y = ts.y;
 	auto width = ts.width;
 	double* newAlpha = new double[height];
+	auto initialAlpha = isStochastic ? 0.0 : _initialStep;
 	for (int i = 0; i < height; ++i){
-		newAlpha[i] = _initialStep;
-		alpha[i] = _initialStep;
+		newAlpha[i] = initialAlpha;
+		alpha[i] = initialAlpha;
 	}
 	int count = 0;
 

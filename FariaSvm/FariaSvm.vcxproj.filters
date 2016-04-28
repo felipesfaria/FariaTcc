@@ -63,6 +63,9 @@
     <ClInclude Include="Settings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CudaArray.cuh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="CudaKernels.cuh">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -172,6 +175,9 @@
       <Filter>Source Files</Filter>
     </CudaCompile>
     <CudaCompile Include="CudaKernels.cu">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="CudaArray.cu">
       <Filter>Source Files</Filter>
     </CudaCompile>
   </ItemGroup>

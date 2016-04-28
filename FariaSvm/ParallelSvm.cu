@@ -5,69 +5,18 @@
 #include "Settings.h"
 #include "CudaKernels.cuh"
 
-#define CUDA_SAFE_CALL(call) { \
-   cudaError_t err = call;     \
-   if(err != cudaSuccess) {    \
-      fprintf(stderr,"Erro no arquivo '%s', linha %i: %s.\n",__FILE__,  __LINE__,cudaGetErrorString(err)); \
-      throw exception(cudaGetErrorString(err)); } } 
-
 using namespace std;
 using namespace FariaSvm;
 
-CudaArray::~CudaArray()
-{
-	if (device!= nullptr)
-		cudaFree(device);
-	if (deviceOnly && host != nullptr)
-		delete[] host;
-}
-
-void CudaArray::Init(int size)
-{
-	deviceOnly = true;
-	if (size != this->size)
-	{
-		if (host != nullptr)
-			delete[] host;
-		host = new double[size];
-	}
-	Init(host, size);
-}
-
-void CudaArray::Init(double* host, int size)
-{
-	if (size != this->size)
-	{
-		if (device!= nullptr)
-			cudaFree(device);
-		CUDA_SAFE_CALL(cudaMalloc((void**)&device, size * sizeof(double)));
-	}
-	this->size = size;
-	this->host = host;
-}
-
-void CudaArray::CopyToDevice() const
-{
-	CUDA_SAFE_CALL(cudaMemcpy(device, host, size* sizeof(double), cudaMemcpyHostToDevice));
-}
-
-void CudaArray::CopyToHost() const
-{
-	CUDA_SAFE_CALL(cudaMemcpy(host, device, size* sizeof(double), cudaMemcpyDeviceToHost));
-}
-
-double CudaArray::GetSum() const
-{
-	double sum = 0;
-	for (int i = 0; i < size; i++)
-	{
-		sum += host[i];
-	}
-	return sum;
-}
-
 ParallelSvm::ParallelSvm(shared_ptr<DataSet> ds)
-	: BaseSvm(ds)
+	: BaseSvm(ds),
+	caTrainingX(*Settings::instance()),
+	caTrainingY(*Settings::instance()),
+	caValidationX(*Settings::instance()),
+	caAlpha(*Settings::instance()),
+	caSum(*Settings::instance()),
+	caStep(*Settings::instance()),
+	caLastDif(*Settings::instance())
 {
 	int halfGigaByte = 1 << 29;
 	long gpuByteSize = ds->nSamples*ds->nFeatures*sizeof(double);
@@ -103,7 +52,7 @@ int ParallelSvm::Classify(const TrainingSet& ts, const ValidationSet& vs, const 
 
 void ParallelSvm::UpdateBlocks(TrainingSet & ts)
 {
-	int newBlockSize = (ts.height + _threadsPerBlock - 1) / _threadsPerBlock;;
+	int newBlockSize = (ts.height + _threadsPerBlock - 1) / _threadsPerBlock;
 	if (newBlockSize == _blocks) return;
 	if (newBlockSize<1)
 	{
@@ -129,22 +78,21 @@ void ParallelSvm::Train(TrainingSet & ts)
 	caSum.Init(ts.height);
 	if (isMultiStep){
 		caStep.Init(ts.height);
-		initArray << <_blocks, _threadsPerBlock >> >(caStep.device, _initialStep, ts.height);
+		caStep.SetAll(_initialStep);
 	}
 
 	caLastDif.Init(ts.height);
-	initArray << <_blocks, _threadsPerBlock >> >(caLastDif.device, 0.0, ts.height);
+	caLastDif.SetAll(0.0);
 
 	caAlpha.Init(ts.alpha, ts.height);
-	initArray << <_blocks, _threadsPerBlock >> >(caAlpha.device, _initialStep, ts.height);
+	caAlpha.SetAll(_initialStep);
 
 	int count = 0;
 	double lastDif = 999999;
 	double avgDif;
-	int batchSize = 512;
+	int batchSize = 256;
 	int batchStart;
 	int batchEnd;
-	//CUDA_SAFE_CALL(cudaDeviceSynchronize());
 	do
 	{
 		for (batchStart = 0; batchStart < ts.height; batchStart += batchSize)

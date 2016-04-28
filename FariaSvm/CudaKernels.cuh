@@ -1,6 +1,14 @@
 #pragma once
+#include "stdafx.h"
 #include <device_launch_parameters.h>
 #include <cuda_runtime_api.h>
+
+using namespace std;
+#define CUDA_SAFE_CALL(call) { \
+   cudaError_t err = call;     \
+   if(err != cudaSuccess) {    \
+      fprintf(stderr,"Erro no arquivo '%s', linha %i: %s.\n",__FILE__,  __LINE__,cudaGetErrorString(err)); \
+      throw exception(cudaGetErrorString(err)); } }
 
 //__host__ __device__ double calcAlphaMultiStep(double* alpha, const double sum, const double* y, double* step, const double C, int idx);
 //

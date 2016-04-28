@@ -152,6 +152,7 @@
   <ItemGroup>
     <ClInclude Include="BaseSet.h" />
     <ClInclude Include="BaseSvm.h" />
+    <ClInclude Include="CudaArray.cuh" />
     <ClInclude Include="CudaKernels.cuh" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="DataSet.h" />
@@ -168,6 +169,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseSet.cpp" />
+    <CudaCompile Include="CudaArray.cu">
+      <FileType>CppCode</FileType>
+    </CudaCompile>
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="ValidationSet.cpp" />

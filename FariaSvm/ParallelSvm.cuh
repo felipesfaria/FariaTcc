@@ -1,22 +1,8 @@
 #pragma once
 #include "BaseSvm.h"
+#include "CudaArray.cuh"
 #include <driver_types.h>
 namespace FariaSvm{
-	class CudaArray
-	{
-	public:
-		double* device = nullptr;
-		double* host = nullptr;
-		int size = 0;
-		bool deviceOnly = false;
-		~CudaArray();
-		void Init(double* host, int size);
-		void Init(int size);
-		void CopyToDevice() const;
-		void CopyToHost() const;
-		double GetSum() const;
-	};
-
 	class ParallelSvm :
 		public BaseSvm
 	{
